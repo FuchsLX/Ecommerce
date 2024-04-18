@@ -2,8 +2,6 @@ package com.springboot.ecommerce.search.controller;
 
 
 import com.springboot.ecommerce.exception.ProductNotFoundException;
-import com.springboot.ecommerce.model.category.Category;
-import com.springboot.ecommerce.model.tag.Tag;
 import com.springboot.ecommerce.search.model.product.ProductElasticSearch;
 import com.springboot.ecommerce.search.model.product.ProductElasticSearchServiceImpl;
 import jakarta.servlet.http.HttpSession;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 
 

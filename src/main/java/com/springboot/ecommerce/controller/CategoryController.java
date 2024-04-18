@@ -2,8 +2,8 @@ package com.springboot.ecommerce.controller;
 
 
 
-import com.springboot.ecommerce.model.category.Category;
-import com.springboot.ecommerce.model.category.CategoryServiceImpl;
+import com.springboot.ecommerce.entities.category.Category;
+import com.springboot.ecommerce.services.impl.CategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

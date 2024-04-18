@@ -1,12 +1,12 @@
 package com.springboot.ecommerce.controller;
 
-import com.springboot.ecommerce.model.category.CategoryServiceImpl;
-import com.springboot.ecommerce.model.product.Product;
-import com.springboot.ecommerce.model.product.ProductServiceImpl;
-import com.springboot.ecommerce.model.productMeta.ProductMeta;
-import com.springboot.ecommerce.model.productMeta.ProductMetaServiceImpl;
-import com.springboot.ecommerce.model.tag.TagServiceImpl;
-import com.springboot.ecommerce.model.user.UserService;
+import com.springboot.ecommerce.services.impl.CategoryServiceImpl;
+import com.springboot.ecommerce.entities.product.Product;
+import com.springboot.ecommerce.services.impl.ProductServiceImpl;
+import com.springboot.ecommerce.entities.product.ProductMeta;
+import com.springboot.ecommerce.services.impl.ProductMetaServiceImpl;
+import com.springboot.ecommerce.services.impl.TagServiceImpl;
+import com.springboot.ecommerce.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

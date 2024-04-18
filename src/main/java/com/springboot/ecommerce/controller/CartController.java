@@ -1,14 +1,14 @@
 package com.springboot.ecommerce.controller;
 
 import com.springboot.ecommerce.exception.EmptyCartException;
-import com.springboot.ecommerce.model.cart.Cart;
-import com.springboot.ecommerce.model.cart.CartServiceImpl;
-import com.springboot.ecommerce.model.cartItem.CartItem;
-import com.springboot.ecommerce.model.cartItem.CartItemServiceImpl;
-import com.springboot.ecommerce.model.product.Product;
-import com.springboot.ecommerce.model.product.ProductServiceImpl;
-import com.springboot.ecommerce.model.user.User;
-import com.springboot.ecommerce.model.user.UserService;
+import com.springboot.ecommerce.entities.cart.Cart;
+import com.springboot.ecommerce.services.impl.CartServiceImpl;
+import com.springboot.ecommerce.entities.cart.CartItem;
+import com.springboot.ecommerce.services.impl.CartItemServiceImpl;
+import com.springboot.ecommerce.entities.product.Product;
+import com.springboot.ecommerce.services.impl.ProductServiceImpl;
+import com.springboot.ecommerce.entities.user.User;
+import com.springboot.ecommerce.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

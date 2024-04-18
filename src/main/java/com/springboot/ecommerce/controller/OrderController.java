@@ -2,17 +2,17 @@ package com.springboot.ecommerce.controller;
 
 
 import com.springboot.ecommerce.exception.EmptyUserMetaException;
-import com.springboot.ecommerce.model.cart.Cart;
-import com.springboot.ecommerce.model.cart.CartServiceImpl;
-import com.springboot.ecommerce.model.order.Order;
-import com.springboot.ecommerce.model.order.OrderServiceImpl;
-import com.springboot.ecommerce.model.transaction.Transaction;
-import com.springboot.ecommerce.model.transaction.TransactionMode;
-import com.springboot.ecommerce.model.transaction.TransactionType;
-import com.springboot.ecommerce.model.userMeta.UserMetaServiceImpl;
-import com.springboot.ecommerce.model.user.User;
-import com.springboot.ecommerce.model.user.UserRole;
-import com.springboot.ecommerce.model.user.UserService;
+import com.springboot.ecommerce.entities.cart.Cart;
+import com.springboot.ecommerce.services.impl.CartServiceImpl;
+import com.springboot.ecommerce.entities.order.Order;
+import com.springboot.ecommerce.services.impl.OrderServiceImpl;
+import com.springboot.ecommerce.entities.transaction.Transaction;
+import com.springboot.ecommerce.entities.transaction.TransactionMode;
+import com.springboot.ecommerce.entities.transaction.TransactionType;
+import com.springboot.ecommerce.services.impl.UserMetaServiceImpl;
+import com.springboot.ecommerce.entities.user.User;
+import com.springboot.ecommerce.entities.user.UserRole;
+import com.springboot.ecommerce.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,8 +28,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.springboot.ecommerce.model.transaction.TransactionMode.*;
-import static com.springboot.ecommerce.model.transaction.TransactionType.*;
+import static com.springboot.ecommerce.entities.transaction.TransactionMode.*;
+import static com.springboot.ecommerce.entities.transaction.TransactionType.*;
 
 
 @Controller

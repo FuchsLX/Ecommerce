@@ -1,11 +1,11 @@
 package com.springboot.ecommerce.controller;
 
 
-import com.springboot.ecommerce.model.userMeta.UserMeta;
-import com.springboot.ecommerce.model.userMeta.UserMetaGender;
-import com.springboot.ecommerce.model.userMeta.UserMetaServiceImpl;
-import com.springboot.ecommerce.model.user.User;
-import com.springboot.ecommerce.model.user.UserService;
+import com.springboot.ecommerce.entities.user.UserMeta;
+import com.springboot.ecommerce.entities.user.UserMetaGender;
+import com.springboot.ecommerce.services.impl.UserMetaServiceImpl;
+import com.springboot.ecommerce.entities.user.User;
+import com.springboot.ecommerce.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static com.springboot.ecommerce.model.userMeta.UserMetaGender.*;
+import static com.springboot.ecommerce.entities.user.UserMetaGender.*;
 
 @Controller
 @RequiredArgsConstructor

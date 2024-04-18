@@ -1,15 +1,11 @@
 package com.springboot.ecommerce.search.model.product;
 
-import com.springboot.ecommerce.model.category.Category;
-import com.springboot.ecommerce.model.product.Product;
-import com.springboot.ecommerce.model.tag.Tag;
+import com.springboot.ecommerce.entities.product.Product;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 
 public interface ProductElasticSearchService {

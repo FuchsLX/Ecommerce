@@ -1,7 +1,7 @@
 package com.springboot.ecommerce.security.registration;
 
 
-import com.springboot.ecommerce.model.user.UserRole;
+import com.springboot.ecommerce.entities.user.UserRole;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;

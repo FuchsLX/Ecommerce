@@ -1,11 +1,9 @@
 package com.springboot.ecommerce.search.model.product;
 
 
-import com.springboot.ecommerce.model.category.Category;
-import com.springboot.ecommerce.model.category.CategoryServiceImpl;
-import com.springboot.ecommerce.model.product.Product;
-import com.springboot.ecommerce.model.tag.Tag;
-import com.springboot.ecommerce.model.tag.TagServiceImpl;
+import com.springboot.ecommerce.entities.category.Category;
+import com.springboot.ecommerce.entities.product.Product;
+import com.springboot.ecommerce.entities.tag.Tag;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

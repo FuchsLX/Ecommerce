@@ -6,7 +6,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = "com.springboot.ecommerce.model")
+@EnableJpaRepositories(basePackages = "com.springboot.ecommerce.repositories")
 @EnableElasticsearchRepositories(basePackages = "com.springboot.ecommerce.search")
 public class EcommerceApplication {
 

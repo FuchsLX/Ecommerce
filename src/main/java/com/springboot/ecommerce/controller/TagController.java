@@ -1,7 +1,7 @@
 package com.springboot.ecommerce.controller;
 
-import com.springboot.ecommerce.model.tag.Tag;
-import com.springboot.ecommerce.model.tag.TagServiceImpl;
+import com.springboot.ecommerce.entities.tag.Tag;
+import com.springboot.ecommerce.services.impl.TagServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
