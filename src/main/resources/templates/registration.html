@@ -1,0 +1,43 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Sign Up</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/regestration.css}">
+</head>
+
+<body>
+<div class="faixa">
+
+  <h1>Registration</h1>
+
+  <form class="registration" th:action="@{registration/register}" method="post" th:object="${request}">
+
+    <input class="textbox" type="text" placeholder="firstname" th:field="*{firstName}" required/>
+    <input class="textbox" type="text" placeholder="lasttname" th:field="*{lastName}" required/>
+    <input class="textbox" type="email" placeholder="Email" th:field="*{email}" required/>
+    <div class="email-already-taken-exception" th:if="${emailAlreadyTakenException}">
+      <span th:text="${emailAlreadyTakenException}" style="color: red"></span>
+    </div>
+    <div class="email-not-valid-exception" th:if="${emailNotValidException}" style="margin-left: 30px">
+      <span th:text="${emailNotValidException}" style="color: #770202; "></span>
+    </div>
+    <input class="textbox" type="password" placeholder="Password" th:field="*{password}" required/>
+    <div class="group_userRole" >
+      <label for="role"></label>
+      <select id="role" th:field="*{userRole}">
+        <option th:each="role: ${roleList}" th:value="${role}" th:text="${role}"/>
+      </select>
+    </div>
+
+    <input class="Send" type="submit" value="Sign up"/>
+
+    <p>
+      <a>You have an account ?</a>
+      <a class="link" th:href="@{login.html}" style="margin: -16px 0px 0px 200px;">Login</a>
+    </p>
+
+  </form>
+</div>
+</body>
+</html>

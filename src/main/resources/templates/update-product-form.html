@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Management</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #FFA500, #FFC0CB);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .update-product-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .update-product-form label {
+            font-size: 16px;
+            color: #444;
+        }
+
+        .update-product-form input[type="text"],
+        .update-product-form input[type="number"],
+        .update-product-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #444;
+            background-color: #f6f6f6;
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        .update-product-form input[type="submit"],
+        .update-product-form button,
+        .update-product-form a.btn-product-meta,
+        .update-product-form a.btn-product-management {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            background-color: #FFC0CB;
+        }
+
+        .update-product-form input[type="submit"]:hover,
+        .update-product-form button:hover,
+        .update-product-form a.btn-product-meta:hover,
+        .update-product-form a.btn-product-management:hover {
+            opacity: 0.8;
+        }
+
+        .update-product-form .group-product-meta button {
+            background-color: #FFC0CB;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            margin-top: 20px;
+        }
+
+        .update-product-form .group-product-meta button:hover {
+            background-color: #FFC0CB;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .form-buttons a {
+            display: inline-block;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.3s ease-in-out;
+            background-color: #FFC0CB;
+        }
+
+        .form-buttons a:hover {
+            opacity: 0.8;
+        }
+
+        .update-product-form .group-product-meta .form-group-key-content{
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f6f6f6;
+        }
+
+        .update-product-form .group-title,
+        .update-product-form .group-image,
+        .update-product-form .group-meta-title,
+        .update-product-form .group-slug,
+        .update-product-form .group-summary,
+        .update-product-form .group-sku,
+        .update-product-form .group-shop-available,
+        .update-product-form .group-price,
+        .update-product-form .group-discount,
+        .update-product-form .group-quantity,
+        .update-product-form .group-published-at,
+        .update-product-form .group-starts-at,
+        .update-product-form .group-ends-at,
+        .update-product-form .group-content,
+        .update-product-form .group-category,
+        .update-product-form .group-tag,
+        .update-product-form .group-product-meta {
+            margin-bottom: 20px;
+        }
+
+        .update-product-form .group-product-meta .form-group-product-meta {
+            margin-bottom: 10px;
+        }
+
+        .update-product-form .group-product-meta .form-group-product-meta:last-child {
+            margin-bottom: 0;
+        }
+
+        .update-product-form .group-product-meta label,
+        .update-product-form .group-product-meta textarea {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .update-product-form .group-product-meta input[type="text"] {
+            width: 80%;
+        }
+
+        .update-product-form .group-product-meta textarea {
+            width: 100%;
+            resize: vertical;
+        }
+
+        .update-product-form a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="update-product-form">
+        <form method="post" th:action="@{/product-management/save-product}" th:object="${product}">
+            <th:block th:if="*{id != null}">
+                <input type="hidden" th:field="*{id}">
+            </th:block>
+            <div class="group-title">
+                <label for="title">Title Product</label>
+                <input type="text" id="title" th:field="*{title}" required><br><br>
+            </div>
+            <div class="group-image">
+                <label for="image-link">Image Link</label>
+                <input type="text"  id="image-link" th:field="*{imageLink}"><br><br>
+            </div>
+            <div class="group-meta-title">
+                <label for="meta-title">Meta Title</label>
+                <input type="text" id="meta-title" th:field="*{metaTitle}"><br><br>
+            </div>
+            <div class="group-slug">
+                <label for="slug">Slug </label>
+                <input type="text" id="slug" th:field="*{slug}" required><br><br>
+            </div>
+            <div class="group-summary">
+                <label for="summary">Summary</label>
+                <input type="text" id="summary" th:field="*{summary}"><br><br>
+            </div>
+            <div class="group-sku">
+                <label for="sku">SKU</label>
+                <input type="text" id="sku" th:field="*{sku}" required><br><br>
+            </div>
+            <div class="group-shop-available">
+                <label for="shop-available">Shop</label>
+                <input type="checkbox" id="shop-available" th:field="*{shop}" th:checked="${true}"><br><br>
+            </div>
+            <div class="group-price">
+                <label for="price">Price</label>
+                <input type="number" id="price" th:field="*{price}" required min="0"><br><br>
+            </div>
+            <div class="group-discount">
+                <label for="discount">Discount</label>
+                <input type="number" id="discount" step="any" th:field="*{discount}" required min="0" max="100"><br><br>
+            </div>
+            <div class="group-quantity">
+                <label for="quantity">Quantity</label>
+                <input type="number" id="quantity" th:field="*{quantity}" required min="0"><br><br>
+            </div>
+            <div class="group-published-at">
+                <label for="published-at">Publish at</label>
+                <input type="datetime-local"  id="published-at" th:field="*{publishedAt}"><br><br>
+            </div>
+            <div class="group-starts-at">
+                <label for="starts-at">Starts at</label>
+                <input type="datetime-local"  id="starts-at" th:field="*{startsAt}"><br><br>
+            </div>
+            <div class="group-ends-at">
+                <label for="ends-at">Ends at</label>
+                <input type="datetime-local"  id="ends-at" th:field="*{endsAt}"><br><br>
+            </div>
+            <div class="group-content">
+                <label for="content">Content</label>
+                <input type="text"  id="content" th:field="*{content}"><br><br><br><br>
+            </div>
+
+            <div class="group-category">
+                <label for="category-product">Category List</label>
+                <th:block th:each="category : ${categoriesList}">
+                    <div>
+                        <input type="checkbox" id="category-product"
+                               th:field="*{categories}"
+                               th:value="${category.id}"
+                               th:text="${category.title}">
+                    </div>
+                </th:block>
+            </div>
+            <br><br>
+
+            <div class="group-tag">
+                <label for="product-tag">Product Tag List</label>
+                <th:block th:each="tag : ${productTags}">
+                    <div>
+                        <input type="checkbox" id="product-tag"
+                               th:field="*{tags}"
+                               th:value="${tag.id}"
+                               th:text="${tag.title}">
+                    </div>
+                </th:block>
+            </div>
+            <br><br>
+
+            <th:block th:if="*{id != null}">
+                <th:block th:if="*{productMetas != null or productMetas.size() == 0}">
+
+                <div class="group-product-meta">
+                    <label for="product-meta">Product Meta List: </label>
+                    <div class="form-group-key-content">
+
+                        <div id="product-meta">
+                            <div class="form-group-product-meta" th:each="meta, metaStatus : *{productMetas}">
+                                <label for="key-product-meta" th:text="'Key product meta '+ ${metaStatus.count}"></label>
+                                <p id="key-product-meta" th:text="*{productMetas[__${metaStatus.index}__].keyProductMeta}"></p>
+                                <label for="content-product-meta" th:text="'Content ' + ${metaStatus.count}"></label>
+                                <p id="content-product-meta" th:text="*{productMetas[__${metaStatus.index}__].content}"></p><br><br>
+                            </div>
+                        </div>
+                </div>
+                </th:block>
+
+
+                <input type="submit" value="Update product">
+
+            </th:block>
+
+            <th:block th:unless="*{id != null}">
+                <div class="group-product-meta">
+                    <label for="product-meta-new">Product Meta List: </label>
+                    <div class="form-group-key-content">
+                        <div id="product-meta-new">
+                            <div class="form-group-product-meta" th:each="meta, metaStatus : *{productMetas}">
+                                <label for="key-product-meta-new" th:text="'Key product meta '+ ${metaStatus.count}"></label>
+                                <input id="key-product-meta-new" th:field="*{productMetas[__${metaStatus.index}__].keyProductMeta}" type="text" required>
+                                <label for="content-product-meta-new" th:text="'Content ' + ${metaStatus.count}"></label>
+                                <textarea id="content-product-meta-new" th:field="*{productMetas[__${metaStatus.index}__].content}" rows="3"></textarea><br><br>
+                                <button type="button" onclick="removeProductMeta(this)">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="addProductMeta()">Add New Product Meta Form</button>
+                </div>
+
+                <!--MAGIC. DON'T TOUCH :)).-->
+                <script type="text/javascript" th:src="@{/js/add-new-product-meta.js}"></script>
+                <!--MAGIC. DON'T TOUCH :)).-->
+
+
+                <input type="submit" value="Add new product">
+            </th:block>
+
+            <div class="form-buttons" th:if="${product.id != null}">
+                <a th:href="@{/product-management/product-meta-management/{id}(id=${product.id})}" class = "btn-product-meta">Product Meta Management</a>
+                <a th:href="@{/product-management/products-list}" class="btn-product-management">Back to Product management</a><br>
+            </div>
+
+
+        </form>
+
+    </div>
+</div>
+</body>
+</html>

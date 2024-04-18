@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Result search</title>
+        <script
+                src="https://code.jquery.com/jquery-3.6.4.js"
+                integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+                crossorigin="anonymous"></script>
+        <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css}" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" th:href="@{/css/home.css}">
+        <link rel="stylesheet" th:href="@{/css/rs.css}">
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+
+        <style>
+            .pagination {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px;
+                background-color: #f5f5f5;
+                border: 1px solid #ddd;
+            }
+
+            .page-links {
+                display: flex;
+                gap: 5px;
+            }
+
+            .page-links a,
+            .page-links span {
+                color: black;
+                float: left;
+                padding: 8px 16px;
+                text-decoration: none;
+                border: 1px solid #ddd; /* Gray */
+            }
+
+
+            .pagination-button-prev a, .pagination-button-next a {
+                padding: 5px 10px;
+                text-decoration: none;
+                color: #333;
+                background-color: #ddd;
+                border: 1px solid #bbb;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="header">
+        <div class="container">
+            <div class="navbar">
+                <div class="logo">
+                    <a th:href="@{/home}"><img th:src="@{/img/logo.png}" alt="logo" width="125px"></a>
+                </div>
+                <nav>
+                    <ul id="MenuItems">
+                        <li>
+                            <form method="get" th:action="@{/search}">
+                                <input type="text" id="search-product"  name="q" placeholder="🔍"
+                                       style="border-radius: 10px;border: none; height:30px; width:300px;">
+                                <input type="submit" id="submit-search" value="Search"
+                                       style="border-radius: 10px; border: none; height: 30px ; width:75px; background-color: #f68383">
+                            </form>
+                        </li>
+                        <li><a th:href="@{/home}" >Home</a></li>
+                        <li><a>Products</a></li>
+                        <li><a th:href="@{/order/history}">Order History</a></li>
+                        <li><a>Contact</a></li>
+                        <li><a th:href="@{/account/edit}">My Account</a></li>
+                        <li><a th:href="@{/logout}" style="color: rgb(211, 38, 38);">Logout</a></li>
+                    </ul>
+                </nav>
+                <a th:href="@{/cart}"><img th:src="@{/img/cart.png}" width="30px" height="30px"></a>
+                <img th:src="@{/img/menu.png}" class="menu-icon" onclick="menutoggle()">
+            </div>
+        </div>
+    </div>
+
+    <!-- ko đc động vào -->
+        <div class="container-rs">
+
+
+
+            <div class="product-not-found-exception" th:if="${productNotFoundException}" style="display: flex; justify-content: center">
+                <img th:src="@{/img/noresult.png}" alt="No Result"; style="width: 700px; height: 500px" ></img>
+            </div>
+
+            <div class="result-search" th:unless="${productNotFoundException}">
+                <!--MAGIC. DON'T TOUCH :)).------------------------------>
+
+                <div class="left4filter">
+                <div class="categories-filter" th:if="${categoriesFilter != null}">
+                    <label for="category-selection">Category Filter: </label>
+                    <th:block th:each="categorySe : ${categoriesFilter}">
+                        <input type="checkbox" id="category-selection"
+                               th:value="${categorySe}"
+                               th:text="${categorySe}"
+                               th:checked="${selectedCategories != null ? #lists.contains(selectedCategories, categorySe) : false}"
+                               onchange="updateCategoriesSelection(this)"><br>
+                    </th:block>
+                </div>
+
+                <div class="tags-filter" th:if="${tagsFilter != null}">
+                    <label for="tag-selection">Tag Filter: </label>
+                    <th:block th:each="tagSe : ${tagsFilter}">
+                        <input type="checkbox" id="tag-selection"
+                               th:value="${tagSe}"
+                               th:text="${tagSe}"
+                               th:checked="${selectedTags != null ? #lists.contains(selectedTags, tagSe) : false}"
+                               onchange="updateTagsSelection(this)"><br>
+                    </th:block>
+                </div>
+
+                <div class="price-filter">
+                    <form class="price-input">
+                        <label for="lower-bound-price-selection">Min price:</label>
+                        <input type="number" id="lower-bound-price-selection"><br><br>
+                        <label for="upper-bound-price-selection">Max price: </label>
+                        <input type="number"  id="upper-bound-price-selection" >
+                        <input type="button" value="Search" onclick="updatePriceSelection()">
+                    </form>
+                </div>
+
+                <div class="sort-button">
+                    <input type="button" value="Sort ASC name" onclick="sortNameASC()"><br><br>
+                    <input type="button" value="Sort DESC name" onclick="sortNameDESC()"><br><br>
+                    <input type="button" value="Sort ASC price" onclick="sortPriceASC()"><br><br>
+                    <input type="button" value="Sort DESC price" onclick="sortPriceDESC()">
+                </div>
+                <!--MAGIC. DON'T TOUCH :)).------------------------------>
+                <script th:inline="javascript">
+                    let selectedCategories = [[${selectedCategories}]];
+                    let selectedTags = [[${selectedTags}]];
+                    let sortFieldSelection = null;
+                    let sortDirectionSelection = null;
+                </script>
+                <script th:src="@{/js/filter-search.js}"></script>
+
+                <form id="search-form" method="get" th:action="@{/search}">
+                    <input type="hidden" name="q" th:value="${query}">
+                    <input type="hidden" id="categories-selection-input">
+                    <input type="hidden" id="tags-selection-input">
+                    <input type="hidden" id="lower-bound-price-input">
+                    <input type="hidden" id="upper-bound-price-input">
+                    <input type="hidden" id="sort-field-input">
+                    <input type="hidden" id="sort-direction-input">
+                </form>
+                <!--MAGIC. DON'T TOUCH :)).------------------------------>
+
+
+
+
+
+            </div>
+                <div class="right4">
+                    <div class="row">
+                        <div class="row" style="background-color: rgb(245, 235, 223); border-radius: 10px;">
+                            <th:block th:each="product : ${listProducts}">
+
+                                <div class="col-4">
+                                    <a th:href="@{/product/{slugProduct}(slugProduct=${product.slug})}"><img th:src="${product.getImageLink()}"></a>
+                                    <h4 th:text="${product.title}"></h4>
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-o"></i>
+                                    </div>
+                                    <p><span th:text="${product.price}"></span><sup>$</sup></p>
+                                    <button class="button-add-product-to-cart" onclick="addProductToCart(this)"  th:data-product-id="${product.id}">Add to Cart</button>
+                                </div>
+
+                            </th:block>
+
+                        </div>
+                    </div>
+
+
+                    <p th:text="'Total products: ' + ${totalItems}"></p>
+
+                    <!--MAGIC. DON'T TOUCH :)).------------------------------>
+                    <div class="pagination">
+                        <div class="pagination-button-prev"></div>
+                        <span class="page-links"></span>
+                        <div class="pagination-button-next"></div>
+                    </div>
+
+                    <script th:inline="javascript">
+                        let totalPages = [[${totalPages}]];
+                        let currentPage = [[${currentPage}]];
+                        let query = [[${query}]];
+                        let sortField = [[${sortField}]];
+                        let sortDir = [[${sortDir}]];
+                        let categories = [[${selectedCategories}]];
+                        let tags = [[${selectedTags}]];
+                        let lowerBoundPrice = [[${lowerBoundPrice}]];
+                        let upperBoundPrice = [[${upperBoundPrice}]];
+                    </script>
+                    <script th:src="@{/js/pagination-result-search.js}"></script>
+                    <!--MAGIC. DON'T TOUCH :)).------------------------------>
+                </div>
+            </div>
+        </div>
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col-1">
+                    <h3>Download Our App</h3>
+                    <p>Download App for Android and ios mobile phone.</p>
+                    <div class="app-logo">
+                        <img th:src="@{/img/play-store.png}">
+                        <img th:src="@{/img/app-store.png}">
+                    </div>
+                </div>
+                <div class="footer-col-2">
+                    <img th:src="@{/img/logo.png}">
+                    <p>Our Purpose Is To Sustainably Make the Pleasure and Benefits of Technology Accessible to the Many.
+                    </p>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Useful Links</h3>
+                    <ul>
+                        <li>Coupons</li>
+                        <li>Blog Post</li>
+                        <li>Return Policy</li>
+                        <li>Join Affiliate</li>
+                    </ul>
+                </div>
+                <div class="footer-col-4">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li>Facebook</li>
+                        <li>Twitter</li>
+                        <li>Instagram</li>
+                        <li>Youtube</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <p class="copyright">Copyright 2023 - Team 7 Web</p>
+        </div>
+    </div>
+    <!--Magic. Don't touch-->
+    <script th:src="@{/js/add-product-to-cart-from-pros-page.js}"></script>
+    <!--Magic. Don't touch-->
+    </body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Order detail</title>
+    <style>
+        /* Thiết lập kích thước và định dạng cho các phần tử */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #FFA500, #FFC0CB);
+            color: #444;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 800px;
+            margin: 0 auto;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .group-user-information,
+        .group-order-item {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            font-weight: bold;
+        }
+
+        td {
+            border-bottom: 1px solid #ddd;
+        }
+        .transaction {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f8f8f8;
+        }
+
+        .transaction p {
+            margin: 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .transaction p:not(:last-child) {
+            margin-bottom: 10px;
+        }
+        .order-list a {
+            display: inline-block;
+            background: #ff523b;
+            color: white;
+            padding: 8px 30px;
+            margin: 30px 0;
+            border-radius: 30px;
+            transition: background 0.5s}
+
+        .order-list a:hover {
+            background-color: #563434;
+        }
+        button.back {
+            background-color: burlywood;
+            color: white;
+            border-radius: 4px;
+        }
+
+    </style>
+</head>
+
+<body>
+<a><img th:src="@{/img/logo.png}" alt="logo" width="80px"></a>
+<div class="container">
+    <div class="group-user-information">
+        <th:block th:with="userMeta=${order.getUser().getUserMeta()}">
+            <table th:object="${userMeta}">
+                <tr>
+                    <th>User id:</th>
+                    <td th:text="${order.getUser().getId()}"></td>
+                </tr>
+                <tr>
+                    <th>Your name:</th>
+                    <td th:text="' ' + *{firstName} + ' ' + *{middleName} + ' ' + *{lastName}"></td>
+                </tr>
+                <tr>
+                    <th>Address:</th>
+                    <td th:text="*{address}"></td>
+                </tr>
+                <tr>
+                    <th>Mobile:</th>
+                    <td th:text="*{mobile}"></td>
+                </tr>
+            </table>
+        </th:block>
+    </div>
+    <div class="group-order-item">
+        <table>
+            <tr>
+                <th>Product name</th>
+                <th>Price</th>
+                <th>Item price</th>
+                <th>Quantity</th>
+            </tr>
+            <tr th:each="orderItem : ${order.getOrderItems()}" th:with="product=${orderItem.product}">
+                <td th:text="${product.title}"></td>
+                <td th:text="${product.price}"></td>
+                <td th:text="${orderItem.price}"></td>
+                <td th:text="${orderItem.quantity}"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="transaction">
+        <p th:text="'Transaction mode: ' + ${transaction.getMode()}"></p><br>
+        <p th:text="'Transaction type: ' + ${transaction.getType()}"></p><br>
+        <p th:text="'Transaction status: ' + ${transaction.getStatus()}"></p><br>
+    </div>
+
+    <div class="order-status">
+        <p th:text="'Order status: ' + ${order.getStatus()}"></p>
+        <th:block th:if="${quantityExceededOrderException}">
+            <p th:text="${quantityExceededOrderException}"></p>
+        </th:block>
+        <th:block th:unless="${quantityExceededOrderException}">
+            <th:block th:if="${order.getStatus().equals(T(com.springboot.ecommerce.model.order.OrderStatus).PROCESSING)}">
+                <form th:action="@{/order-management/update-delivered-order/{orderId}(orderId=${order.id})}">
+                    <button type="submit">Update Delivered Order</button>
+                </form>
+            </th:block>
+        </th:block>
+        <th:block th:if="${order.getStatus().equals(T(com.springboot.ecommerce.model.order.OrderStatus).PROCESSING)} or
+                            ${order.getStatus().equals(T(com.springboot.ecommerce.model.order.OrderStatus).DELIVERED)}">
+            <form th:action="@{/order/update-cancelled-order/{orderId}(orderId=${order.id})}">
+                <button type="submit">Update Cancelled Order</button>
+            </form>
+        </th:block>
+
+        <th:block th:if="${order.getStatus().equals(T(com.springboot.ecommerce.model.order.OrderStatus).DELIVERED)}">
+            <form th:action="@{/order-management/update-completed-order/{orderId}(orderId=${order.id})}">
+                <button type="submit">Update Completed Order</button>
+            </form>
+        </th:block>
+
+    </div>
+    <button class="back">
+        <a th:href="@{/order-management}">Back</a>
+    </button>
+</div>
+</body>
+</html>

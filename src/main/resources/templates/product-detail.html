@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product - detail | TechShop</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/product-detail.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <div class="navbar">
+        <div class="logo">
+            <a th:href="@{/home}"><img th:src="@{/img/logo.png}" alt="logo" width="125px"></a>
+        </div>
+        <nav>
+            <ul id="MenuItems">
+                <li>
+                    <form method="get" th:action="@{/search}">
+                        <input type="text" id="search-product"  name="q" placeholder="🔍"
+                               style="border-radius: 10px;border: 1px solid gray; height:30px; width:300px;">
+                        <input type="submit" id="submit-search" value="Search"
+                               style="border-radius: 10px; border: none; height: 30px ; width:75px; background-color: #f68383">
+                    </form>
+                </li>
+                <li><a th:href="@{/home}">Home</a></li>
+                <li><a>Products</a></li>
+                <li><a>About</a></li>
+                <li><a >Contact</a></li>
+                <li><a th:href="@{/account/edit}">Account</a></li>
+            </ul>
+        </nav>
+        <a th:href="@{/cart}"><img th:src="@{/img/cart.png}" width="30px" height="30px"></a>
+        <img th:src="@{/img/menu.png}" class="menu-icon" onclick="menutoggle()">
+    </div>
+</div>
+
+<!-- Detail Products -->
+
+<div class="detail-product">
+
+    <div class="product-info" style="display: flex; align-items: center;">
+        <div class="img">
+            <img th:src="${product.getImageLink()}"
+                 th:alt="${product.title}"
+                 style="height: 400px; width: 400px">
+        </div>
+        <div class="next-to-img">
+<!--            <a th:href="@{/home}" id="back">Home page/</a><br><br>-->
+            <h1 th:text="${product.title}"></h1><br>
+            <p th:text="'Price: ' + ${product.price} + ' $'" style="font-size: 25px;font-weight:500 "></p><br>
+            <p th:text="'Discount: '+ ${product.discount} + ' %' "></p><br><br>
+
+            <th:block th:if="${product.shop == false}">
+                <p>Product no longer available</p>
+            </th:block>
+
+            <th:block th:unless="${product.quantity > 0}">
+                <p>Out of stock</p>
+            </th:block>
+
+            <th:block th:if="${product.quantity > 0 and product.shop==true}">
+                <div class="custom-number-input h-10 w-32">
+
+                    <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
+                        <button data-action="decrement" class="increase-decrease-product">
+                            <span class="m-auto-text-2xl-font-thin">−</span>
+                        </button>
+                        <input type="number" class="number-product"
+
+                               th:id="'quantity' + ${product.id}"
+                               name="custom-input-number"
+                               value="1">
+                        <button data-action="increment" class="increase-decrease-product">
+                            <span class="m-auto-text-2xl-font-thin" >+</span>
+                        </button><br><br>
+                    </div>
+
+                        <button id="button-add-product-to-cart">Add To Cart</button>
+                    </div>
+
+                    <!--MAGIC. DON'T TOUCH :)).-->
+                    <script th:inline="javascript">
+                        let maxQuantityProduct = [[${product.quantity}]];
+                        let productId = [[${product.id}]];
+                    </script>
+                    <script th:src="@{/js/quantity-controll-product-page.js}"></script>
+                    <!--MAGIC. DON'T TOUCH :)).-->
+
+
+                    <th:block th:if="${product.quantity <= 10}">
+                        <p th:text="'Only ' + ${product.quantity} + ' left in stock'"></p>
+                    </th:block>
+
+            </th:block>
+
+
+        </div>
+    </div>
+</div>
+<!-- title -->
+<div class="small-container">
+    <div class="row row-2">
+        <h2>Related Products</h2>
+    </div>
+</div>
+<!-- Related Products -->
+<div class="small-container">
+    <div class="relatedPr">
+        <th:block th:each="reProduct : ${relatedProducts}">
+            <div class="col-4">
+                <a th:href="@{/product/{slugProduct}(slugProduct=${reProduct.slug})}"><img th:src="${reProduct.getImageLink()}"></a>
+
+                <h4 th:text="${reProduct.getTitle()}"></h4>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <p><span th:text="${reProduct.price}"></span><sup>$</sup></p>
+            </div>
+        </th:block>
+    </div>
+    <script>
+        $(document).ready(function() {
+            var slider = $('.relatedPr');
+
+            function autoSlide() {
+                slider.slick('slickNext');
+            }
+
+            slider.slick({
+                infinite: true,
+                slidesToShow: 4,
+                prevArrow: $('.prevv'),
+                nextArrow: $('.nextt')
+            });
+
+            setInterval(autoSlide, 4000);
+        });
+    </script>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-col-1">
+                <h3>Download Our App</h3>
+                <p>Download App for Android and ios mobile phone.</p>
+                <div class="app-logo">
+                    <img th:src="@{/img/play-store.png}">
+                    <img th:src="@{/img/app-store.png}">
+                </div>
+            </div>
+            <div class="footer-col-2">
+                <img th:src="@{/img/logo-white.png}">
+                <p>Our Purpose Is To Sustainably Make the Pleasure and Benefits of Sports Accessible to the Many.
+                </p>
+            </div>
+            <div class="footer-col-3">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li>Coupons</li>
+                    <li>Blog Post</li>
+                    <li>Return Policy</li>
+                    <li>Join Affiliate</li>
+                </ul>
+            </div>
+            <div class="footer-col-4">
+                <h3>Follow Us</h3>
+                <ul>
+                    <li>Facebook</li>
+                    <li>Twitter</li>
+                    <li>Instagram</li>
+                    <li>Youtube</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <p class="copyright">Copyright 2023 - Team 7 Web</p>
+    </div>
+</div>
+
+<!-- javascript -->
+
+<script>
+    var MenuItems = document.getElementById("MenuItems");
+    MenuItems.style.maxHeight = "0px";
+    function menutoggle() {
+        if (MenuItems.style.maxHeight == "0px") {
+            MenuItems.style.maxHeight = "200px"
+        }
+        else {
+            MenuItems.style.maxHeight = "0px"
+        }
+    }
+</script>
+
+<!-- product gallery -->
+<script>
+    var ProductImg = document.getElementById("ProductImg");
+    var SmallImg = document.getElementsByClassName("small-img");
+
+    SmallImg[0].onclick = function () {
+        ProductImg.src = SmallImg[0].src;
+    }
+    SmallImg[1].onclick = function () {
+        ProductImg.src = SmallImg[1].src;
+    }
+    SmallImg[2].onclick = function () {
+        ProductImg.src = SmallImg[2].src;
+    }
+    SmallImg[3].onclick = function () {
+        ProductImg.src = SmallImg[3].src;
+    }
+
+</script>
+</body>
+
+</html>

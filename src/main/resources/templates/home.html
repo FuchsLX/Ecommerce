@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page | TechShop </title>
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css}" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+
+</head>
+<body>
+
+<div class="header">
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <a th:href="@{/home}"><img th:src="@{/img/logo.png}" alt="logo" width="125px"></a>
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li>
+                        <form method="get" th:action="@{/search}">
+                            <input type="text" id="search-product"  name="q" placeholder="🔍"
+                                   style="border-radius: 10px;border: none; height:30px; width:300px;">
+                            <input type="submit" id="submit-search" value="Search"
+                            style="border-radius: 10px; border: none; height: 30px ; width:75px; background-color: #f68383">
+                        </form>
+                    </li>
+                    <li><a th:href="@{/home}" >Home</a></li>
+                    <li><a>Products</a></li>
+                    <li><a th:href="@{/order/history}">Order History</a></li>
+                    <li><a>Contact</a></li>
+                    <li><a th:href="@{/account/edit}">My Account</a></li>
+                    <li><a th:href="@{/logout}" style="color: rgb(211, 38, 38);">Logout</a></li>
+                </ul>
+            </nav>
+            <a th:href="@{/cart}"><img th:src="@{/img/cart.png}" width="30px" height="30px"></a>
+            <img th:src="@{/img/menu.png}" class="menu-icon" onclick="menutoggle()">
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <h1>Welcome myStore <br> Trends of technology !</h1>
+                <p>
+                    This is the place to update the latest technology trends that we bring to you <br> Let us satisfy your needs !!!</p>
+                <a href="" class="btn">Explore Now &#8594;</a>
+            </div>
+            <div class="col-2">
+                <img th:src="@{/img/image1.png}">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Feadtued Categories -->
+
+<div class="categories">
+    <div class="small-container">
+        <div class="row">
+            <div class="col-3">
+                <img th:src="@{/img/category-1.jpg}">
+            </div>
+            <div class="col-3">
+                <img th:src="@{/img/category-2.jpg}">
+            </div>
+            <div class="col-3">
+                <img th:src="@{/img/category-3.jpg}">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Featured Phones and Laptop -->
+
+<div class="small-container">
+    <h2 class="title"> Featured Phones</h2>
+    <div class="row">
+        <div class="row" style="background-color: rgb(245, 235, 223); border-radius: 10px;">
+            <th:block th:each="product : ${phoneProducts}">
+
+                <div class="col-4">
+                    <a th:href="@{/product/{slugProduct}(slugProduct=${product.slug})}"><img th:src="${product.getImageLink()}"></a>
+                    <h4 th:text="${product.title}"></h4>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-o"></i>
+                    </div>
+                    <p><span th:text="${product.price}"></span><sup>$</sup></p>
+                    <button class="button-add-product-to-cart" onclick="addProductToCart(this)"  th:data-product-id="${product.id}">Add to Cart</button>
+                </div>
+
+            </th:block>
+
+        </div>
+    </div>
+    <h2 class="title">Featured Laptop</h2>
+    <div class="Laptop">
+        <div class="row" style="background-color: rgb(245, 235, 223); border-radius: 10px; margin-bottom: 10px;">
+            <th:block th:each="product : ${laptopProducts}">
+                <div class="col-4">
+                    <a th:href="@{/product/{slugProduct}(slugProduct=${product.slug})}"><img th:src="${product.getImageLink()}"></a>
+                    <h4 th:text="${product.title}"></h4>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-o"></i>
+                    </div>
+                    <p><span th:text="${product.price}"></span><sup>đ</sup></p>
+                    <button class="button-add-product-to-cart" onclick="addProductToCart(this)"  th:data-product-id="${product.id}">Add to Cart</button>
+                </div>
+            </th:block>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Offer -->
+<div class="offer">
+    <div class="small-container">
+        <div class="row">
+            <div class="col-2">
+                <img th:src="@{/img/exclusive.png}" class="offer-img">
+            </div>
+            <div class="col-2">
+                <p>Exclusively Available on RedStore</p>
+                <h1>Smart Band 4</h1>
+                <small>The Mi Smart Band 4 fearures a 39.9%larger (than Mi Band 3) AMOLED color full-touch display
+                    with adjustable brightness, so everything is clear as can be.<br></small>
+                <a class="btn">Buy Now &#8594;</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-----------Smart Watch--------------->
+<div>
+    <h2 class="title-watch"> Top Sale Smart Watch</h2>
+
+    <div class="watch" >
+
+        <th:block th:each="product : ${watchProducts}">
+            <div class="watch-1"> <!---san pham-->
+                <a th:href="@{/product/{slugProduct}(slugProduct=${product.slug})}"><img th:src="${product.getImageLink()}"></a>
+                <h4 th:text="${product.title}"></h4>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <p><span th:text="${product.price}"></span><sup>$</sup></p>
+                <button class="button-add-product-to-cart" onclick="addProductToCart(this)"  th:data-product-id="${product.id}">Add to Cart</button>
+            </div>
+        </th:block>
+    </div>
+
+    <div class="slider-watch-btn">
+        <button class="prev">&#10094;</button>
+        <button class="next">&#10095;</button>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            var slider = $('.watch');
+
+            function autoSlide() {
+                slider.slick('slickNext');
+            }
+
+            slider.slick({
+                infinite: true,
+                slidesToShow: 5,
+                prevArrow: $('.prev'),
+                nextArrow: $('.next')
+            });
+
+            $('.prev').click(function() {
+                slider.slick('slickPrev');
+            });
+
+            $('.next').click(function() {
+                slider.slick('slickNext');
+            });
+
+            setInterval(autoSlide, 6000);
+        });
+    </script>
+
+</div>
+<!---------Title------------------->
+<div>
+    <h2 class="title-more-products"><button id="moreProductsButton" style="background-color: #f4dba6; border: none;"><h2 style="color: #484747; font-size: 25px; align-items: center; bottom: 10px">Review TechShop</h2></button></h2>
+</div>
+<!-- -----------Review-->
+<div class="testimonial" >
+    <div class="small-container" >
+        <div class="testimonial-detail">
+            <div class="col-3">
+                <i class="fa fa-quote-left"></i>
+                <p>Trang thương mại điện tử của các bạn rất tiện ích, giúp các bạn dễ dàng mua sắm trực tuyến từ nhà. Tất cả các sản phẩm đều được tổ chức gọn gàng và dễ dàng tìm kiếm, mang lại trải nghiệm mua sắm trực tuyến dễ dàng và thoải mái.</p>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </div>
+                <img th:src="@{/img/user-1.png}" style="margin-left: 125px;"><br>
+                <h3>Hung Tran </h3>
+            </div>
+            <div class="col-3">
+                <i class="fa fa-quote-left"></i>
+                <p>Với nhiều tính năng thông minh, trang thương mại điện tử của các bạn đáp ứng đầy đủ nhu cầu của các bạn. Từ tính năng lưu trữ yêu thích, phản hồi từ người dùng, đánh giá sản phẩm đến khả năng tìm kiếm nhanh chóng  giao diện thân thiện. </p>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </div>
+                <img th:src="@{/img/user-2.png}" style="margin-left: 125px;"><br>
+                <h3>Le Hai Dang</h3>
+            </div>
+            <div class="col-3">
+                <i class="fa fa-quote-left"></i>
+                <p> Giao diện trực quan và hướng dẫn rõ ràng, các bạn có thể dễ dàng duyệt qua các danh mục sản phẩm, thêm vào giỏ hàng và hoàn tất thanh toán chỉ trong vài bước đơn giản,các bạn đảm bảo các bạn có trải nghiệm tuyệt vời mỗi lần mua sắm.</p>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </div>
+                <img th:src="@{/img/user-3.png}" style="margin-left: 125px;"><br>
+                <h3>Cuong Minh</h3>
+            </div>
+            <div class="col-3">
+                <i class="fa fa-quote-left"></i>
+                <p>Trang thương mại điện tử của các bạn được thiết kế để mang lại sự tiện lợi tối đa cho khách hàng. Với tính năng đặt hàng nhanh chóng, thông tin sản phẩm chi tiết và khả năng tương tác linh hoạt, bạn có thể mua sắm một cách dễ dàng .</p>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </div>
+                <img th:src="@{/img/user-4.png}" style="margin-left: 125px;"><br>
+                <h3>Bui Dung</h3>
+            </div>
+            <div class="col-3">
+                <i class="fa fa-quote-left"></i>
+                <p>Trang thương mại điện tử của các bạn thật đa dạng với các kiểu sản phẩm phong phú. Từ thời trang, đồ điện tử đến đồ gia dụng và nhiều hơn nữa, các bạn có thể tìm thấy mọi thứ mình cần trong một nơi duy nhất. khám phá kho báu sản phẩm.</p>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </div>
+                <img th:src="@{/img/user-5.png}" style="margin-left: 125px;"><br>
+                <h3>Vuong Doan</h3>
+            </div>
+            <div class="col-3">
+                <i class="fa fa-quote-left"></i>
+                <p>Khám phá trang thương mại điện tử của các bạn và trải nghiệm một thế giới mua sắm trực tuyến không giới hạn. Với một bộ sưu tập đa dạng, tính năng tùy chỉnh, và khả năng tư vấn, thoải mái mua từ bất kỳ đâu và bất kỳ thiết bị nào</p>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </div>
+                <img th:src="@{/img/user-6.png}" style="margin-left: 125px;"><br>
+                <h3>Chu Manh</h3>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            var slider = $('.testimonial-detail');
+
+            function autoSlide() {
+                slider.slick('slickNext');
+            }
+
+            slider.slick({
+                infinite: true,
+                slidesToShow: 3,
+                prevArrow: $('.prevv'),
+                nextArrow: $('.nextt')
+            });
+
+            setInterval(autoSlide, 4000);
+        });
+    </script>
+
+</div>
+
+<!-- Brands -->
+
+<div class="brands">
+    <div class="small-container">
+        <div class="row">
+            <div class="col-5">
+                <img th:src="@{/img/logo-godrej.png}">
+            </div>
+            <div class="col-5">
+                <img th:src="@{/img/logo-oppo.png}">
+            </div>
+            <div class="col-5">
+                <img th:src="@{/img/logo-coca-cola.png}">
+            </div>
+            <div class="col-5">
+                <img th:src="@{/img/logo-paypal.png}">
+            </div>
+            <div class="col-5">
+                <img th:src="@{/img/logo-philips.png}">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-col-1">
+                <h3>Download Our App</h3>
+                <p>Download App for Android and ios mobile phone.</p>
+                <div class="app-logo">
+                    <img th:src="@{/img/play-store.png}">
+                    <img th:src="@{/img/app-store.png}">
+                </div>
+            </div>
+            <div class="footer-col-2">
+                <img th:src="@{/img/logo-white.png}">
+                <p>Our Purpose Is To Sustainably Make the Pleasure and Benefits of Sports Accessible to the Many.
+                </p>
+            </div>
+            <div class="footer-col-3">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li>Coupons</li>
+                    <li>Blog Post</li>
+                    <li>Return Policy</li>
+                    <li>Join Affiliate</li>
+                </ul>
+            </div>
+            <div class="footer-col-4">
+                <h3>Follow Us</h3>
+                <ul>
+                    <li>Facebook</li>
+                    <li>Twitter</li>
+                    <li>Instagram</li>
+                    <li>Youtube</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <p class="copyright">Copyright 2023 - Team 7 Web</p>
+    </div>
+</div>
+
+<!-- javascript -->
+
+<script>
+    var MenuItems = document.getElementById("MenuItems");
+    MenuItems.style.maxHeight = "0px";
+    function menutoggle() {
+        if (MenuItems.style.maxHeight == "0px") {
+            MenuItems.style.maxHeight = "200px"
+        }
+        else {
+            MenuItems.style.maxHeight = "0px"
+        }
+    }
+</script>
+<!--Magic. Don't touch-->
+<script th:src="@{/js/add-product-to-cart-from-pros-page.js}"></script>
+<!--Magic. Don't touch-->
+</body>
+</html>

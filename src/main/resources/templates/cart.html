@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/cart.css}">
+    <style>
+        table {border-collapse: collapse;width: 100%;}
+        th, td {text-align: left;padding: 8px;}
+        tr:nth-child(even) {background-color: #D6EEEE;}
+        thead {background-color: aquamarine;}
+    </style>
+
+    <style>
+        input[type='number']::-webkit-inner-spin-button,
+        input[type='number']::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .custom-number-input input:focus {
+            outline: none !important;
+        }
+
+        .custom-number-input button:focus {
+            outline: none !important;
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.js"
+            integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+            crossorigin="anonymous"></script>
+
+</head>
+<body>
+<div class="header">
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <a th:href="@{/home}"><img th:src="@{/img/logo.png}" alt="logo" width="125px"></a>
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li>
+                        <form method="get" th:action="@{/search}">
+                            <input type="text" id="search-product"  name="q" placeholder="🔍"
+                                   style="border-radius: 10px;border: 1px solid gray; height:30px; width:300px;">
+                            <input type="submit" id="submit-search" value="Search"
+                                   style="border-radius: 10px; border: none; height: 30px ; width:75px; background-color: #f68383">
+                        </form>
+                    </li>
+                    <li><a th:href="@{/home}" >Home</a></li>
+                    <li><a th:href="@{/order/history}">Order History</a></li>
+                    <li><a>Contact</a></li>
+                    <li><a th:href="@{/account/edit}">My Account</a></li>
+                    <li><a th:href="@{/logout}" style="color: rgb(211, 38, 38);">Logout</a></li>
+                </ul>
+            </nav>
+
+            <a th:href="@{/cart}"><img th:src="@{/img/cart.png}" width="30px" height="30px"></a>
+            <img th:src="@{/img/menu.png}" class="menu-icon" onclick="menutoggle()">
+        </div>
+    </div>
+</div>
+
+<!-- Cart Items Details -->
+<div class="container">
+
+    <div class="empty-cart-exception" th:if="${emptyCartException}">
+        <br><br>
+        <img class="no-item-image" th:src="@{/img/empty-cart.png}" alt="Cart Empty">
+    </div>
+    <div class="shopping-cart" th:unless="${emptyCartException}">
+        <table>
+            <div class="small-container cart-page">
+                <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>SubTotal</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cartItem : ${cart.cartItems}">
+                    <th:block th:with="product=${cartItem.product}">
+                        <td th:text="${product.title}"></td>
+                        <td th:text="${product.price}"></td>
+                    </th:block>
+                    <td>
+                        <th:block>
+                            <div class="custom-number-input h-10 w-32">
+                                <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
+                                    <button data-action="decrement" class="increase-decrease-product">
+                                        <span class="m-auto text-2xl font-thin">−</span>
+                                    </button>
+                                    <input type="number" class="number-product"
+                                           name="custom-input-number"
+                                           th:data-cart-item-id="${cartItem.getId()}"
+                                           th:maxQuantity="${cartItem.product.quantity}"
+                                           th:value="${cartItem.getQuantity()}">
+                                    <button data-action="increment" class="increase-decrease-product">
+                                        <span class="m-auto text-2xl font-thin">+</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </th:block>
+                    </td>
+                    <td>
+                        <p th:id="'price-cart-item-'+${cartItem.id}"
+                           th:text="${cartItem.quantity}*${cartItem.product.price}"
+                           th:data-price-product="${cartItem.product.price}"></p>
+                    </td>
+                    <td>
+                        <a th:href="@{/cart/delete-cart-item/{cartItemId}(cartItemId=${cartItem.getId()})}">
+                            <img class="small-image" th:src="@{https://frontend.tikicdn.com/_desktop-next/static/img/icons/trash.svg}" alt="deleted">
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </div>
+        </table>
+        <div style="display: flex; justify-content: flex-end;">
+            <div class="box-container">
+                <div class="subtotal-row">
+                    <p class="subtotal-text">SubTotal:</p>
+                    <p class="subtotal-value" id="sub-total-price-cartItem" th:text="${cart.subTotal}"></p>
+                    <br><br>
+                </div>
+                <br>
+                <a class="custom-button-order" th:href="@{order/checkout/payment}">Order</a>
+            </div>
+        </div>
+
+    </div>
+    <div class="custom-button-container">
+        <button class="custom-button" onclick="window.location.href='/home'">Continue Shopping</button>
+    </div>
+
+
+    <!--MAGIC. DON'T TOUCH :)).-->
+    <script type="text/javascript" th:src="@{/js/quantity-controll-Cart.js}"></script>
+</div>
+<!-- Footer -->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-col-1">
+                <h3>Download Our App</h3>
+                <p>Download App for Android and ios mobile phone.</p>
+                <div class="app-logo">
+                    <img th:src="@{/img/play-store.png}">
+                    <img th:src="@{/img/app-store.png}">
+                </div>
+            </div>
+            <div class="footer-col-2">
+                <img th:src="@{/img/logo.png}">
+                <p>Our Purpose Is To Sustainably Make the Pleasure and Benefits of Technology Accessible to the Many.
+                </p>
+            </div>
+            <div class="footer-col-3">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li>Coupons</li>
+                    <li>Blog Post</li>
+                    <li>Return Policy</li>
+                    <li>Join Affiliate</li>
+                </ul>
+            </div>
+            <div class="footer-col-4">
+                <h3>Follow Us</h3>
+                <ul>
+                    <li>Facebook</li>
+                    <li>Twitter</li>
+                    <li>Instagram</li>
+                    <li>Youtube</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <p class="copyright">Copyright 2023 - Team 7 Web</p>
+    </div>
+</div>
+</body>
+</html>
