@@ -19,17 +19,8 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditListener.class)
 public class ProductMeta extends BasicEntity {
     @Id
-    @SequenceGenerator(
-            name = "productMetas_sequence",
-            sequenceName = "productMetas_sequence",
-            allocationSize = 5,
-            initialValue = 1
-    )
-    @GeneratedValue(
-            generator = "productMetas_sequence",
-            strategy = GenerationType.SEQUENCE
-    )
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @ManyToOne(
             fetch = FetchType.LAZY,

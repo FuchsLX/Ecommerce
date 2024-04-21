@@ -16,17 +16,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 public class UserMeta implements Serializable {
-    @SequenceGenerator(
-            name = "user_meta_sequence",
-            sequenceName = "user_meta_sequence",
-            allocationSize = 1
-    )
+
     @Id
-    @GeneratedValue(
-            generator = "user_meta_sequence",
-            strategy = GenerationType.SEQUENCE
-    )
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     private String firstName;
     private String middleName;

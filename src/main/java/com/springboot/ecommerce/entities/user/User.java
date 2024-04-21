@@ -1,16 +1,16 @@
 package com.springboot.ecommerce.entities.user;
 
-
 import com.springboot.ecommerce.entities.cart.Cart;
 import com.springboot.ecommerce.entities.order.Order;
 import com.springboot.ecommerce.entities.product.Product;
 import com.springboot.ecommerce.entities.transaction.Transaction;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,18 +19,11 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
-    @SequenceGenerator(
-            name = "user_sequence",
-            sequenceName = "user_sequence",
-            allocationSize = 1
-    )
+public class User {
+
     @Id
-    @GeneratedValue(
-            generator = "user_sequence",
-            strategy = GenerationType.SEQUENCE
-    )
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false)
     private String firstName;
@@ -45,10 +38,20 @@ public class User implements UserDetails {
     private String password;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+    private boolean isAccountNonExpired;
 
-    private boolean enabled = false;
+    @Column(nullable = false)
+    private boolean isAccountNonLocked;
+
+    @Column(nullable = false)
+    private boolean isCredentialsNonExpired;
+
+    @Column(nullable = false)
+    private boolean isEnabled;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     @OneToMany(mappedBy = "user")
     private Set<Product> products = new HashSet<>();
@@ -65,33 +68,4 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Transaction> transactions = new ArrayList<>();
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return userRole.getGrantedAuthorities();
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
 }

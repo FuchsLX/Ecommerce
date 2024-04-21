@@ -1,12 +1,8 @@
 package com.springboot.ecommerce.controller;
 
-import com.springboot.ecommerce.services.impl.CategoryServiceImpl;
+import com.springboot.ecommerce.services.*;
 import com.springboot.ecommerce.entities.product.Product;
-import com.springboot.ecommerce.services.impl.ProductServiceImpl;
 import com.springboot.ecommerce.entities.product.ProductMeta;
-import com.springboot.ecommerce.services.impl.ProductMetaServiceImpl;
-import com.springboot.ecommerce.services.impl.TagServiceImpl;
-import com.springboot.ecommerce.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,10 +19,10 @@ import java.util.List;
 @RequestMapping("/product-management")
 public class ProductController {
 
-    private final CategoryServiceImpl categoryService;
-    private final TagServiceImpl tagService;
-    private final ProductServiceImpl productService;
-    private final ProductMetaServiceImpl productMetaService;
+    private final CategoryService categoryService;
+    private final TagService tagService;
+    private final ProductService productService;
+    private final ProductMetaService productMetaService;
     private final UserService userService;
 
     @GetMapping("products-list")
@@ -72,7 +68,7 @@ public class ProductController {
     }
 
     @GetMapping("delete-product/{id}")
-    public String deleteProduct(@PathVariable(value = "id") Integer id){
+    public String deleteProduct(@PathVariable(value = "id") String id){
         productService.deleteProduct(id);
         return "redirect:/product-management/products-list";
 
@@ -80,7 +76,7 @@ public class ProductController {
 
 
     @GetMapping("update-product-form/{id}")
-    public String updateProduct(@PathVariable("id") Integer id, Model model){
+    public String updateProduct(@PathVariable("id") String id, Model model){
         model.addAttribute("product", productService.getProductById(id));
         model.addAttribute("categoriesList", categoryService.getAllCategories());
         model.addAttribute("productTags", tagService.getAllProductTags());
@@ -88,14 +84,14 @@ public class ProductController {
     }
 
     @GetMapping("product-meta-management/{id}")
-    public String viewProductMetaList(@PathVariable("id") Integer productId, Model model){
+    public String viewProductMetaList(@PathVariable("id") String productId, Model model){
         model.addAttribute("product", productService.getProductById(productId));
         model.addAttribute("productMetaList", productMetaService.getAllByProduct(productId));
         return "management-product-meta";
     }
 
     @GetMapping("delete-product-meta/{id}")
-    public String deleteProductMeta(@PathVariable("id") Long productMetaId,
+    public String deleteProductMeta(@PathVariable("id") String productMetaId,
                                     RedirectAttributes redirectAttributes){
         Product product = productService.getProductByProductMeta(productMetaId);
         product.getProductMetas().remove(productMetaService.getProductMetaById(productMetaId));
@@ -106,14 +102,14 @@ public class ProductController {
     }
 
     @GetMapping("update-product-meta-form/{id}")
-    public String updateProductMeta(@PathVariable("id") Long productMetaId, Model model){
+    public String updateProductMeta(@PathVariable("id") String productMetaId, Model model){
         model.addAttribute("productMeta", productMetaService.getProductMetaById(productMetaId));
         return "update-product-meta-form";
     }
 
 
     @GetMapping("add-new-product-meta/productId={productId}")
-    public String getAddNewProductMetaView(@PathVariable("productId") Integer productId, Model model){
+    public String getAddNewProductMetaView(@PathVariable("productId") String productId, Model model){
         ProductMeta productMeta = new ProductMeta();
         productMeta.setProduct(productService.getProductById(productId));
         model.addAttribute("productMeta", productMeta);

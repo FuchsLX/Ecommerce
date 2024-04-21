@@ -1,6 +1,7 @@
 package com.springboot.ecommerce.security.jwt;
 
 
+import com.springboot.ecommerce.entities.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -31,18 +32,15 @@ public class JwtService {
     }
 
 
-    /**
-     * Overload nhé:))
-     */
-    public String generateToken(UserDetails userDetails){return generateToken(new HashMap<>(), userDetails);}
+    public String generateToken(User user){return generateToken(new HashMap<>(), user);}
 
     private String generateToken(
             Map<String, Object> extractClaims,
-            UserDetails userDetails
+            User user
     ){
         return Jwts.builder()
                 .setClaims(extractClaims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(user.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15))
                 .signWith(getSignInWith(), SignatureAlgorithm.HS256)
@@ -63,19 +61,7 @@ public class JwtService {
         return claimResolver.apply(claims);
     }
 
-    /**
-     * Phương thức getSignInWith() trong đoạn mã này trả về một đối tượng Key dùng để ký và xác thực JWT (JSON Web Token).
 
-     * Cụ thể, phương thức này sử dụng một chuỗi SECRET_KEY được mã hóa dưới dạng Base64 và chuyển đổi nó
-     * thành một mảng byte keyBytes. Sau đó, phương thức sử dụng lớp Keys của thư viện java-jwt để tạo ra
-     * một đối tượng Key bằng cách sử dụng thuật toán mã hóa SHA và keyBytes.
-     * Khi một JWT được tạo ra, nó sẽ được ký bằng Key này để đảm bảo tính xác thực.
-     * Khi JWT được gửi lại cho server, server sẽ sử dụng cùng một Key để xác thực và
-     * giải mã JWT để lấy thông tin người dùng từ trong payload của JWT.
-     * Nếu Key được sử dụng để xác thực không khớp với Key được sử dụng để ký JWT ban đầu,
-     * server sẽ từ chối yêu cầu và báo lỗi xác thực.
-     * @author đếu phải tôi đâu nhé:)))
-     */
     private Key getSignInWith(){
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);

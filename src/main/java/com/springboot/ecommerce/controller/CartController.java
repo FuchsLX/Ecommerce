@@ -1,16 +1,15 @@
 package com.springboot.ecommerce.controller;
 
+import com.springboot.ecommerce.entities.user.User;
 import com.springboot.ecommerce.exception.EmptyCartException;
 import com.springboot.ecommerce.entities.cart.Cart;
-import com.springboot.ecommerce.services.impl.CartServiceImpl;
+import com.springboot.ecommerce.services.*;
 import com.springboot.ecommerce.entities.cart.CartItem;
-import com.springboot.ecommerce.services.impl.CartItemServiceImpl;
 import com.springboot.ecommerce.entities.product.Product;
-import com.springboot.ecommerce.services.impl.ProductServiceImpl;
-import com.springboot.ecommerce.entities.user.User;
-import com.springboot.ecommerce.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -22,13 +21,13 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/cart")
 public class CartController {
-    private final ProductServiceImpl productService;
+    private final ProductService productService;
     private final UserService userService;
-    private final CartServiceImpl cartService;
-    private final CartItemServiceImpl cartItemService;
+    private final CartService cartService;
+    private final CartItemService cartItemService;
 
 
-    @GetMapping("")
+    @GetMapping()
     public String viewCartPage(Model model,
                                HttpSession session){
         Cart activeCart = cartService.getActiveCartBySession(session);
@@ -42,7 +41,7 @@ public class CartController {
 
     @PostMapping("add-product-to-cart/{productId}/{quantity}")
     @ResponseBody
-    public void addProductToCart(@PathVariable("productId") Integer productId,
+    public void addProductToCart(@PathVariable("productId") String productId,
                                  @PathVariable("quantity") Long quantity,
                                  @AuthenticationPrincipal UserDetails user,
                                  HttpSession session){
@@ -74,7 +73,7 @@ public class CartController {
 
 
     @GetMapping("delete-cart-item/{cartItemId}")
-    public String deleteCartItem(@PathVariable("cartItemId") Integer cartItemId,
+    public String deleteCartItem(@PathVariable("cartItemId") String cartItemId,
                                  @AuthenticationPrincipal UserDetails user,
                                  HttpSession session){
         User currentUser = userService.findByEmail(user.getUsername());
@@ -87,7 +86,7 @@ public class CartController {
     @PostMapping("update-quantity-cart-item/{cartItemId}/{quantity}")
     @ResponseBody
     public void  updateQuantityCartItem(
-            @PathVariable("cartItemId") Integer cartItemId,
+            @PathVariable("cartItemId") String cartItemId,
             @PathVariable("quantity") Long quantity,
             HttpSession session){
         cartItemService.updateQuantityCartItem(cartItemId, quantity, session);

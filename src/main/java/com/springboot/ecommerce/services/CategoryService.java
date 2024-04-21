@@ -1,21 +1,23 @@
 package com.springboot.ecommerce.services;
 
 import com.springboot.ecommerce.entities.category.Category;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface CategoryService {
     void saveCategory(Category category);
 
     List<Category> getAllCategories();
 
-    void deleteCategory(Long id);
+    void deleteCategory(String id);
 
-    Category getCategoryById(Long id);
+    Category getCategoryById(String id);
 
-    List<Category> getAllCategoriesExcept(Long categoryId);
+    List<Category> getAllCategoriesExcept(String categoryId);
 
-    List<Long> getAllSubCategoriesOf(Long categoryParentId);
+    List<String> getAllSubCategoriesOf(String categoryParentId);
 
-    List<Long> getAllCategoryParent();
+    List<String> getAllCategoryParent();
 }

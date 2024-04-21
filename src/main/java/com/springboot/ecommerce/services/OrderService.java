@@ -3,14 +3,16 @@ package com.springboot.ecommerce.services;
 import com.springboot.ecommerce.entities.order.Order;
 import com.springboot.ecommerce.entities.order.OrderItem;
 import com.springboot.ecommerce.entities.transaction.Transaction;
-import com.springboot.ecommerce.entities.user.UserMeta;
 import com.springboot.ecommerce.entities.user.User;
+import com.springboot.ecommerce.entities.user.UserMeta;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface OrderService {
 
     void saveOrder(Order order,
@@ -32,27 +34,27 @@ public interface OrderService {
 
     List<Order> getAllOrder();
 
-    List<Order> getCancelledOrderByCurrentUser(Long currentUserId);
+    List<Order> getCancelledOrderByCurrentUser(String currentUserId);
 
-    List<Order> getDeliveredOrderByCurrentUser(Long currentUserId);
+    List<Order> getDeliveredOrderByCurrentUser(String currentUserId);
 
-    List<Order> getProcessingOrderByCurrentUser(Long currentUserId);
+    List<Order> getProcessingOrderByCurrentUser(String currentUserId);
 
-    List<Order> getCompletedOrderByCurrentUser(Long currentUserId);
+    List<Order> getCompletedOrderByCurrentUser(String currentUserId);
 
-    List<Order> getAllOrderByCurrentUser(Long currentUserId);
+    List<Order> getAllOrderByCurrentUser(String currentUserId);
 
-    void setCompletedOrder(Long orderId);
+    void setCompletedOrder(String orderId);
 
-    void setCancelledOrder(Long orderId);
+    void setCancelledOrder(String orderId);
 
-    void setDeliveredOrder(Long Id);
+    void setDeliveredOrder(String Id);
 
-    Order getOrderById(Long orderId);
+    Order getOrderById(String orderId);
 
     int checkCartBeforeOrder(User currentUser, HttpSession session);
 
-    void buyAgainHandler(Long orderId, HttpSession session);
+    void buyAgainHandler(String orderId, HttpSession session);
 
     void processingNewOrder(Transaction newTransaction, User currentUser, HttpSession session);
 

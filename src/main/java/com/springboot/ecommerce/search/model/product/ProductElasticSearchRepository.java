@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
-public interface ProductElasticSearchRepository extends ElasticsearchRepository<ProductElasticSearch, Integer> {
+public interface ProductElasticSearchRepository extends ElasticsearchRepository<ProductElasticSearch, String> {
 
     /**
      * Tìm kiếm dựa trên tên sản phẩm (fuzzy query)

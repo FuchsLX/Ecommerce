@@ -21,17 +21,8 @@ import java.time.LocalDateTime;
 @DynamicUpdate
 public class OrderItem extends BasicEntity {
     @Id
-    @SequenceGenerator(
-            name = "order_item_sequence",
-            sequenceName = "order_item_sequence",
-            allocationSize = 5,
-            initialValue = 1
-    )
-    @GeneratedValue(
-            generator = "order_item_sequence",
-            strategy = GenerationType.SEQUENCE
-    )
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     private BigDecimal price;
     private BigDecimal discount;

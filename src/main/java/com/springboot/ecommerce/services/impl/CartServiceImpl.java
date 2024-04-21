@@ -8,16 +8,16 @@ import com.springboot.ecommerce.entities.cart.CartItem;
 import com.springboot.ecommerce.entities.cart.CartStatus;
 import com.springboot.ecommerce.entities.user.User;
 import com.springboot.ecommerce.services.CartService;
-import com.springboot.ecommerce.services.UserService;
 import com.springboot.ecommerce.repositories.CartRepository;
+import com.springboot.ecommerce.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
@@ -57,7 +57,7 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public List<Cart> getAllCartsByUser(Long userId) {
+    public List<Cart> getAllCartsByUser(String userId) {
         return cartRepository.findByUser_Id(userId);
     }
 
@@ -67,7 +67,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart getActiveCartByUser(Long userId) {
+    public Cart getActiveCartByUser(String userId) {
         return cartRepository.getActiveCartByUser(userId);
     }
 
@@ -99,7 +99,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart getCartById(Long cartId) {
+    public Cart getCartById(String cartId) {
         return cartRepository.findById(cartId).orElse(null);
     }
 }

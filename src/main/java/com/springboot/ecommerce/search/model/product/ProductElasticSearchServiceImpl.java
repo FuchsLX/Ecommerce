@@ -48,7 +48,7 @@ public class ProductElasticSearchServiceImpl implements ProductElasticSearchServ
     }
 
     @Override
-    public ProductElasticSearch getProductElasticSearchById(Integer productId) {
+    public ProductElasticSearch getProductElasticSearchById(String productId) {
         Optional<ProductElasticSearch> productElasticSearchOptional = productElasticSearchRepository.findById(productId);
         if (productElasticSearchOptional.isPresent()){
             return productElasticSearchOptional.get();
@@ -58,7 +58,7 @@ public class ProductElasticSearchServiceImpl implements ProductElasticSearchServ
     }
 
     @Override
-    public void delete(Integer productId) {
+    public void delete(String productId) {
         ProductElasticSearch  productElasticSearch = this.getProductElasticSearchById(productId);
         productElasticSearchRepository.delete(productElasticSearch);
     }

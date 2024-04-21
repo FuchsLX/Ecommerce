@@ -31,17 +31,8 @@ import java.util.List;
         generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Product extends BasicEntity {
     @Id
-    @SequenceGenerator(
-            name = "product_sequence",
-            sequenceName = "product_sequence",
-            allocationSize = 5,
-            initialValue = 1
-    )
-    @GeneratedValue(
-            generator = "product_sequence",
-            strategy = GenerationType.SEQUENCE
-    )
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @ManyToOne(
             cascade = CascadeType.DETACH,

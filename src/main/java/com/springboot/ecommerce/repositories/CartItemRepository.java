@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
+public interface CartItemRepository extends JpaRepository<CartItem, String> {
 
     @Query("select ct " +
             "from CartItem as ct " +
@@ -14,6 +14,6 @@ public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
             "inner join Product as p on p.id = ct.product.id " +
             "where c.id = :cartId and p.id = :productId"
     )
-    CartItem findByProductAndCart(Integer productId, Long cartId);
+    CartItem findByProductAndCart(String productId, String cartId);
 
 }

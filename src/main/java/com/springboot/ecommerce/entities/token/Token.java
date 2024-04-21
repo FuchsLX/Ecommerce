@@ -14,23 +14,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class Token {
-    @SequenceGenerator(
-            sequenceName = "token_sequence",
-            name = "token_sequence",
-            allocationSize = 1
-    )
+
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "token_sequence"
-    )
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(unique = true)
     private String token;
 
     @Enumerated(EnumType.STRING)
-    private TokenType tokenType = TokenType.BEARER;
+    private TokenType tokenType = TokenType.JWT;
 
     private boolean expired;
     private boolean revoked;

@@ -1,30 +1,32 @@
 package com.springboot.ecommerce.services.impl;
 
 import com.springboot.ecommerce.entities.cart.CartItem;
+import com.springboot.ecommerce.entities.user.User;
 import com.springboot.ecommerce.exception.QuantityExceededCartException;
 import com.springboot.ecommerce.entities.cart.Cart;
 import com.springboot.ecommerce.services.CartItemService;
 import com.springboot.ecommerce.entities.product.Product;
-import com.springboot.ecommerce.entities.user.User;
 import com.springboot.ecommerce.repositories.CartItemRepository;
+import com.springboot.ecommerce.services.CartService;
+import com.springboot.ecommerce.services.ProductService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class CartItemServiceImpl implements CartItemService {
     private final CartItemRepository cartItemRepository;
-    private final CartServiceImpl cartService;
-    private final ProductServiceImpl productService;
+    private final CartService cartService;
+    private final ProductService productService;
 
 
     @Override
-    public CartItem getCartItemByProductAndCart(Integer productId, Long cartId) {
+    public CartItem getCartItemByProductAndCart(String productId, String cartId) {
         return cartItemRepository.findByProductAndCart(productId, cartId);
     }
 
@@ -34,7 +36,7 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public Cart deleteCartItem(Integer cartItemId, User currentUser) {
+    public Cart deleteCartItem(String cartItemId, User currentUser) {
         CartItem cartItem = this.getCartItemById(cartItemId);
         Product product = cartItem.getProduct();
         Cart activeCart = cartItem.getCart();
@@ -48,7 +50,7 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public void deleteCartItemByProduct(Integer productId) {
+    public void deleteCartItemByProduct(String productId) {
         Product product = productService.getProductById(productId);
         for (CartItem cartItem : product.getCartItems()) {
             product.getCartItems().remove(cartItem);
@@ -61,7 +63,7 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public CartItem getCartItemById(Integer cartItemId) {
+    public CartItem getCartItemById(String cartItemId) {
         Optional<CartItem> optionalCartItem = cartItemRepository.findById(cartItemId);
         if (optionalCartItem.isPresent()){
             return optionalCartItem.get();
@@ -72,7 +74,7 @@ public class CartItemServiceImpl implements CartItemService {
 
 
     @Override
-    public void updateQuantityCartItem(Integer cartItemId, Long quantity, HttpSession session) {
+    public void updateQuantityCartItem(String cartItemId, Long quantity, HttpSession session) {
         CartItem cartItem = this.getCartItemById(cartItemId);
         BigDecimal priceCartItem = BigDecimal.valueOf(quantity).multiply(cartItem.getProduct().getPrice());
         cartItem.setQuantity(quantity);
@@ -94,7 +96,7 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     public void cartItemInitializer(CartItem cartItem, Cart activeCart,
                                     Product product, Long quantity,
-                                    User currenttUser, HttpSession session) {
+                                    User currentUser, HttpSession session) {
         cartItem.setProduct(product);
         cartItem.setCart(activeCart);
         cartItem.setQuantity(quantity);
@@ -105,7 +107,7 @@ public class CartItemServiceImpl implements CartItemService {
         cartItem.setDiscount(product.getDiscount());
         this.saveCartItem(cartItem);
 
-        activeCart.setUser(currenttUser);
+        activeCart.setUser(currentUser);
         activeCart.getCartItems().add(cartItem);
         cartService.updateSubTotal(activeCart);
 

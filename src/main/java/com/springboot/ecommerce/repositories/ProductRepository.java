@@ -11,15 +11,15 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Integer> {
+public interface ProductRepository extends JpaRepository<Product, String> {
 
-    List<Product> findAllByTags_Id(Long id);
+    List<Product> findAllByTags_Id(String id);
 
-    List<Product> findAllByCategories_Id(Long id);
+    List<Product> findAllByCategories_Id(String id);
 
-    List<Product> findAllByCategories_IdAndTags_Id(Long categoryId, Long tagId);
+    List<Product> findAllByCategories_IdAndTags_Id(String categoryId, String tagId);
 
-    Product findByProductMetas_Id(Long productMetaId);
+    Product findByProductMetas_Id(String productMetaId);
 
     @Query("select p " +
             "from Product as p " +
@@ -46,7 +46,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("select distinct p " +
             "from Product as p join p.categories as c " +
             "where c.id in ?1 and p.id <> ?2")
-    Page<Product> getAllRelatedProduct(List<Long> relatedCategoriesId, Integer productId, Pageable pageable);
+    Page<Product> getAllRelatedProduct(List<String> relatedCategoriesId, String productId, Pageable pageable);
 
 
 }

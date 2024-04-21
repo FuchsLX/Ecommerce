@@ -22,17 +22,8 @@ import java.util.List;
 @EntityListeners(AuditListener.class)
 public class Tag extends BasicEntity {
     @Id
-    @SequenceGenerator(
-            name = "tag_sequence",
-            sequenceName = "tag_sequence",
-            allocationSize = 5,
-            initialValue = 1
-    )
-    @GeneratedValue(
-            generator = "tag_sequence",
-            strategy = GenerationType.SEQUENCE
-    )
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false)
     private String title;

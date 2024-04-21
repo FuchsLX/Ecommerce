@@ -4,17 +4,19 @@ package com.springboot.ecommerce.services;
 import com.springboot.ecommerce.entities.tag.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface TagService {
     void saveProductTag(Tag tag);
 
     List<Tag> getAllProductTags();
 
-    void deleteTag(Long id);
+    void deleteTag(String id);
 
-    Tag getTagById(Long id);
+    Tag getTagById(String id);
 
     Pageable findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
 

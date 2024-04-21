@@ -14,9 +14,9 @@ public interface ProductElasticSearchService {
 
     void updateProductElasticSearch(Product product);
 
-    ProductElasticSearch getProductElasticSearchById(Integer productId);
+    ProductElasticSearch getProductElasticSearchById(String productId);
 
-    void delete(Integer productId);
+    void delete(String productId);
 
     void initProductElasticSearch(Product product);
 

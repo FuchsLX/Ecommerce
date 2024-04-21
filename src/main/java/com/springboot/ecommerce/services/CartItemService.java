@@ -5,25 +5,27 @@ import com.springboot.ecommerce.entities.cart.CartItem;
 import com.springboot.ecommerce.entities.product.Product;
 import com.springboot.ecommerce.entities.user.User;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface CartItemService {
-    CartItem getCartItemByProductAndCart(Integer productId, Long cartId);
+    CartItem getCartItemByProductAndCart(String productId, String cartId);
 
     void saveCartItem (CartItem cartItem);
 
-    Cart deleteCartItem(Integer cartItemId, User currentUser);
+    Cart deleteCartItem(String cartItemId, User currentUser);
 
-    CartItem getCartItemById(Integer cartItemId);
+    CartItem getCartItemById(String cartItemId);
 
-    void updateQuantityCartItem(Integer cartItemId, Long quantity, HttpSession session);
+    void updateQuantityCartItem(String cartItemId, Long quantity, HttpSession session);
 
     void updateQuantityCartItem(CartItem cartItem, Long quantity);
 
-    void deleteCartItemByProduct(Integer productId);
+    void deleteCartItemByProduct(String productId);
 
     void cartItemInitializer(CartItem cartItem, Cart activeCart,
                              Product product, Long quantity,
-                             User currenttUser, HttpSession session);
+                             User currentUser, HttpSession session);
 
     void updateExistingCartItemWhenAddProductToCart(CartItem existingCartItem,
                                                     Long quantity,Product product,

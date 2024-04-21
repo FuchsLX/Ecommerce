@@ -3,24 +3,26 @@ package com.springboot.ecommerce.services;
 import com.springboot.ecommerce.entities.product.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface ProductService {
     void saveNewProduct(Product product);
     Page<Product> getAllProducts(int pageNo, int pageSize, String sortField, String sortDirection);
 
-    void deleteProduct(Integer id);
+    void deleteProduct(String id);
 
-    List<Product> findAllByTag(Long id);
+    List<Product> findAllByTag(String id);
 
-    List<Product> findAllByCategory(Long id);
+    List<Product> findAllByCategory(String id);
 
-    List<Product> findAllByCategoryAndTag(Long categoryId, Long tagId);
+    List<Product> findAllByCategoryAndTag(String categoryId, String tagId);
 
-    Product getProductById(Integer id);
+    Product getProductById(String id);
 
-    Product getProductByProductMeta(Long productMetaId);
+    Product getProductByProductMeta(String productMetaId);
 
     void saveProduct(Product product);
 

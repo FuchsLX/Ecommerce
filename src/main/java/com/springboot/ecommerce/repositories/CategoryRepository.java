@@ -10,22 +10,22 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category, Long> {
+public interface CategoryRepository extends JpaRepository<Category, String> {
 
     @Transactional
     @Query("select c " +
             "from Category as c " +
             "where c.id not in ?1")
-    List<Category> getAllCategoriesExceptId(List<Long> categoriesId);
+    List<Category> getAllCategoriesExceptId(List<String> categoriesId);
 
     @Transactional
     @Modifying
     @Query("select c.id " +
             "from Category as c " +
             "where c.categoryParent.id = ?1")
-    List<Long> getAllSubCategoriesOf(Long categoryParentId);
+    List<String> getAllSubCategoriesOf(String categoryParentId);
 
     @Query("select c.categoryParent.id " +
             "from Category as c ")
-    List<Long> getALlCategoryParent();
+    List<String> getALlCategoryParent();
 }

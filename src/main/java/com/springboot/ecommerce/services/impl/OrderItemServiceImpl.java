@@ -6,12 +6,13 @@ import com.springboot.ecommerce.entities.order.OrderItem;
 import com.springboot.ecommerce.repositories.OrderItemRepository;
 import com.springboot.ecommerce.services.OrderItemService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class OrderItemServiceImpl implements OrderItemService {
     private final OrderItemRepository orderItemRepository;

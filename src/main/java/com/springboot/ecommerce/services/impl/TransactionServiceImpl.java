@@ -5,9 +5,10 @@ import com.springboot.ecommerce.entities.transaction.TransactionStatus;
 import com.springboot.ecommerce.repositories.TransactionRepository;
 import com.springboot.ecommerce.services.TransactionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
 

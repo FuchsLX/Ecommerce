@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserMetaRepository extends JpaRepository<UserMeta, Long> {
+public interface UserMetaRepository extends JpaRepository<UserMeta, String> {
 
     @Query("select um " +
             "from UserMeta  as um " +
             "where um.user.id=?1")
-    UserMeta getUserMetaByUser_Id(Long currentUserId);
+    UserMeta getUserMetaByUser_Id(String currentUserId);
 }

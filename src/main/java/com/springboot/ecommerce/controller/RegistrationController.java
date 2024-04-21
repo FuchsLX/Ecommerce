@@ -1,18 +1,14 @@
 package com.springboot.ecommerce.controller;
 
 
-import com.springboot.ecommerce.security.registration.RegistrationRequest;
+import com.springboot.ecommerce.controller.dto.RegistrationDto;
 import com.springboot.ecommerce.security.registration.RegistrationService;
-import com.springboot.ecommerce.entities.user.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
 
-import static com.springboot.ecommerce.entities.user.UserRole.*;
 
 @Controller
 @RequestMapping("/registration")
@@ -23,15 +19,15 @@ public class RegistrationController {
 
     @GetMapping
     public String getSignUpPage(Model model){
-        RegistrationRequest request = new RegistrationRequest();
+        RegistrationDto request = new RegistrationDto();
         model.addAttribute("request", request);
-        List<UserRole> roleList = Arrays.asList(USER,VENDOR, ADMIN);
-        model.addAttribute("roleList", roleList);
+//        List<UserRole> roleList = Arrays.asList(USER,VENDOR, ADMIN);
+//        model.addAttribute("roleList", roleList);
         return  "registration";
     }
 
     @PostMapping("register")
-    public String register(@ModelAttribute("request") RegistrationRequest request){
+    public String register(@ModelAttribute("request") RegistrationDto request){
         registrationService.register(request);
         return "redirect:/home";
     }

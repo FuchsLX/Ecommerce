@@ -23,21 +23,21 @@
       <span th:text="${emailNotValidException}" style="color: #770202; "></span>
     </div>
     <input class="textbox" type="password" placeholder="Password" th:field="*{password}" required/>
-    <div class="group_userRole" >
-      <label for="role"></label>
-      <select id="role" th:field="*{userRole}">
-        <option th:each="role: ${roleList}" th:value="${role}" th:text="${role}"/>
-      </select>
-    </div>
+<!--    <div class="group_userRole" >-->
+<!--      <label for="role"></label>-->
+<!--      <select id="role" th:field="*{userRole}">-->
+<!--        <option th:each="role: ${roleList}" th:value="${role}" th:text="${role}"/>-->
+<!--      </select>-->
+<!--    </div>-->
 
     <input class="Send" type="submit" value="Sign up"/>
 
     <p>
-      <a>You have an account ?</a>
+      You have an account ?
       <a class="link" th:href="@{login.html}" style="margin: -16px 0px 0px 200px;">Login</a>
     </p>
-
   </form>
+
 </div>
 </body>
 </html>

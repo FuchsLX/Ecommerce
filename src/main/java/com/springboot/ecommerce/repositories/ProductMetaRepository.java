@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface ProductMetaRepository extends JpaRepository<ProductMeta, Long> {
+public interface ProductMetaRepository extends JpaRepository<ProductMeta, String> {
 
     @Transactional
     @Query("select pm " +
             "from ProductMeta as pm " +
             "where pm.product.id = ?1")
-    List<ProductMeta> findByProductId(Integer id);
+    List<ProductMeta> findByProductId(String id);
 }

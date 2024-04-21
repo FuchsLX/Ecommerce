@@ -26,18 +26,10 @@ import static com.springboot.ecommerce.entities.order.OrderStatus.*;
 @EntityListeners(AuditListener.class)
 @Table(name = "orders")
 public class Order extends BasicEntity {
+
     @Id
-    @SequenceGenerator(
-            name = "order_sequence",
-            sequenceName = "order_sequence",
-            allocationSize = 5,
-            initialValue = 1
-    )
-    @GeneratedValue(
-            generator = "order_sequence",
-            strategy = GenerationType.SEQUENCE
-    )
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     private BigDecimal subTotal;
 

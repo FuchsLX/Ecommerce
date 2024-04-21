@@ -1,44 +1,18 @@
 package com.springboot.ecommerce.services;
 
+
 import com.springboot.ecommerce.entities.user.User;
-import com.springboot.ecommerce.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
-@RequiredArgsConstructor
-public class UserService  implements UserDetailsService {
-    private final static String USER_NOT_FOUND_MESSAGE = "user with email %s not found";
-    private final UserRepository userRepository;
+public interface UserService {
+    UserDetails loadUserDetailsByUsername(String email);
 
+    int enableUser(String email);
 
-    @Override
-    public UserDetails loadUserByUsername(String email)
-            throws UsernameNotFoundException {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException(
-                                String.format(USER_NOT_FOUND_MESSAGE, email)
-                        ));
-    }
-    public int enableUser(String email){
-        return userRepository.enableUser(email);
-    }
+    User findByEmail(String email);
 
-    public Optional<User> findByEmailUser(String email){
-        return userRepository.findByEmail(email);
-    }
-
-    public User saveUser(User user){
-        return userRepository.save(user);
-    }
-
-    public User findByEmail(String email){return userRepository.findByUsername(email);}
-
+    User saveUser(User user);
 
 }

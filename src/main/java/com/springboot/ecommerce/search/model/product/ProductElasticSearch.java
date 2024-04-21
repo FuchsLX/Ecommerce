@@ -21,7 +21,7 @@ import java.util.List;
 public class ProductElasticSearch {
     @Id
     @Field(name = "id", type = FieldType.Keyword)
-    private Integer id;
+    private String id;
 
     private String slug;
 

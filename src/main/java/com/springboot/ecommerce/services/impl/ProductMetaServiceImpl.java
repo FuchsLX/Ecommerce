@@ -4,12 +4,13 @@ import com.springboot.ecommerce.entities.product.ProductMeta;
 import com.springboot.ecommerce.repositories.ProductMetaRepository;
 import com.springboot.ecommerce.services.ProductMetaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class ProductMetaServiceImpl implements ProductMetaService {
     private final ProductMetaRepository productMetaRepository;
@@ -21,12 +22,12 @@ public class ProductMetaServiceImpl implements ProductMetaService {
 
 
     @Override
-    public List<ProductMeta> getAllByProduct(Integer productId) {
+    public List<ProductMeta> getAllByProduct(String productId) {
         return productMetaRepository.findByProductId(productId);
     }
 
     @Override
-    public void deleteByProduct(Integer productId) {
+    public void deleteByProduct(String productId) {
         List<ProductMeta> productMetas = this.getAllByProduct(productId);
         for (ProductMeta productMeta : productMetas){
             productMetaRepository.deleteById(productMeta.getId());
@@ -34,7 +35,7 @@ public class ProductMetaServiceImpl implements ProductMetaService {
     }
 
     @Override
-    public ProductMeta getProductMetaById(Long id) {
+    public ProductMeta getProductMetaById(String id) {
         Optional<ProductMeta> optionalProductMeta = productMetaRepository.findById(id);
         if (optionalProductMeta.isPresent()){
             return optionalProductMeta.get();
@@ -44,7 +45,7 @@ public class ProductMetaServiceImpl implements ProductMetaService {
     }
 
     @Override
-    public void deleteProductMeta(Long productMetaId) {
+    public void deleteProductMeta(String productMetaId) {
         ProductMeta productMeta = this.getProductMetaById(productMetaId);
         productMeta.setProduct(null);
         this.saveProductMeta(productMeta);

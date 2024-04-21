@@ -24,18 +24,10 @@ import java.util.List;
 @DynamicUpdate
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "cart"})
 public class Cart extends BasicEntity {
+
     @Id
-    @SequenceGenerator(
-            name = "cart_sequence",
-            sequenceName = "cart_sequence",
-            allocationSize = 5,
-            initialValue = 1
-    )
-    @GeneratedValue(
-            generator = "cart_sequence",
-            strategy = GenerationType.SEQUENCE
-    )
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @ManyToOne(
             cascade = CascadeType.DETACH,

@@ -2,6 +2,7 @@ package com.springboot.ecommerce.services.impl;
 
 import com.springboot.ecommerce.entities.tag.Tag;
 import com.springboot.ecommerce.entities.product.Product;
+import com.springboot.ecommerce.services.ProductService;
 import com.springboot.ecommerce.services.TagService;
 import com.springboot.ecommerce.repositories.TagRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,16 +10,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class TagServiceImpl implements TagService {
     private final TagRepository tagRepository;
-    private final ProductServiceImpl productService;
+    private final ProductService productService;
 
     @Override
     public void saveProductTag(Tag tag) {
@@ -32,7 +34,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag getTagById(Long id) {
+    public Tag getTagById(String id) {
         Optional<Tag> optionalTag = tagRepository.findById(id);
         if (optionalTag.isPresent()){
             return optionalTag.get();
@@ -42,7 +44,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void deleteTag(Long id) {
+    public void deleteTag(String id) {
         List<Product> products = productService.findAllByTag(id);
         Tag tag  = tagRepository.findById(id).orElse(null);
         for (Product product : products){

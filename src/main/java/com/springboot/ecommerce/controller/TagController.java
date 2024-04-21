@@ -1,7 +1,7 @@
 package com.springboot.ecommerce.controller;
 
 import com.springboot.ecommerce.entities.tag.Tag;
-import com.springboot.ecommerce.services.impl.TagServiceImpl;
+import com.springboot.ecommerce.services.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/tag-management")
 public class TagController {
-    private final TagServiceImpl tagService;
+    private final TagService tagService;
 
     @GetMapping("add-new-tag.html")
     public String getAddNewProductTag(Model model){
@@ -34,13 +34,13 @@ public class TagController {
 
 
     @GetMapping("delete-tag/{id}")
-    public String deleteTag(@PathVariable("id") Long id){
+    public String deleteTag(@PathVariable("id") String id){
         tagService.deleteTag(id);
         return "redirect:/tag-management/tags-list";
     }
 
     @GetMapping("update-tag-form/{id}")
-    public String updateTag(@PathVariable("id") Long id, Model model){
+    public String updateTag(@PathVariable("id") String id, Model model){
         model.addAttribute("tag", tagService.getTagById(id));
         return "update-tag-form";
     }

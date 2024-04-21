@@ -1,5 +1,14 @@
 package com.springboot.ecommerce.entities.token;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum TokenType {
-    BEARER;
+
+    UUID("UUID"),
+    JWT("JWT");
+
+    private final String name;
 }

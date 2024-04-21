@@ -1,15 +1,17 @@
 package com.springboot.ecommerce.controller;
 
 
+import com.springboot.ecommerce.constants.BootstrapRole;
 import com.springboot.ecommerce.entities.cart.Cart;
-import com.springboot.ecommerce.services.impl.CartServiceImpl;
-import com.springboot.ecommerce.entities.product.Product;
-import com.springboot.ecommerce.services.impl.ProductServiceImpl;
 import com.springboot.ecommerce.entities.user.User;
-import com.springboot.ecommerce.entities.user.UserRole;
+import com.springboot.ecommerce.services.CartService;
+import com.springboot.ecommerce.services.ProductService;
+import com.springboot.ecommerce.entities.product.Product;
 import com.springboot.ecommerce.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -19,16 +21,17 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
-    private final ProductServiceImpl productService;
+
+    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+    private final ProductService productService;
     private final UserService userService;
-    private final CartServiceImpl cartService;
+    private final CartService cartService;
 
 
     @GetMapping("/setCartSession")
     public String setCartSession(@AuthenticationPrincipal UserDetails user, HttpSession session){
-
         User currentUser = userService.findByEmail(user.getUsername());
-        if (currentUser.getUserRole().equals(UserRole.ADMIN)) {
+        if (!currentUser.getRole().getName().equals(BootstrapRole.CUSTOMER.getName())) {
             return "redirect:/admin";
         } else {
             Cart activeCart = cartService.getActiveCartByUser(currentUser.getId());

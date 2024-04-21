@@ -3,6 +3,8 @@ package com.springboot.ecommerce.services.impl;
 import com.springboot.ecommerce.entities.category.Category;
 import com.springboot.ecommerce.entities.product.Product;
 import com.springboot.ecommerce.entities.product.ProductMeta;
+import com.springboot.ecommerce.search.model.product.ProductElasticSearchService;
+import com.springboot.ecommerce.services.ProductMetaService;
 import com.springboot.ecommerce.services.ProductService;
 import com.springboot.ecommerce.repositories.ProductRepository;
 import com.springboot.ecommerce.search.model.product.ProductElasticSearchServiceImpl;
@@ -11,18 +13,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductMetaServiceImpl productMetaService;
-    private final ProductElasticSearchServiceImpl productElasticSearchService;
+    private final ProductMetaService productMetaService;
+    private final ProductElasticSearchService productElasticSearchService;
 
 
     @Override
@@ -50,24 +53,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProduct(Integer id) {
+    public void deleteProduct(String id) {
         productElasticSearchService.delete(id);
         productMetaService.deleteByProduct(id);
         productRepository.deleteById(id);
     }
 
     @Override
-    public List<Product> findAllByTag(Long id) {
+    public List<Product> findAllByTag(String id) {
         return productRepository.findAllByTags_Id(id);
     }
 
     @Override
-    public List<Product> findAllByCategory(Long id) {
+    public List<Product> findAllByCategory(String id) {
         return productRepository.findAllByCategories_Id(id);
     }
 
     @Override
-    public Product getProductById(Integer id) {
+    public Product getProductById(String id) {
         Optional<Product> optionalProduct = productRepository.findById(id);
         if (optionalProduct.isPresent()){
             return optionalProduct.get();
@@ -77,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProductByProductMeta(Long productMetaId) {
+    public Product getProductByProductMeta(String productMetaId) {
         return productRepository.findByProductMetas_Id(productMetaId);
     }
 
@@ -99,7 +102,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public List<Product> findAllByCategoryAndTag(Long categoryId, Long tagId) {
+    public List<Product> findAllByCategoryAndTag(String categoryId, String tagId) {
         return productRepository.findAllByCategories_IdAndTags_Id(categoryId, tagId);
     }
 
@@ -123,7 +126,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> getAllRelatedProduct(Product product, Pageable pageable) {
-        List<Long> relatedCategoriesId = product.getCategories()
+        List<String> relatedCategoriesId = product.getCategories()
                 .stream()
                 .map(Category::getId)
                 .toList();

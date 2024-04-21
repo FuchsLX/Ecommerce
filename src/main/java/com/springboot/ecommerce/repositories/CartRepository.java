@@ -8,14 +8,14 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CartRepository extends JpaRepository<Cart, Long> {
+public interface CartRepository extends JpaRepository<Cart, String> {
 
-    List<Cart> findByUser_Id (Long id);
+    List<Cart> findByUser_Id (String id);
 
     @Query("select c " +
             "from Cart as c " +
             "where c.user.id=?1 and c.cartStatus= 'ACTIVE'")
-    Cart getActiveCartByUser(Long userId);
+    Cart getActiveCartByUser(String userId);
 
 
 

@@ -8,34 +8,34 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface OrderRepository extends JpaRepository<Order, String> {
 
 
     @Query("select o " +
             "from Order as o " +
             "where o.user.id=?1")
-    List<Order> getAllOrderByCurrentUser(Long currentUserId);
+    List<Order> getAllOrderByCurrentUser(String currentUserId);
 
 
     @Query("select o " +
             "from Order as o " +
             "where o.user.id=?1 and o.status='COMPLETED'")
-    List<Order> getCompletedOrderByCurrentUser(Long currentUserId);
+    List<Order> getCompletedOrderByCurrentUser(String currentUserId);
 
     @Query("select o " +
             "from Order as o " +
             "where o.user.id=?1 and o.status='PROCESSING'")
-    List<Order> getProcessingOrderByCurrentUser(Long currentUserId);
+    List<Order> getProcessingOrderByCurrentUser(String currentUserId);
 
     @Query("select o " +
             "from Order as o " +
             "where o.user.id=?1 and o.status='DELIVERED'")
-    List<Order> getDeliveredOrderByCurrentUser(Long currentUserId);
+    List<Order> getDeliveredOrderByCurrentUser(String currentUserId);
 
     @Query("select o " +
             "from Order as o " +
             "where o.user.id=?1 and o.status='CANCELLED'")
-    List<Order> getCancelledOrderByCurrentUser(Long currentUserId);
+    List<Order> getCancelledOrderByCurrentUser(String currentUserId);
 
 
     @Query("select o " +

@@ -1,10 +1,10 @@
 package com.springboot.ecommerce.controller;
 
 
+import com.springboot.ecommerce.entities.user.User;
 import com.springboot.ecommerce.entities.user.UserMeta;
 import com.springboot.ecommerce.entities.user.UserMetaGender;
-import com.springboot.ecommerce.services.impl.UserMetaServiceImpl;
-import com.springboot.ecommerce.entities.user.User;
+import com.springboot.ecommerce.services.UserMetaService;
 import com.springboot.ecommerce.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,7 +26,7 @@ import static com.springboot.ecommerce.entities.user.UserMetaGender.*;
 public class UserMetaController {
     private final UserService userService;
 
-    private final UserMetaServiceImpl userMetaService;
+    private final UserMetaService userMetaService;
 
     @GetMapping("edit")
     public String addNewAccountInformation(Model model,
@@ -49,7 +49,4 @@ public class UserMetaController {
         userMetaService.saveUserMeta(userMeta);
         return "redirect:/account/edit";
     }
-
-
-
 }

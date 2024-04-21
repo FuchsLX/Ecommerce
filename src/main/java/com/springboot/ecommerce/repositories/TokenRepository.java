@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TokenRepository extends JpaRepository<Token, Long> {
+public interface TokenRepository extends JpaRepository<Token, String> {
     Optional<Token> findByToken(String token);
 
     @Transactional
@@ -27,6 +27,6 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
             "from Token as t inner join User as u " +
             "on t.user.id = u.id " +
             "where t.user.id = ?1 and (t.expired = false or t.revoked = false)")
-    List<Token> findAllValidTokenByUser(Long id);
+    List<Token> findAllValidTokenByUser(String userId);
 
 }

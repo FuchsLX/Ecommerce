@@ -5,17 +5,19 @@ import com.springboot.ecommerce.entities.category.Category;
 import com.springboot.ecommerce.entities.product.Product;
 import com.springboot.ecommerce.services.CategoryService;
 import com.springboot.ecommerce.repositories.CategoryRepository;
+import com.springboot.ecommerce.services.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
-    private final ProductServiceImpl productService;
+    private final ProductService productService;
 
     @Override
     public void saveCategory(Category category) {
@@ -28,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category getCategoryById(Long id) {
+    public Category getCategoryById(String id) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
         if (optionalCategory.isPresent()){
             return optionalCategory.get();
@@ -38,7 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteCategory(Long id) {
+    public void deleteCategory(String id) {
         List<Product> productList = productService.findAllByCategory(id);
         Category category = categoryRepository.findById(id).orElse(null);
         for (Product product : productList) {
@@ -49,19 +51,19 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> getAllCategoriesExcept(Long categoryId) {
-        List<Long> subCategories = this.getAllSubCategoriesOf(categoryId);
+    public List<Category> getAllCategoriesExcept(String categoryId) {
+        List<String> subCategories = this.getAllSubCategoriesOf(categoryId);
         subCategories.add(categoryId);
         return categoryRepository.getAllCategoriesExceptId(subCategories);
     }
 
     @Override
-    public List<Long> getAllSubCategoriesOf(Long categoryParentId) {
+    public List<String> getAllSubCategoriesOf(String categoryParentId) {
         return categoryRepository.getAllSubCategoriesOf(categoryParentId);
     }
 
     @Override
-    public List<Long> getAllCategoryParent() {
+    public List<String> getAllCategoryParent() {
         return categoryRepository.getALlCategoryParent();
     }
 }

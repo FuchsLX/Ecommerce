@@ -2,15 +2,15 @@ package com.springboot.ecommerce.services.impl;
 
 import com.springboot.ecommerce.entities.order.Order;
 import com.springboot.ecommerce.entities.order.OrderStatus;
+import com.springboot.ecommerce.entities.user.User;
 import com.springboot.ecommerce.exception.QuantityExceededOrderException;
 import com.springboot.ecommerce.entities.cart.Cart;
-import com.springboot.ecommerce.services.OrderService;
+import com.springboot.ecommerce.services.*;
 import com.springboot.ecommerce.entities.cart.CartItem;
 import com.springboot.ecommerce.entities.order.OrderItem;
 import com.springboot.ecommerce.entities.product.Product;
 import com.springboot.ecommerce.entities.transaction.Transaction;
 import com.springboot.ecommerce.entities.user.UserMeta;
-import com.springboot.ecommerce.entities.user.User;
 import com.springboot.ecommerce.repositories.OrderRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -18,23 +18,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
-    private final TransactionServiceImpl transactionService;
-    private final ProductServiceImpl productService;
-    private final CartItemServiceImpl cartItemService;
-    private final CartServiceImpl cartService;
-    private final UserMetaServiceImpl userMetaService;
-    private final OrderItemServiceImpl orderItemService;
+    private final TransactionService transactionService;
+    private final ProductService productService;
+    private final CartItemService cartItemService;
+    private final CartService cartService;
+    private final UserMetaService userMetaService;
+    private final OrderItemService orderItemService;
 
 
 
@@ -104,33 +104,33 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getCancelledOrderByCurrentUser(Long currentUserId) {
+    public List<Order> getCancelledOrderByCurrentUser(String currentUserId) {
         return orderRepository.getCancelledOrderByCurrentUser(currentUserId);
     }
 
     @Override
-    public List<Order> getDeliveredOrderByCurrentUser(Long currentUserId) {
+    public List<Order> getDeliveredOrderByCurrentUser(String currentUserId) {
         return orderRepository.getDeliveredOrderByCurrentUser(currentUserId);
     }
 
     @Override
-    public List<Order> getProcessingOrderByCurrentUser(Long currentUserId) {
+    public List<Order> getProcessingOrderByCurrentUser(String currentUserId) {
         return orderRepository.getProcessingOrderByCurrentUser(currentUserId);
     }
 
     @Override
-    public List<Order> getCompletedOrderByCurrentUser(Long currentUserId) {
+    public List<Order> getCompletedOrderByCurrentUser(String currentUserId) {
         return orderRepository.getCompletedOrderByCurrentUser(currentUserId);
     }
 
     @Override
-    public List<Order> getAllOrderByCurrentUser(Long currentUserId) {
+    public List<Order> getAllOrderByCurrentUser(String currentUserId) {
         return orderRepository.getAllOrderByCurrentUser(currentUserId);
     }
 
 
     @Override
-    public void setCompletedOrder(Long orderId) {
+    public void setCompletedOrder(String orderId) {
         Order order = this.getOrderById(orderId);
         Transaction transaction = order.getTransaction();
         order.setStatus(OrderStatus.COMPLETED);
@@ -139,7 +139,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void setCancelledOrder(Long orderId) {
+    public void setCancelledOrder(String orderId) {
         Order order = this.getOrderById(orderId);
         if (!order.getStatus().equals(OrderStatus.PROCESSING)){
             for (OrderItem orderItem : order.getOrderItems()){
@@ -156,7 +156,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void setDeliveredOrder(Long orderId) {
+    public void setDeliveredOrder(String orderId) {
         Order order = this.getOrderById(orderId);
         for (OrderItem orderItem: order.getOrderItems()) {
             Product product = orderItem.getProduct();
@@ -173,7 +173,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrderById(Long orderId) {
+    public Order getOrderById(String orderId) {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         if (optionalOrder.isPresent()){
             return optionalOrder.get();
@@ -220,7 +220,7 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public void buyAgainHandler(Long orderId, HttpSession session) {
+    public void buyAgainHandler(String orderId, HttpSession session) {
         Order oldOrder = this.getOrderById(orderId);
         Cart activeCart = cartService.getActiveCartBySession(session);
 

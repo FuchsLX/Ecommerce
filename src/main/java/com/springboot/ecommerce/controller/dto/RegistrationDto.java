@@ -1,7 +1,7 @@
-package com.springboot.ecommerce.security.registration;
+package com.springboot.ecommerce.controller.dto;
 
 
-import com.springboot.ecommerce.entities.user.UserRole;
+import com.springboot.ecommerce.constants.BootstrapRole;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
@@ -13,12 +13,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegistrationRequest {
+public class RegistrationDto {
     private String firstName;
     private String lastName;
     private String email;
     private String password;
-
-    @Enumerated(EnumType.STRING)
-    private UserRole userRole;
 }

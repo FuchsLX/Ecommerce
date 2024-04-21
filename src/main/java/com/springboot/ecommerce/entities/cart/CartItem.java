@@ -25,17 +25,8 @@ import java.time.LocalDateTime;
         generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class CartItem extends BasicEntity {
     @Id
-    @SequenceGenerator(
-            name = "cart_item_sequence",
-            sequenceName = "cart_item_sequence",
-            allocationSize = 100,
-            initialValue = 1
-    )
-    @GeneratedValue(
-            generator = "cart_item_sequence",
-            strategy = GenerationType.SEQUENCE
-    )
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     private String sku;
     private BigDecimal price;

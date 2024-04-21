@@ -1,18 +1,15 @@
 package com.springboot.ecommerce.controller;
 
 
+import com.springboot.ecommerce.constants.BootstrapRole;
+import com.springboot.ecommerce.entities.user.User;
 import com.springboot.ecommerce.exception.EmptyUserMetaException;
 import com.springboot.ecommerce.entities.cart.Cart;
-import com.springboot.ecommerce.services.impl.CartServiceImpl;
+import com.springboot.ecommerce.services.*;
 import com.springboot.ecommerce.entities.order.Order;
-import com.springboot.ecommerce.services.impl.OrderServiceImpl;
 import com.springboot.ecommerce.entities.transaction.Transaction;
 import com.springboot.ecommerce.entities.transaction.TransactionMode;
 import com.springboot.ecommerce.entities.transaction.TransactionType;
-import com.springboot.ecommerce.services.impl.UserMetaServiceImpl;
-import com.springboot.ecommerce.entities.user.User;
-import com.springboot.ecommerce.entities.user.UserRole;
-import com.springboot.ecommerce.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,10 +33,10 @@ import static com.springboot.ecommerce.entities.transaction.TransactionType.*;
 @RequiredArgsConstructor
 public class OrderController {
 
-    private final CartServiceImpl cartService;
+    private final CartService cartService;
     private final UserService userService;
-    private final OrderServiceImpl orderService;
-    private final UserMetaServiceImpl userMetaService;
+    private final OrderService orderService;
+    private final UserMetaService userMetaService;
 
 
 
@@ -77,7 +74,7 @@ public class OrderController {
     }
 
     @GetMapping("/order/buy-again/{orderId}")
-    public String buyAgainOrder(@PathVariable("orderId") Long orderId,
+    public String buyAgainOrder(@PathVariable("orderId") String orderId,
                                 HttpSession session){
         orderService.buyAgainHandler(orderId, session);
         return "redirect:/cart";
@@ -92,7 +89,7 @@ public class OrderController {
 
     @GetMapping("/order-management/order-detail/{orderId}")
     public String getOrderDetail(
-            @PathVariable("orderId") Long orderId,
+            @PathVariable("orderId") String orderId,
             Model model
     ){
         Order order = orderService.getOrderById(orderId);
@@ -103,7 +100,7 @@ public class OrderController {
 
 
     @GetMapping("/order-management/update-delivered-order/{orderId}")
-    public String updateDeliveredOrder(@PathVariable("orderId") Long orderId,
+    public String updateDeliveredOrder(@PathVariable("orderId") String orderId,
                                        RedirectAttributes redirectAttributes){
         orderService.setDeliveredOrder(orderId);
         redirectAttributes.addAttribute("orderId", orderId);
@@ -111,12 +108,12 @@ public class OrderController {
     }
 
     @GetMapping("/order/update-cancelled-order/{orderId}")
-    public String updateCancelledOrder(@PathVariable("orderId") Long orderId,
+    public String updateCancelledOrder(@PathVariable("orderId") String orderId,
                                         RedirectAttributes redirectAttributes,
                                        @AuthenticationPrincipal UserDetails user) {
         User currentUser = userService.findByEmail(user.getUsername());
         orderService.setCancelledOrder(orderId);
-        if (currentUser.getUserRole().equals(UserRole.ADMIN)){
+        if (currentUser.getRole().equals(BootstrapRole.ADMIN.getName())){
             redirectAttributes.addAttribute("orderId", orderId);
             return "redirect:/order-management/order-detail/{orderId}";
         } else {
@@ -126,7 +123,7 @@ public class OrderController {
     }
 
     @GetMapping("/order-management/update-completed-order/{orderId}")
-    public String updateCompletedOrder(@PathVariable("orderId") Long orderId,
+    public String updateCompletedOrder(@PathVariable("orderId") String orderId,
                                        RedirectAttributes redirectAttributes){
         orderService.setCompletedOrder(orderId);
         redirectAttributes.addAttribute("orderId", orderId);
