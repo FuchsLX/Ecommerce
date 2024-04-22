@@ -2,6 +2,8 @@ package com.springboot.ecommerce.config;
 
 
 import com.springboot.ecommerce.constants.BootstrapRole;
+import com.springboot.ecommerce.security.loginError.CustomAuthenticationFailureHandler;
+import com.springboot.ecommerce.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +11,9 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -21,7 +26,6 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final AuthenticationFailureHandler authenticationFailureHandler;
 
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -37,7 +41,7 @@ public class SecurityConfig {
                 .formLogin(login -> login
                         .loginPage("/login").permitAll()
                         .defaultSuccessUrl("/setCartSession", true)
-                        .failureHandler(authenticationFailureHandler)
+                        .failureHandler(this.authenticationFailureHandler())
                         .usernameParameter("email")
                         .passwordParameter("password")
                 )
@@ -54,5 +58,15 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/home")
                 )
                 .build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
     }
 }

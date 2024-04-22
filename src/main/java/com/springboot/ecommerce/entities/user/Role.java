@@ -24,7 +24,6 @@ public class Role {
     @Column(nullable = false)
     private String name;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String description;
 
@@ -35,6 +34,10 @@ public class Role {
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
     private List<Permission> permissions;
+
+    @OneToMany(mappedBy = "role")
+    private List<User> users;
+
 
 
     public Role(String name) {
@@ -61,7 +64,7 @@ public class Role {
         if (obj instanceof String) {
             return this.name == obj;
         } else if (obj instanceof BootstrapRole) {
-            return this.name == ((BootstrapRole) obj).getName();
+            return this.name.equals(((BootstrapRole) obj).getName());
         }
         return false;
     }

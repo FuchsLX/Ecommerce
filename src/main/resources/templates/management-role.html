@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Role management</title>
+</head>
+<body>
+<div class="tnn"><a><img th:src="@{/img/logo.png}" alt="logo" width="80px"></a></div>
+<div class="container">
+    <h1>Role list</h1>
+    <button class="add">
+        <a th:href="@{/role-management/add-new-role}">Add new role</a>
+    </button>
+    <table class="role-list-management">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="role : ${managerRoles}">
+                <td th:text="${role.getName()}"></td>
+                <td th:text="${role.getDescription()}"></td>
+                <td>
+                    <button class="delete" type="button">
+                        <a onclick="return warningDelete('Are you sure want to delete this item ?');"
+                            th:href="@{/role-management/delete-role/{id}(id=${role.getId()})}">Delete</a>
+                    </button>
+                    <button class="update">
+                        <a th:href="@{/role-management/update-role/{id}(id=${role.getId()})}">Update</a>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button class="back">
+        <a th:href="@{/admin}">Back to Admin panel</a>
+    </button>
+</div>
+</body>
+</html>

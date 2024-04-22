@@ -8,10 +8,20 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class QuantityExceededOrderException extends RuntimeException{
     private Long orderId;
+
+    public QuantityExceededOrderException() {super();}
+
     public QuantityExceededOrderException(String message) {
         super(message);
+    }
+
+    public QuantityExceededOrderException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public QuantityExceededOrderException(Throwable cause) {
+        super(cause);
     }
 }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Staff</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+
+</head>
+<body>
+<div class="container">
+    <h1>Staff Detail</h1>
+    <form class="form-update-staff" method="post" th:action="@{/staff-management/save-staff-account}" th:object="${staff}">
+        <th:block th:if="*{id != null}">
+            <input type="hidden" th:field="*{id}">
+        </th:block>
+        <div class="form-group">
+            <label for="first-name">First name: </label>
+            <input id="first-name" type="text" th:field="*{firstName}" required>
+        </div>
+        <div class="form-group">
+            <label for="last-name">Last name:</label>
+            <input id="last-name" type="text" th:field="*{lastName}" required>
+        </div>
+        <th:block th:if="*{id != null}">
+            <p>Email: <span th:text="${staff.getEmail()}"></span></p><br>
+        </th:block>
+        <th:block th:unless="${id != null}">
+            <div class="form-group">
+                <label for="email">Email: </label>
+                <input type="email" id="email" th:field="*{email}" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password: </label>
+                <input type="password" id="password" th:field="*{password}" required>
+            </div>
+        </th:block>
+        <div class="form-group">
+            <label for="account-lock">Account Lock: </label>
+            <input id="account-lock" type="checkbox" th:field="*{accountNonLocked}" th:checked="${true}">
+        </div>
+        <div class="form-group">
+            <label for="enable">Enabled:</label>
+            <input id="enable" type="checkbox" th:field="*{enabled}" th:checked="${true}">
+        </div>
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <select id="role" th:field="*{role}">
+                <option th:each="ro: ${roles}"
+                        th:value="${ro.name}" th:text="${ro.name}">
+                </option>
+            </select>
+        </div>
+        <input type="submit" value="Save">
+    </form>
+</div>
+</body>
+</html>

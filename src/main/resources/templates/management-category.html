@@ -130,7 +130,7 @@
                 <td>
                     <th:block th:if="${!categoriesParentList.contains(category.id)}">
                         <button class="delete">
-                            <a onclick="return warningDelete('bạn có chắc muốn xóa không');" th:href="@{/category-management/delete-category/{id}(id=${category.id})}">Delete</a>
+                            <a onclick="return warningDelete('Are you sure want to delete this item ?');" th:href="@{/category-management/delete-category/{id}(id=${category.id})}">Delete</a>
                         </button>
                     </th:block>
 

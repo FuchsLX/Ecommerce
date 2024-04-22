@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Staff management</title>
+</head>
+<body>
+<div class="container">
+    <h1>Staff account list</h1>
+    <button class="add">
+        <a th:href="@{/staff-management/add-new-staff}">Add new staff account</a>
+    </button>
+    <table class="staff-list-management">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Full name</th>
+                <th>Role</th>
+                <th>Account Lock</th>
+                <th>Enabled</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="st: ${staffs}">
+                <td th:text="${st.getEmail()}"></td>
+                <td th:text="${st.getFirstName() + ' ' + st.getLastName()}"></td>
+                <td th:text="${st.getRole()}"></td>
+                <td th:text="${st.isAccountNonLocked()}"></td>
+                <td th:text="${st.isEnabled()}"></td>
+                <td>
+                    <button class="delete" type="button">
+                        <a onclick="return warningDelete('Are you sure qant to delete this item ?');"
+                           th:href="@{/staff-management/delete-staff/{id}(id=${st.getId()})}">Delete</a>
+                    </button>
+                    <button class="update">
+                        <a th:href="@{/staff-management/staff-detail/{id}(id=${st.getId()})}">Update</a>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button class="back">
+        <a th:href="@{/admin}">Back to Admin panel</a>
+    </button>
+</div>
+</body>
+</html>

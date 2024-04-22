@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Role</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+</head>
+<body>
+<div class="container">
+    <h1>Role Detail</h1>
+    <form class="form-update-role" method="post" th:action="@{/role-management/save-role}" th:object="${role}">
+        <th:block th:if="*{id != null}">
+            <input type="hidden" th:field="*{id}">
+        </th:block>
+        <div class="form-group">
+            <label for="name">Role's name:</label>
+            <input id="name" type="text" th:field="*{name}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description: </label>
+            <input id="description" type="text" th:field="*{description}">
+        </div>
+        <div class="form-group">
+            <label for="permissions">Permissions: </label>
+            <th:block th:each="per : ${permissions}">
+                <div>
+                    <input type="checkbox" id="permissions"
+                           th:field="*{permissions}"
+                           th:value="${per.getName()}"
+                           th:text="${per.getName()}">
+                </div>
+            </th:block>
+
+        </div>
+        <input type="submit" value="Update role">
+    </form>
+</div>
+</body>
+</html>

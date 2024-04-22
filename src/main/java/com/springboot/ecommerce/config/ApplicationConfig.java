@@ -21,34 +21,26 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 public class ApplicationConfig {
     private final UserService userService;
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
 
     @Bean
     public UserDetailsService userDetailsService() {
         return userService::loadUserDetailsByUsername;
     }
 
-    @Bean
-    public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(this.passwordEncoder());
-        provider.setUserDetailsService(this.userDetailsService());
-        return provider;
-    }
+//    @Bean
+//    public AuthenticationProvider authenticationProvider(){
+//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+//        provider.setPasswordEncoder(passwordEncoder);
+//        provider.setUserDetailsService(this.userDetailsService());
+//        return provider;
+//    }
+//
+//    @Bean
+//    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception{
+//        AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
+//        authenticationManagerBuilder.authenticationProvider(this.authenticationProvider());
+//        return authenticationManagerBuilder.build();
+//    }
 
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception{
-        AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.authenticationProvider(this.authenticationProvider());
-        return authenticationManagerBuilder.build();
-    }
-
-    @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new CustomAuthenticationFailureHandler();
-    }
 
 }
