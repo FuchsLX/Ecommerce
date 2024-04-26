@@ -1,39 +1,46 @@
 package com.springboot.ecommerce.entities.product;
 
-
 import com.springboot.ecommerce.entities.auditListener.AuditListener;
 import com.springboot.ecommerce.entities.auditListener.BasicEntity;
+import com.springboot.ecommerce.entities.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
 
-@Setter
+
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "product_reviews")
 @Entity
 @DynamicUpdate
 @EntityListeners(AuditListener.class)
-public class ProductMeta extends BasicEntity {
+public class ProductReview extends BasicEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-    @Column(nullable = false)
-    private String keyProductMeta;
-
-    @Lob
-    private String content;
+    private int rating;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    public User customer;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    public Product product;
 }

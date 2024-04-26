@@ -16,4 +16,6 @@ public final class ErrorMessage {
     public static final String ROLE_ALREADY_EXISTS_MESSAGE = "Role with name %s already exists.";
 
     public static final String STAFF_ACCOUNT_NOT_FOUND_MESSAGE = "Staff account with id [%s] not found.";
+
+    public static final String INVALID_REVIEW_MESSAGE = "Invalid product review !";
 }

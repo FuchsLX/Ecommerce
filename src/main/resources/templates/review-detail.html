@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Review detail</title>
+</head>
+<body>
+<div class="container">
+    <form class="review-form" method="post" th:action="@{/review/save}" th:object="${review}">
+        <th:block th:if="*{id != null}">
+            <input type="hidden" th:field="*{id}">
+        </th:block>
+        <p>Email: <span th:text="${email}"></span></p>
+        <input type="hidden" th:field="*{customerEmail}">
+        <input type="hidden" th:field="*{productId}">
+        <label for="rating">Rating: </label>
+        <input type="number" max="5" min="1" id="rating" th:field="*{rating}">
+        <label for="review-content">Content</label>
+        <textarea id="review-content" cols="30" rows="10" th:field="*{content}"></textarea>
+        <input type="submit" value="Save">
+    </form>
+</div>
+
+</body>
+</html>

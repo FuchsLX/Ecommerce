@@ -5,7 +5,7 @@ import com.springboot.ecommerce.controller.dto.RegistrationDto;
 import com.springboot.ecommerce.entities.user.User;
 import com.springboot.ecommerce.exception.EmailAlreadyTakenException;
 import com.springboot.ecommerce.exception.EmailNotValidException;
-import com.springboot.ecommerce.security.jwt.JwtService;
+import com.springboot.ecommerce.utils.JwtService;
 import com.springboot.ecommerce.security.registration.emailRegistration.EmailDetails;
 import com.springboot.ecommerce.security.registration.emailRegistration.EmailService;
 import com.springboot.ecommerce.security.registration.emailRegistration.EmailValidator;

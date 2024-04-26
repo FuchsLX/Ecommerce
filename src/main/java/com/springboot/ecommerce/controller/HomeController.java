@@ -5,6 +5,7 @@ import com.springboot.ecommerce.constants.BootstrapRole;
 import com.springboot.ecommerce.entities.cart.Cart;
 import com.springboot.ecommerce.entities.user.User;
 import com.springboot.ecommerce.services.CartService;
+import com.springboot.ecommerce.services.ProductReviewService;
 import com.springboot.ecommerce.services.ProductService;
 import com.springboot.ecommerce.entities.product.Product;
 import com.springboot.ecommerce.services.UserService;
@@ -26,6 +27,7 @@ public class HomeController {
     private final ProductService productService;
     private final UserService userService;
     private final CartService cartService;
+    private final ProductReviewService productReviewService;
 
 
     @GetMapping("/setCartSession")
@@ -75,7 +77,12 @@ public class HomeController {
             @PathVariable("slugProduct") String slugProduct,
             Model model){
         Product product = productService.findBySlugProduct(slugProduct);
+        var reviews = productReviewService.getAllReviewWithPagination(product.getId());
+        model.addAttribute("totalReviews", reviews.getTotalElements());
+        model.addAttribute("totalReviewPages", reviews.getTotalPages());
+        model.addAttribute("currentReviewPage", 1);
         model.addAttribute("product", product);
+        model.addAttribute("reviews", reviews);
         model.addAttribute("relatedProducts",
                 productService.getAllRelatedProduct(
                         product, productService.findPaginated(1,10, "title", "asc")).getContent()

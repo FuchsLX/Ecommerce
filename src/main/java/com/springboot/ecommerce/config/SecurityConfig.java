@@ -1,17 +1,16 @@
 package com.springboot.ecommerce.config;
 
 
+import com.springboot.ecommerce.constants.BootstrapPermission;
 import com.springboot.ecommerce.constants.BootstrapRole;
 import com.springboot.ecommerce.security.loginError.CustomAuthenticationFailureHandler;
-import com.springboot.ecommerce.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -30,12 +29,12 @@ public class SecurityConfig {
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(c -> c
-                        .requestMatchers("/home/**", "/registration/**", "/product/**", "/css/**", "/js/**", "/fonts/**", "/images/**", "/img/**").permitAll()
+                        .requestMatchers("/home/**", "/registration/**", "/product/**", "/css/**", "/js/**", "/fonts/**", "/img/**").permitAll()
                         .requestMatchers("/category-management/**", "/tag-management/**", "/order-management/**", "/admin").hasAnyRole(BootstrapRole.ADMIN.getName(), BootstrapRole.STAFF.getName())
                         .requestMatchers("/product-management/**").hasAnyRole(BootstrapRole.ADMIN.getName(), BootstrapRole.STAFF.getName())
-                        .requestMatchers("/cart/**", "/setCartSession", "/account/**", "/order/**").hasAnyRole(BootstrapRole.CUSTOMER.getName(), BootstrapRole.ADMIN.getName(), BootstrapRole.STAFF.getName())
+                        .requestMatchers("/cart/**", "/account/**", "/order/**").hasAnyAuthority(BootstrapPermission.CUSTOMER_READ.getName(), BootstrapPermission.CUSTOMER_WRITE.getName(), BootstrapPermission.ADMIN_WRITE.getName())
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login

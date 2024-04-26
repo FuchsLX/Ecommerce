@@ -133,5 +133,4 @@ public class ProductController {
         productMetaService.saveProductMeta(productMeta);
         return "redirect:/product-management/product-meta-management/{productId}";
     }
-
 }

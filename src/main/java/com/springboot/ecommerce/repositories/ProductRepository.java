@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, String> {
@@ -24,7 +25,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     @Query("select p " +
             "from Product as p " +
             "where p.slug = :slugProduct")
-    Product findBySlugProduct(String slugProduct);
+    Optional<Product> findBySlugProduct(String slugProduct);
 
 
     @Query("select p " +
@@ -49,4 +50,11 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     Page<Product> getAllRelatedProduct(List<String> relatedCategoriesId, String productId, Pageable pageable);
 
 
+    @Query(value = "select distinct p.id " +
+            "from products as p " +
+            "inner join order_items as oi on p.id = oi.product_id " +
+            "inner join orders as o on oi.order_id = o.id " +
+            "inner join users as u on u.id = o.customer_id " +
+            "where o.status = 'COMPLETED' and u.email = :email", nativeQuery = true)
+    List<String> getAllOrderedProductIdByCustomerName(@Param("email") String customerEmail);
 }

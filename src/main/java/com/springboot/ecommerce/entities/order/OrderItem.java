@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "order_items")
 @EntityListeners(AuditListener.class)
 @DynamicUpdate
 public class OrderItem extends BasicEntity {

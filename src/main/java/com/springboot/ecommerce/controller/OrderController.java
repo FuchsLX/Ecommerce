@@ -113,7 +113,7 @@ public class OrderController {
                                        @AuthenticationPrincipal UserDetails user) {
         User currentUser = userService.findByEmail(user.getUsername());
         orderService.setCancelledOrder(orderId);
-        if (currentUser.getRole().equals(BootstrapRole.ADMIN.getName())){
+        if (currentUser.getRole().getName().equals(BootstrapRole.ADMIN.getName())){
             redirectAttributes.addAttribute("orderId", orderId);
             return "redirect:/order-management/order-detail/{orderId}";
         } else {

@@ -106,6 +106,32 @@
         </div>
     </div>
 </div>
+
+
+<div class="reviews">
+    <h2>Reviews</h2>
+    <div id="review-contents">
+        <th:block th:each="rv: ${reviews}">
+            <p>Name: <span th:text="${rv.getCustomer().getFirstName() + ' ' + rv.getCustomer().getLastName()}"></span></p>
+            <p>Rating: <span th:text="${rv.getRating()}"></span></p>
+            <p>Content: <span th:text="${rv.getContent()}"></span></p>
+            <br><br>
+        </th:block>
+    </div>
+    <div id="reviews-pagination">
+        <th:block th:each="i : ${#numbers.sequence(1, totalReviewPages)}">
+            <button th:if="${currentReviewPage != i}" th:text="${i}" th:onclick="getReviewsWithPagination([[${i}]])" type="button"></button>
+            <button th:unless="${currentReviewPage != i}" th:text="${i}" type="button"></button>
+        </th:block>
+    </div>
+    <script th:inline="javascript">
+        let totalReviewPages = [[${totalReviewPages}]]
+    </script>
+    <script th:src="@{/js/reviews-pagination.js}"></script>
+</div>
+
+
+
 <!-- title -->
 <div class="small-container">
     <div class="row row-2">
@@ -120,13 +146,6 @@
                 <a th:href="@{/product/{slugProduct}(slugProduct=${reProduct.slug})}"><img th:src="${reProduct.getImageLink()}"></a>
 
                 <h4 th:text="${reProduct.getTitle()}"></h4>
-                <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
-                </div>
                 <p><span th:text="${reProduct.price}"></span><sup>$</sup></p>
             </div>
         </th:block>

@@ -29,6 +29,7 @@ import java.util.List;
 @JsonIdentityInfo(
         scope = Product.class,
         generator = ObjectIdGenerators.IntSequenceGenerator.class)
+@Table(name = "products")
 public class Product extends BasicEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -122,4 +123,7 @@ public class Product extends BasicEntity {
     @JsonIgnore
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    private List<ProductReview> productReviews;
 }

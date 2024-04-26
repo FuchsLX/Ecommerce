@@ -1,4 +1,4 @@
-package com.springboot.ecommerce.security.jwt;
+package com.springboot.ecommerce.utils;
 
 
 import com.springboot.ecommerce.entities.user.User;

@@ -39,7 +39,19 @@ public class CartController {
         }
     }
 
-    @PostMapping("add-product-to-cart/{productId}/{quantity}")
+    @PostMapping("/test")
+    @ResponseBody
+    public String wtf() {
+        return "deo gieu kieu gi";
+    }
+
+    @GetMapping("/test")
+    @ResponseBody
+    public String wtfGet() {
+        return "deo gieu kieu gi";
+    }
+
+    @PostMapping("/add-product-to-cart/{productId}/{quantity}")
     @ResponseBody
     public void addProductToCart(@PathVariable("productId") String productId,
                                  @PathVariable("quantity") Long quantity,

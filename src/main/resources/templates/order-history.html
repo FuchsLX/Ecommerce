@@ -142,6 +142,7 @@
                         </th:block>
                         <td th:text="${orderItem.getQuantity()}"></td>
                         <td th:text="${orderItem.getPrice()}"></td>
+                        <td><a th:href="@{/review/detail/{productId}(productId=${orderItem.getProduct().getId()})}">Review</a></td>
                     </tr>
                 </table>
             </div>

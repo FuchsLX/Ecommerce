@@ -3,6 +3,7 @@ package com.springboot.ecommerce.services.impl;
 import com.springboot.ecommerce.entities.category.Category;
 import com.springboot.ecommerce.entities.product.Product;
 import com.springboot.ecommerce.entities.product.ProductMeta;
+import com.springboot.ecommerce.repositories.ProductReviewRepository;
 import com.springboot.ecommerce.search.model.product.ProductElasticSearchService;
 import com.springboot.ecommerce.services.ProductMetaService;
 import com.springboot.ecommerce.services.ProductService;
@@ -26,6 +27,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProductMetaService productMetaService;
     private final ProductElasticSearchService productElasticSearchService;
+    private final ProductReviewRepository productReviewRepository;
 
 
     @Override
@@ -56,6 +58,7 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(String id) {
         productElasticSearchService.delete(id);
         productMetaService.deleteByProduct(id);
+        productReviewRepository.deleteByProductId(id);
         productRepository.deleteById(id);
     }
 
@@ -97,7 +100,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findBySlugProduct(String slugProduct) {
-        return productRepository.findBySlugProduct(slugProduct);
+        return productRepository.findBySlugProduct(slugProduct).orElse(null);
     }
 
 

@@ -55,7 +55,7 @@ public class Order extends BasicEntity {
             cascade = CascadeType.DETACH,
             fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "customer_id")
     private User user;
 
     @OneToMany(mappedBy = "order")

@@ -3,6 +3,7 @@ package com.springboot.ecommerce.entities.user;
 import com.springboot.ecommerce.entities.cart.Cart;
 import com.springboot.ecommerce.entities.order.Order;
 import com.springboot.ecommerce.entities.product.Product;
+import com.springboot.ecommerce.entities.product.ProductReview;
 import com.springboot.ecommerce.entities.transaction.Transaction;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,7 +32,7 @@ public class User {
     @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "email")
     private String email;
 
     @Column(nullable = false)
@@ -68,4 +69,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Transaction> transactions = new ArrayList<>();
 
+    @OneToMany(mappedBy = "customer")
+    private List<ProductReview> productReviews;
 }
