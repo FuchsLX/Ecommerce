@@ -15,14 +15,14 @@ import java.util.List;
 @Service
 public interface OrderService {
 
-    void saveOrder(Order order,
+    Order saveOrder(Order order,
                    List<OrderItem> orderItems,
                    UserMeta userMeta,
                    Transaction transaction);
 
-    void saveOrder(Order order);
+//    void saveOrder(Order order);
 
-    void saveOrder(Order order, Transaction transaction);
+//    void saveOrder(Order order, Transaction transaction);
 
     List<Order> getAllCancelledOrder();
 
@@ -56,11 +56,11 @@ public interface OrderService {
 
     void buyAgainHandler(String orderId, HttpSession session);
 
-    void processingNewOrder(Transaction newTransaction, User currentUser, HttpSession session);
+    Order processingNewOrder(Transaction newTransaction, User currentUser, HttpSession session);
 
-    Pageable findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
+//    Pageable findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
 
-    Page<Order> getAllOrderWithPaginationAndSort(int pageNo, int pageSize, String sortField, String sortDirection);
+//    Page<Order> getAllOrderWithPaginationAndSort(int pageNo, int pageSize, String sortField, String sortDirection);
 
 
 }

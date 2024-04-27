@@ -1,6 +1,9 @@
 package com.springboot.ecommerce.controller;
 
 
+import com.paypal.api.payments.Links;
+import com.paypal.api.payments.Payment;
+import com.paypal.base.rest.PayPalRESTException;
 import com.springboot.ecommerce.constants.BootstrapRole;
 import com.springboot.ecommerce.entities.user.User;
 import com.springboot.ecommerce.exception.EmptyUserMetaException;
@@ -8,10 +11,12 @@ import com.springboot.ecommerce.entities.cart.Cart;
 import com.springboot.ecommerce.services.*;
 import com.springboot.ecommerce.entities.order.Order;
 import com.springboot.ecommerce.entities.transaction.Transaction;
-import com.springboot.ecommerce.entities.transaction.TransactionMode;
 import com.springboot.ecommerce.entities.transaction.TransactionType;
+import com.springboot.ecommerce.utils.PaypalService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -21,13 +26,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.springboot.ecommerce.entities.transaction.TransactionMode.*;
 import static com.springboot.ecommerce.entities.transaction.TransactionType.*;
-
+import static com.springboot.ecommerce.constants.PaymentUrl.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -37,6 +42,9 @@ public class OrderController {
     private final UserService userService;
     private final OrderService orderService;
     private final UserMetaService userMetaService;
+    private final PaypalService paypalService;
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
 
 
@@ -53,24 +61,44 @@ public class OrderController {
                 return "redirect:/cart";
             }
             Cart activeCart = cartService.getActiveCartBySession(session);
-            List<TransactionMode> transactionModes = Arrays.asList(CASH_ON_DELIVERY, CHEQUE, WIRED, DRAFT);
-            List<TransactionType> transactionTypes = Arrays.asList(DEBIT, CREDIT);
+//            List<TransactionMode> transactionModes = Arrays.asList(CASH_ON_DELIVERY, CHEQUE, WIRED, DRAFT);
+            List<TransactionType> transactionTypes = Arrays.asList(CASH_ON_DELIVERY, CHECKOUT_VIA_PAYPAL);
             model.addAttribute("cart",activeCart);
             model.addAttribute("userMeta",userMetaService.getUserMetaByCurrentUser(currentUser.getId()));
             model.addAttribute("transaction", new Transaction());
             model.addAttribute("transactionTypes", transactionTypes);
-            model.addAttribute("transactionModes", transactionModes);
+//            model.addAttribute("transactionModes", transactionModes);
             return "order-payment";
         }
     }
 
     @PostMapping("/order/processing")
-    public String processingOrder(HttpSession session,
-                                  @ModelAttribute("transaction") Transaction transaction,
-                                  @AuthenticationPrincipal UserDetails user){
+    public RedirectView processingOrder(HttpSession session,
+                                        @ModelAttribute("transaction") Transaction transaction,
+                                        @AuthenticationPrincipal UserDetails user){
             User currentUser = userService.findByEmail(user.getUsername());
-            orderService.processingNewOrder(transaction, currentUser, session);
-        return "redirect:/order/history";
+            var order = orderService.processingNewOrder(transaction, currentUser, session);
+            if (transaction.getType().equals(CHECKOUT_VIA_PAYPAL)) {
+                try {
+                    Payment payment = paypalService.createPayment(
+                            order.getSubTotal().doubleValue(),
+                            "USD",
+                            "paypal",
+                            "sale",
+                            "Payment description",
+                            PAYMENT_CANCEL_URL,
+                            PAYMENT_SUCCESS_URL
+                    );
+                    for (Links links: payment.getLinks()) {
+                        if (links.getRel().equals("approval_url")) {
+                            return new RedirectView(links.getHref());
+                        }
+                    }
+                } catch (PayPalRESTException ex) {
+                    logger.error("Error occurred:: ", ex);
+                }
+            }
+        return new RedirectView("/order/history");
     }
 
     @GetMapping("/order/buy-again/{orderId}")

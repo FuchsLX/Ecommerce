@@ -40,8 +40,8 @@ public class Transaction extends BasicEntity {
     @Enumerated(EnumType.STRING)
     private TransactionStatus status = PENDING;
 
-    @Enumerated(EnumType.STRING)
-    private TransactionMode mode;
+//    @Enumerated(EnumType.STRING)
+//    private TransactionMode mode;
 
     @Enumerated(EnumType.STRING)
     private TransactionType type;

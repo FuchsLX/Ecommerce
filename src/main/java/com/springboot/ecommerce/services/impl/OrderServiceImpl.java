@@ -2,6 +2,7 @@ package com.springboot.ecommerce.services.impl;
 
 import com.springboot.ecommerce.entities.order.Order;
 import com.springboot.ecommerce.entities.order.OrderStatus;
+import com.springboot.ecommerce.entities.transaction.TransactionType;
 import com.springboot.ecommerce.entities.user.User;
 import com.springboot.ecommerce.exception.QuantityExceededOrderException;
 import com.springboot.ecommerce.entities.cart.Cart;
@@ -39,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public void saveOrder(Order order,
+    public Order saveOrder(Order order,
                           List<OrderItem> orderItems,
                           UserMeta userMeta,
                           Transaction transaction) {
@@ -63,20 +64,20 @@ public class OrderServiceImpl implements OrderService {
         order.setLastName(userMeta.getLastName());
         order.setTransaction(transaction);
         order.setOrderItems(orderItems);
-        orderRepository.save(order);
+        return orderRepository.save(order);
 
     }
 
-    @Override
-    public void saveOrder(Order order, Transaction transaction) {
-        order.setTransaction(transaction);
-        orderRepository.save(order);
-    }
+//    @Override
+//    public void saveOrder(Order order, Transaction transaction) {
+//        order.setTransaction(transaction);
+//        orderRepository.save(order);
+//    }
 
-    @Override
-    public void saveOrder(Order order) {
-        orderRepository.save(order);
-    }
+//    @Override
+//    public void saveOrder(Order order) {
+//        orderRepository.save(order);
+//    }
 
     @Override
     public List<Order> getAllCancelledOrder() {
@@ -280,13 +281,14 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public void processingNewOrder(Transaction newTransaction, User currentUser, HttpSession session) {
+    public Order processingNewOrder(Transaction newTransaction, User currentUser, HttpSession session) {
         Cart activeCart = cartService.getActiveCartBySession(session);
         UserMeta userMeta  = userMetaService.getUserMetaByCurrentUser(currentUser.getId());
         Order processingOrder = new Order();
 
         processingOrder.setUser(currentUser);
-        this.saveOrder(processingOrder);
+        orderRepository.save(processingOrder);
+//        this.saveOrder(processingOrder);
 
         newTransaction.setOrder(processingOrder);
         newTransaction.setUser(currentUser);
@@ -296,25 +298,10 @@ public class OrderServiceImpl implements OrderService {
                 activeCart.getCartItems(),
                 processingOrder
         );
-
-        this.saveOrder(processingOrder, orderItems, userMeta, newTransaction);
         cartService.setCompletedStatusCart(activeCart, currentUser);
         session.removeAttribute("cart");
+        return this.saveOrder(processingOrder, orderItems, userMeta, newTransaction);
     }
 
 
-    @Override
-    public Pageable findPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
-        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name())
-                ? Sort.by(sortField).ascending()
-                : Sort.by(sortField).descending();
-        return PageRequest.of(pageNo - 1, pageSize, sort);
-    }
-
-    @Override
-    public Page<Order> getAllOrderWithPaginationAndSort(int pageNo, int pageSize, String sortField, String sortDirection) {
-        return orderRepository.findAll(
-                this.findPaginated(pageNo, pageSize, sortField, sortDirection)
-        );
-    };
 }

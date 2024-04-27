@@ -1,8 +1,8 @@
-package com.springboot.ecommerce.entities.transaction;
-
-public enum TransactionMode {
-    CASH_ON_DELIVERY,
-    CHEQUE,
-    WIRED,
-    DRAFT
-}
+//package com.springboot.ecommerce.entities.transaction;
+//
+//import lombok.Getter;
+//
+//@Getter
+//public enum TransactionMode {
+//
+//}

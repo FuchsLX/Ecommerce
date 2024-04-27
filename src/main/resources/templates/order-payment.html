@@ -87,20 +87,20 @@
     <div class="transaction">
         <form method="post" th:object="${transaction}"
               th:action="@{/order/processing}">
-            <div class="transaction-mode">
-                <label for="transaction-mode">Transaction mode: </label>
-                <select id="transaction-mode" th:field="*{mode}">
-                    <option th:each="mode : ${transactionModes}"
-                            th:text="${mode}" th:value="${mode}">
-                    </option>
-                </select>
-                <br><br>
-            </div>
+<!--            <div class="transaction-mode">-->
+<!--                <label for="transaction-mode">Transaction mode: </label>-->
+<!--                <select id="transaction-mode" th:field="*{mode}">-->
+<!--                    <option th:each="mode : ${transactionModes}"-->
+<!--                            th:text="${mode}" th:value="${mode}">-->
+<!--                    </option>-->
+<!--                </select>-->
+<!--                <br><br>-->
+<!--            </div>-->
             <div class="transaction-type">
                 <label for="transaction-type">Transaction type:</label>
                 <select id="transaction-type" th:field="*{type}">
                     <option th:each="type : ${transactionTypes}"
-                            th:text="${type}" th:value="${type}">
+                            th:text="${type.getDescription()}" th:value="${type}">
                     </option>
                 </select>
                 <br><br>
@@ -110,6 +110,7 @@
         </form>
     </div>
 </div>
+
 <!-- Footer -->
 <div class="footer">
     <div class="container">
