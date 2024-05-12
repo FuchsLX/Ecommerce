@@ -51,7 +51,7 @@ paypal:
   mode: sandbox
 
 server:
-  port: 8082
+  port: 8080
   error:
     whitelabel:
       enabled: false
