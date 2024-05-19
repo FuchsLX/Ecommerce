@@ -1,23 +1,156 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Payment Integration</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css}" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Payment | TechShop</title>
+        <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css}" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" th:href="@{/css/home.css}">
+        <link rel="stylesheet" th:href="@{/css/order_his.css}">
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+    
+        <style>
+        
 
+        /* CSS cho phần thương hiệu (brands) */
+        .brands {
+            margin-bottom: 100px; /* Đảm bảo phần thương hiệu luôn cách footer một khoảng cố định */
+        }
+
+        /* CSS cho phần Paypal Success */
+        .paypal-container {
+            margin-top: 50px; /* Khoảng cách giữa header và box Paypal Success */
+            width: 50%; /* Định sẵn chiều rộng của hộp box */
+            margin-left: auto; /* Canh lề trái tự động */
+            margin-right: auto; /* Canh lề phải tự động */
+            padding: 20px; /* Khoảng cách giữa nội dung và viền của hộp box */
+            background-color: #ffffff; /* Màu nền của hộp box */
+            border-radius: 8px; /* Bo tròn viền của hộp box */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Hiệu ứng bóng đổ */
+            height: 400px; /* Chiều cao tự động điều chỉnh theo nội dung */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .paypal-image {
+            width: 200px; /* Độ rộng của hình ảnh */
+            height: 200px; /* Độ cao sẽ tự động điều chỉnh để giữ tỉ lệ khung hình */
+            margin-bottom: 20px; /* Khoảng cách giữa hình ảnh và văn bản */
+        }
+        </style>
+    </head>
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="navbar">
+                <div class="logo">
+                    <a th:href="@{/home}"><img th:src="@{/img/logo.png}" alt="logo" width="125px"></a>
+                </div>
+                <nav>
+                    <ul id="MenuItems">
+                        <li>
+                            <form method="get" th:action="@{/search}">
+                                <input type="text" id="search-product"  name="q" placeholder="🔍"
+                                       style="border-radius: 10px;border: 1px solid gray; height:30px; width:300px;">
+                                <input type="submit" id="submit-search" value="Search"
+                                       style="border-radius: 10px; border: none; height: 30px ; width:75px; background-color: #f68383">
+                            </form>
+                        </li>
+                        <li><a th:href="@{/home}" >Home</a></li>
+                        <li><a>Products</a></li>
+                        <li><a th:href="@{/order/history}">Order History</a></li>
+                        <li><a>Contact</a></li>
+                        <li><a th:href="@{/account/edit}">My Account</a></li>
+                        <li><a th:href="@{/logout}" style="color: rgb(211, 38, 38);">Logout</a></li>
+                    </ul>
+                </nav>
+                <a th:href="@{/cart}"><img th:src="@{/img/cart.png}" width="30px" height="30px"></a>
+                <img th:src="@{/img/menu.png}" class="menu-icon" onclick="menutoggle()">
+            </div>
+        </div>
+    </div>
 <div class="paypal-container">
+    <img th:src="@{/img/payment_success.png}" class="paypal-image">
     <h1 class="text-center mt-5">Paypal Success</h1>
     <div class="d-flex justify-content-center">
         <a th:href="@{/home}" class="btn btn-primary">Back to home</a>
     </div>
 </div>
+
+<!-- Brands -->
+
+<div class="brands">
+    <div class="small-container">
+        <div class="row">
+            <div class="col-5">
+                <img th:src="@{/img/logo-godrej.png}">
+            </div>
+            <div class="col-5">
+                <img th:src="@{/img/logo-oppo.png}">
+            </div>
+            <div class="col-5">
+                <img th:src="@{/img/logo-coca-cola.png}">
+            </div>
+            <div class="col-5">
+                <img th:src="@{/img/logo-paypal.png}">
+            </div>
+            <div class="col-5">
+                <img th:src="@{/img/logo-philips.png}">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-col-1">
+                <h3>Download Our App</h3>
+                <p>Download App for Android and ios mobile phone.</p>
+                <div class="app-logo">
+                    <img th:src="@{/img/play-store.png}">
+                    <img th:src="@{/img/app-store.png}">
+                </div>
+            </div>
+            <div class="footer-col-2">
+                <img th:src="@{/img/logo-white.png}">
+                <p>Our Purpose Is To Sustainably Make the Pleasure and Benefits of Sports Accessible to the Many.
+                </p>
+            </div>
+            <div class="footer-col-3">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li>Coupons</li>
+                    <li>Blog Post</li>
+                    <li>Return Policy</li>
+                    <li>Join Affiliate</li>
+                </ul>
+            </div>
+            <div class="footer-col-4">
+                <h3>Follow Us</h3>
+                <ul>
+                    <li>Facebook</li>
+                    <li>Twitter</li>
+                    <li>Instagram</li>
+                    <li>Youtube</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <p class="copyright">Copyright 2023 - Team 7 Web/p>
+    </div>
+</div>
+
 
 </body>
 </html>

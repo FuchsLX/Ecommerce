@@ -5,7 +5,100 @@
     <title>Update Staff</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #FFA500, #FFC0CB);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        .form-update-staff {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            font-weight: 700
+        }
+
+        .form-update-staff label {
+            font-size: 16px;
+            color: #444;
+        }
+
+        .form-update-staff input[type="text"],
+        .form-update-staff input[type="email"],
+        .form-update-staff input[type="password"],
+        .form-update-staff input[type="checkbox"],
+        .form-update-staff select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #444;
+            background-color: #f6f6f6;
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        .form-update-staff input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .form-update-staff input[type="submit"] {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 22px;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            background-color: #FFC0CB;
+            font-weight: 700;
+        }
+
+        .form-update-staff input[type="submit"]:hover {
+            opacity: 0.8;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group div {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-update-staff a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+    </style>
 </head>
 <body>
 <div class="container">
