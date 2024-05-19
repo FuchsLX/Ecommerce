@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<<<<<<< HEAD
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,7 +18,78 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
     
         <style>
-        
+
+
+        @import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .paypal-container {
+            text-align: center;
+            position: relative;
+        }
+
+        .paypal-container h1 {
+            color: #333;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .paypal-container h1 .success-text {
+            font-size: 2em;
+            position: relative;
+        }
+
+        .paypal-container h1 .success-text img {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%) scale(2);
+            width: 80px;
+            height: auto;
+        }
+
+        .paypal-container h1 .message-text {
+            font-size: 1em;
+        }
+
+        .paypal-container .btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        .paypal-container .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .paypal-container .btn:active {
+            background-color: #004085;
+        }
+
+        .paypal-container .btn .btn-text {
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+        <style>
 
         /* CSS cho phần thương hiệu (brands) */
         .brands {
@@ -79,10 +151,22 @@
         </div>
     </div>
 <div class="paypal-container">
+<<<<<<< HEAD
     <img th:src="@{/img/payment_success.png}" class="paypal-image">
     <h1 class="text-center mt-5">Paypal Success</h1>
+=======
+    <h1>
+        <span class="success-text">
+            <img src="https://www.kablooe.com/wp-content/uploads/2019/08/check_mark.png" alt="Check Mark">
+        </span><br>
+        <span class="success-text">Success!</span><br>
+        <span class="message-text">Your request has been processed successfully</span>
+    </h1>
+>>>>>>> 38b9e6a3632122ce4d343cf460ad94c0f92a1c76
     <div class="d-flex justify-content-center">
-        <a th:href="@{/home}" class="btn btn-primary">Back to home</a>
+        <a th:href="@{/home}" class="btn btn-primary">
+            <span class="btn-text">Continue Shopping</span>
+        </a>
     </div>
 </div>
 

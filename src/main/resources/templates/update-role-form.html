@@ -12,6 +12,7 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
+<<<<<<< HEAD
             margin: 0;
             padding: 0;
             background: linear-gradient(45deg, #FFA500, #FFC0CB);
@@ -19,27 +20,49 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+=======
+            background: linear-gradient(45deg, #FFA500, #FFC0CB);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+>>>>>>> 38b9e6a3632122ce4d343cf460ad94c0f92a1c76
         }
 
         .container {
             width: 100%;
+<<<<<<< HEAD
             max-width: 700px;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             border-radius: 8px;
+=======
+            max-width: 800px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+>>>>>>> 38b9e6a3632122ce4d343cf460ad94c0f92a1c76
         }
 
         h1 {
             text-align: center;
+<<<<<<< HEAD
             color: #444;
             margin-bottom: 20px;
+=======
+            margin-bottom: 20px;
+            color: #333;
+>>>>>>> 38b9e6a3632122ce4d343cf460ad94c0f92a1c76
         }
 
         .form-update-role {
             display: flex;
             flex-direction: column;
             gap: 20px;
+<<<<<<< HEAD
         }
 
         .form-update-role label {
@@ -51,10 +74,30 @@
         .form-update-role input[type="submit"],
         .form-update-role select {
             width: 100%;
+=======
+            flex-grow: 1;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="submit"],
+        select {
+>>>>>>> 38b9e6a3632122ce4d343cf460ad94c0f92a1c76
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 16px;
+<<<<<<< HEAD
             color: #444;
             background-color: #f6f6f6;
             transition: border-color 0.3s ease-in-out;
@@ -101,6 +144,35 @@
             padding: 10px;
         }
         
+=======
+            color: #333;
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        input[type="text"],
+        input[type="submit"] {
+            background-color: #f6f6f6;
+        }
+
+        input[type="text"]:focus,
+        input[type="submit"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #de7693;
+        }
+
+        input[type="submit"] {
+            background-color: #de7693;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #ca5a77;
+        }
+>>>>>>> 38b9e6a3632122ce4d343cf460ad94c0f92a1c76
     </style>
 </head>
 <body>
@@ -120,9 +192,20 @@
         </div>
         <div class="form-group">
             <label for="permissions">Permissions: </label>
+<<<<<<< HEAD
             <select id="permissions" class="permissions-select" th:field="*{permissions}">
                 <option th:each="per : ${permissions}" th:value="${per.getName()}" th:text="${per.getName()}"></option>
             </select>
+=======
+            <th:block th:each="per : ${permissions}">
+                <div>
+                    <input type="checkbox" id="permissions"
+                           th:field="*{permissions}"
+                           th:value="${per.getName()}"
+                           th:text="${per.getName()}">
+                </div>
+            </th:block>
+>>>>>>> 38b9e6a3632122ce4d343cf460ad94c0f92a1c76
         </div>
         <input type="submit" value="Update role">
     </form>
