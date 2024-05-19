@@ -9,14 +9,93 @@
   <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css}" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+
+
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;700&display=swap');
+
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .paypal-container {
+      text-align: center;
+      position: relative;
+    }
+
+    .paypal-container h1 {
+      color: #333;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .paypal-container h1 .fail-text {
+      font-size: 2em;
+      position: relative;
+    }
+
+    .paypal-container h1 .fail-text img {
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%) scale(2);
+      width: 80px;
+      height: auto;
+    }
+
+    .paypal-container h1 .message-text {
+      font-size: 1em;
+    }
+
+    .paypal-container .btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      display: inline-block;
+      font-weight: 700;
+    }
+
+    .paypal-container .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .paypal-container .btn:active {
+      background-color: #004085;
+    }
+
+    .paypal-container .btn .btn-text {
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  </style>
 </head>
 <body>
 
 <div class="paypal-container">
-  <h1 class="text-center mt-5">Paypal Error</h1>
-  <p class="text-center mt-3">An error occurred during the payment. Please try again!</p>
+  <h1>
+        <span class="fail-text">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/FailureIcon.png" alt="Check Mark">
+        </span><br>
+    <span class="fail-text">Payment Failed!</span><br>
+    <span class="message-text">We're sorry. We not able to process your request right now</span>
+  </h1>
   <div class="d-flex justify-content-center">
-    <a th:href="@{/home}" class="btn btn-primary">Back to home</a>
+    <a th:href="@{/home}" class="btn btn-primary">
+      <span class="btn-text">Back to the site</span>
+    </a>
   </div>
 </div>
 
