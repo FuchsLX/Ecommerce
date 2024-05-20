@@ -6,9 +6,39 @@
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <style>
+        #category-rating-chart, #most-ordered-categories-chart, #highest-revenue-categories-chart,#highest-reorder-rate-categories-chart {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
 </head>
 <body>
 
+    <h1>Category rating average</h1>
+    <div id="category-rating-chart-container">
+        <div id="category-rating-chart"></div>
+    </div>
+
+    <h1>Most Ordered Categories</h1>
+    <div id="most-ordered-categories-chart-container">
+        <div id="most-ordered-categories-chart"></div>
+    </div>
+
+    <h1>Highest Revenue Categories</h1>
+    <div id="highest-revenue-categories-chart-container">
+        <div id="highest-revenue-categories-chart"></div>
+    </div>
+
+    <h1>Highest Reorder Rate Categories</h1>
+    <div id="highest-reorder-rate-categories-chart-container">
+        <div id="highest-reorder-rate-categories-chart"></div>
+    </div>
+
+    <h1>Category Pc</h1>
+    <div id="category-pc-container"></div>
+
     <script th:src="@{/js/analytic-category.js}"></script>
+    <script th:src="@{/js/render-chart.js}"></script>
 </body>
 </html>

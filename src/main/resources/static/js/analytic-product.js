@@ -7,7 +7,7 @@ let prevTopHighestProdBCData;
 
 const prodRatingAvgSchema = {
     productIdField: "productId",
-    productNameField: "productName",
+    YField: "productName",
     chartContainer: "product-rating-chart-container",
     renderChartDiv: "product-rating-chart",
     properties: [
@@ -44,7 +44,7 @@ const prodRatingAvgSchema = {
 
 const prodOSCSchema = {
     productIdField: "productId",
-    productNameField: "productName",
+    YField: "productName",
     chartContainer: "most-ordered-products-chart-container",
     renderChartDiv: "most-ordered-products-chart",
     properties: [
@@ -69,7 +69,7 @@ const prodOSCSchema = {
 
 const prodOSRSchema = {
     productIdField: "productId",
-    productNameField: "productName",
+    YField: "productName",
     chartContainer: "highest-revenue-products-chart-container",
     renderChartDiv: "highest-revenue-products-chart",
     properties: [
@@ -94,7 +94,7 @@ const prodOSRSchema = {
 
 const prodBCSchema = {
     productIdField: "productId",
-    productNameField: "productName",
+    YField: "productName",
     chartContainer: "highest-reorder-rate-products-chart-container",
     renderChartDiv: "highest-reorder-rate-products-chart",
     properties: [

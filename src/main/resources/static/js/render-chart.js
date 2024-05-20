@@ -174,7 +174,7 @@ function renderStackedBarChart(data, schema) {
 
         let yRenderer = am5xy.AxisRendererY.new(root, {});
         let yAxis = chart.yAxes.push(am5xy.CategoryAxis.new(root, {
-            categoryField: schema.productNameField,
+            categoryField: schema.YField,
             renderer: yRenderer,
             tooltip: am5.Tooltip.new(root, {})
         }));
@@ -208,7 +208,7 @@ function renderStackedBarChart(data, schema) {
                 yAxis: yAxis,
                 baseAxis: yAxis,
                 valueXField: fieldName,
-                categoryYField: schema.productNameField
+                categoryYField: schema.YField
             }));
 
             series.columns.template.setAll({
