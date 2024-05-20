@@ -1,15 +1,15 @@
-let previousOrderStatusCntData;
+let previousTagProductCntData;
 
-function renderOSC(data) {
-    let orderChartContainer = document.getElementById("order-chart-container");
-    if (document.getElementById("order-status-cnt-chart")) {
-        let chartDiv = document.getElementById("order-status-cnt-chart");
+function renderTPC(data) {
+    let childContainer = document.getElementById("tag-chart-container");
+    if (document.getElementById("tag-product-cnt-chart")) {
+        let chartDiv = document.getElementById("tag-product-cnt-chart");
         chartDiv.remove();
         let newChartDiv = document.createElement("div");
-        newChartDiv.setAttribute("id", "order-status-cnt-chart");
-        orderChartContainer.append(newChartDiv);
+        newChartDiv.setAttribute("id", "tag-product-cnt-chart");
+        childContainer.append(newChartDiv);
     }
-    let root = am5.Root.new("order-status-cnt-chart");
+    let root = am5.Root.new("tag-product-cnt-chart");
 
     root.setThemes([
         am5themes_Animated.new(root)
@@ -47,7 +47,7 @@ function renderOSC(data) {
 
     let xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
         maxDeviation: 0.3,
-        categoryField: "status",
+        categoryField: "tagName",
         renderer: xRenderer,
         tooltip: am5.Tooltip.new(root, {})
     }));
@@ -65,9 +65,9 @@ function renderOSC(data) {
         name: "Series 1",
         xAxis: xAxis,
         yAxis: yAxis,
-        valueYField: "order_quantity",
+        valueYField: "productCount",
         sequencedInterpolation: true,
-        categoryXField: "status",
+        categoryXField: "tagName",
         tooltip: am5.Tooltip.new(root, {
             labelText: "{valueY}"
         })
@@ -90,7 +90,7 @@ function renderOSC(data) {
     chart.appear(1000, 100);
 }
 
-async function renderOrderCountChart() {
+async function renderTagProductCntChart() {
     console.log("setInterval is working!!!")
     const options = {
         method: 'GET',
@@ -98,19 +98,19 @@ async function renderOrderCountChart() {
             'Content-type': 'application/json'
         },
     };
-    const url = 'http://localhost:8081/api/v1/analytics/order/counter';
+    const url = 'http://localhost:8081/api/v1/analytics/tag/counter';
     const response = await fetch(url, options);
     if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`)
     }
     const newData = await response.json();
     console.log(newData);
-    console.log(previousOrderStatusCntData);
-    if (JSON.stringify(newData) === JSON.stringify(previousOrderStatusCntData) ||
+    console.log(previousTagProductCntData);
+    if (JSON.stringify(newData) === JSON.stringify(previousTagProductCntData) ||
         (Array.isArray(newData) && newData.length === 0)) return
-    previousOrderStatusCntData = newData;
-    renderOSC(previousOrderStatusCntData);
+    previousTagProductCntData = newData;
+    renderTPC(previousTagProductCntData);
 }
 
 
-setInterval(renderOrderCountChart, 5000)
+setInterval(renderTagProductCntChart, 5000)

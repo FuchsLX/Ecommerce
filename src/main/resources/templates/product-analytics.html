@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product analytic</title>
+    <style>
+        #product-rating-chart, #most-ordered-products-chart, #highest-revenue-products-chart, #highest-reorder-rate-products-chart, #products-quantity-chart {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+</head>
+<body>
+    <h1>Product rating average</h1>
+    <div id="product-rating-chart-container">
+        <div id="product-rating-chart"></div>
+    </div>
+
+
+    <h1>Most Ordered Products</h1>
+    <div id="most-ordered-products-chart-container">
+        <div id="most-ordered-products-chart"></div>
+    </div>
+
+    <h1>Highest Revenue Products</h1>
+    <div id="highest-revenue-products-chart-container">
+        <div id="highest-revenue-products-chart"></div>
+    </div>
+
+    <h1>Highest Reorder Rate Products</h1>
+    <div id="highest-reorder-rate-products-chart-container">
+        <div id="highest-reorder-rate-products-chart"></div>
+    </div>
+
+    <h1>Product Std</h1>
+    <div id="product-std-container"></div>
+
+    <script th:src="@{/js/analytic-product.js}"></script>
+</body>
+</html>

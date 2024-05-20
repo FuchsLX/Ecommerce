@@ -11,7 +11,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
         }
 
-        #chartdiv {
+        #order-status-cnt-chart, #tag-product-cnt-chart {
             width: 50%;
             height: 500px;
         }
@@ -22,9 +22,15 @@
 </head>
 <body>
 
-    <div id="chart-container">
-        <div id="chartdiv"></div>
+    <div id="order-chart-container">
+        <div id="order-status-cnt-chart"></div>
     </div>
+
+    <div id="tag-chart-container">
+        <div id="tag-product-cnt-chart"></div>
+    </div>
+
     <script th:src="@{/js/analytic-order-status-cnt.js}"></script>
+    <script th:src="@{/js/analytic-tag-product-cnt.js}"></script>
 </body>
 </html>
