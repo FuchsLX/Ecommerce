@@ -9,7 +9,7 @@
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 
     <style>
-        #product-rating-chart, #product-osc-chart {
+        #product-rating-chart, #product-osc-chart, #product-osr-chart {
             width: 100%;
             height: 500px;
         }
@@ -25,10 +25,14 @@
     <div id="product-osc-chart-container">
         <div id="product-osc-chart"></div>
     </div>
+    <div id="product-osr-chart-container">
+        <div id="product-osr-chart"></div>
+    </div>
     <script th:inline="javascript">
         const productId = [[${productId}]]
     </script>
     <script th:src="@{/js/analytic-product-detail.js}"></script>
+    <script th:src="@{/js/render-chart.js}"></script>
 
 </body>
 </html>

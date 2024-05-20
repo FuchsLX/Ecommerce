@@ -15,6 +15,102 @@ const prodOSCChartContainer = {
     renderChartDiv: 'product-osc-chart'
 }
 
+const prodOSRChartContainer = {
+    chartContainer: 'product-osr-chart-container',
+    renderChartDiv: 'product-osr-chart',
+    XField: 'status',
+    YField: 'value'
+}
+
+function convertProdRatingData() {
+    return [
+        {
+            category: "One Star",
+            value: prevProdRatingData.oneStarRatingCount
+        },
+        {
+            category: "Two Star",
+            value: prevProdRatingData.twoStarRatingCount
+        },
+        {
+            category: "Three Star",
+            value: prevProdRatingData.threeStarRatingCount
+        },
+        {
+            category: "Four Star",
+            value: prevProdRatingData.fourStarRatingCount
+        },
+        {
+            category: "Five Star",
+            value: prevProdRatingData.fiveStarRatingCount
+        }
+    ];
+}
+
+function convertProdOSCData() {
+    return [
+        {
+            category: "Completed",
+            value: prevProdOSCData.completedCount
+        },
+        {
+            category: "Processing",
+            value: prevProdOSCData.processingCount
+        },
+        {
+            category: "Delivered",
+            value: prevProdOSCData.deliveredCount
+        },
+        {
+            category: "Cancelled",
+            value: prevProdOSCData.cancelledCount
+        },
+    ]
+}
+
+function convertProdOSRData() {
+    return [
+        {
+            status: "Completed",
+            value: prevProdOSRData.completedTotalPrice
+        },
+        {
+            status: "Processing",
+            value: prevProdOSRData.processingTotalPrice
+        },
+        {
+            status: "Delivered",
+            value: prevProdOSRData.deliveredTotalPrice
+        },
+        {
+            status: "Cancelled",
+            value: prevProdOSRData.cancelledTotalPrice
+        },
+    ]
+}
+
+function renderProductDetailAnalyticTable() {
+    let prodDetailContainer = document.getElementById("product-detail-table-container");
+    prodDetailContainer.innerHTML ="";
+    let table = document.createElement("table");
+    table.innerHTML = `
+                <tr><th>Id</th><td>${productId}</td></tr>
+                <tr><th>Name</th><td>${prevProdStdData.productName}</td></tr>
+                <tr><th>Price</th><td>${prevProdStdData.price}</td></tr>
+                <tr><th>Discount</th><td>${prevProdStdData.discount}</td></tr>
+                <tr><th>Quantity</th><td>${prevProdStdData.quantity}</td></tr>
+                <tr><th>Categories</th><td>${prevProdCTData.categoryNames.join(', ')}</td></tr>
+                <tr><th>Tags</th><td>${prevProdCTData.tagNames.join(', ')}</td></tr>          
+                <tr><th>Rating Count</th><td>${prevProdRatingData.ratingCount}</td></tr>
+                <tr><th>Rating Avg</th><td>${prevProdRatingData.ratingAvg}</td></tr>
+                <tr><th>Revenue</th><td>${prevProdOSRData.completedTotalPrice}</td></tr>
+                <tr><th>Unique Buyers Count</th><td>${prevProdBCData.uniqueBuyersCount}</td></tr>
+                <tr><th>Reorder rate</th><td>${prevProdBCData.reorderRate}</td></tr>
+                
+    `;
+    prodDetailContainer.appendChild(table);
+}
+
 async function analyticProductDetail() {
     const prefixUrl = 'http://localhost:8081/api/v1/analytics/product';
     const getRatingApi = prefixUrl + `/rating/${productId}`;
@@ -77,6 +173,7 @@ async function analyticProductDetail() {
 
     if (!(JSON.stringify(newProdOSRData) === JSON.stringify(prevProdOSRData) || (Array.isArray(newProdOSRData) && newProdOSRData.length === 0))) {
         prevProdOSRData = newProdOSRData;
+        renderColChart(convertProdOSRData(), prodOSRChartContainer)
     }
     console.log(prevProdOSRData);
 
@@ -86,119 +183,7 @@ async function analyticProductDetail() {
     console.log(prevProdBCData);
 
     renderProductDetailAnalyticTable();
-
 }
 
-
-function renderProductDetailAnalyticTable() {
-    let prodDetailContainer = document.getElementById("product-detail-table-container");
-    prodDetailContainer.innerHTML ="";
-    let table = document.createElement("table");
-    table.innerHTML = `
-                <tr><th>Id</th><td>${productId}</td></tr>
-                <tr><th>Name</th><td>${prevProdStdData.productName}</td></tr>
-                <tr><th>Price</th><td>${prevProdStdData.price}</td></tr>
-                <tr><th>Discount</th><td>${prevProdStdData.discount}</td></tr>
-                <tr><th>Quantity</th><td>${prevProdStdData.quantity}</td></tr>
-                <tr><th>Categories</th><td>${prevProdCTData.categoryNames.join(', ')}</td></tr>
-                <tr><th>Tags</th><td>${prevProdCTData.tagNames.join(', ')}</td></tr>          
-                <tr><th>Rating Count</th><td>${prevProdRatingData.ratingCount}</td></tr>
-                <tr><th>Rating Avg</th><td>${prevProdRatingData.ratingAvg}</td></tr>
-                <tr><th>Revenue</th><td>${prevProdOSRData.completedTotalPrice}</td></tr>
-                <tr><th>Unique Buyers Count</th><td>${prevProdBCData.uniqueBuyersCount}</td></tr>
-                <tr><th>Reorder rate</th><td>${prevProdBCData.reorderRate}</td></tr>
-                
-    `;
-    prodDetailContainer.appendChild(table);
-}
-
-
-function renderPieChart(data, container) {
-    console.log('renderPieChart() is working');
-    am5.ready(function() {
-        let chartContainer = document.getElementById(container.chartContainer);
-        if (document.getElementById(container.renderChartDiv)) {
-            let chartDiv = document.getElementById(container.renderChartDiv);
-            chartDiv.remove();
-            let newChartDiv = document.createElement("div");
-            newChartDiv.setAttribute("id", container.renderChartDiv);
-            chartContainer.append(newChartDiv);
-        }
-
-        let root = am5.Root.new(container.renderChartDiv);
-
-        root.setThemes([
-            am5themes_Animated.new(root)
-        ]);
-
-        let chart = root.container.children.push(
-            am5percent.PieChart.new(root, {
-                endAngle: 270
-            })
-        );
-
-        let series = chart.series.push(
-            am5percent.PieSeries.new(root, {
-                valueField: "value",
-                categoryField: "category",
-                endAngle: 270
-            })
-        );
-
-        series.states.create("hidden", {
-            endAngle: -90
-        });
-
-        series.data.setAll(data);
-
-        series.appear(1000, 100);
-    });
-}
-
-function convertProdRatingData() {
-    return [
-        {
-            category: "One Star",
-            value: prevProdRatingData.oneStarRatingCount
-        },
-        {
-            category: "Two Star",
-            value: prevProdRatingData.twoStarRatingCount
-        },
-        {
-            category: "Three Star",
-            value: prevProdRatingData.threeStarRatingCount
-        },
-        {
-            category: "Four Star",
-            value: prevProdRatingData.fourStarRatingCount
-        },
-        {
-            category: "Five Star",
-            value: prevProdRatingData.fiveStarRatingCount
-        }
-    ];
-}
-
-function convertProdOSCData() {
-    return [
-        {
-            category: "Completed",
-            value: prevProdOSCData.completedCount
-        },
-        {
-            category: "Processing",
-            value: prevProdOSCData.processingCount
-        },
-        {
-            category: "Delivered",
-            value: prevProdOSCData.deliveredCount
-        },
-        {
-            category: "Cancelled",
-            value: prevProdOSCData.cancelledCount
-        },
-    ]
-}
 
 setInterval(analyticProductDetail, 2000);
