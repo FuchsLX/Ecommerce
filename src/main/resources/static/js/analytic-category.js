@@ -180,6 +180,7 @@ function renderCatePcTable(data) {
     let productStdContainer = document.getElementById("category-pc-container");
     productStdContainer.innerHTML = "";
     let table = document.createElement("table");
+    table.setAttribute("class", "table");
     let tableHead = table.insertRow(0);
     tableHead.innerHTML = '<th>Category Id</th><th>Category Name</th><th>Product Count</th><th>Action</th>';
     for (let i = 0; i < data.length; i++) {
@@ -187,7 +188,13 @@ function renderCatePcTable(data) {
         row.innerHTML = `<td>${data[i].categoryId}</td>
                         <td>${data[i].categoryName}</td>
                         <td>${data[i].productCount}</td>
-                        <td><button type="button"><a href="/analytics/category/${data[i].categoryId}">Detail</a></button></td>`
+                        <td>
+                            <a href="/analytics/category/${data[i].categoryId}">
+                                <button type="button" class="btn btn-primary btn-rounded btn-fw">
+                                    Detail
+                                </button>
+                            </a>
+                        </td>`
     }
     productStdContainer.appendChild(table);
 }

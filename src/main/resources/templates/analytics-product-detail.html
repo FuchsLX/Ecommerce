@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Product detail analytics</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" th:href="@{/assets/vendors/mdi/css/materialdesignicons.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendors/flag-icon-css/css/flag-icon.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendors/css/vendor.bundle.base.css}">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" th:href="@{/assets/vendors/font-awesome/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css}">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <!-- End layout styles -->
+    <link rel="shortcut icon" th:href="@{/assets/images/favicon.png}">
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <style>
+        #product-rating-chart, #product-osc-chart, #product-osr-chart {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+            <a class="navbar-brand brand-logo" href="index.html"><img th:src="@{/assets/images/logo.svg}" alt="logo" /></a>
+            <a class="navbar-brand brand-logo-mini" href="index.html"><img th:src="@{/assets/images/logo-mini.svg}" alt="logo" /></a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-stretch">
+            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                <span class="mdi mdi-menu"></span>
+            </button>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                <span class="mdi mdi-menu"></span>
+            </button>
+        </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item nav-category">Main</li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/analytics/main}">
+                        <span class="icon-bg"><i class="mdi mdi-cube menu-icon"></i></span>
+                        <span class="menu-title">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item sidebar-user-actions">
+                    <div class="sidebar-user-menu">
+                        <a href="#" class="nav-link"><i class="mdi mdi-settings menu-icon"></i>
+                            <span class="menu-title">Settings</span>
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item sidebar-user-actions">
+                    <div class="sidebar-user-menu">
+                        <a href="#" class="nav-link"><i class="mdi mdi-speedometer menu-icon"></i>
+                            <span class="menu-title">Take Tour</span></a>
+                    </div>
+                </li>
+                <li class="nav-item sidebar-user-actions">
+                    <div class="sidebar-user-menu">
+                        <a href="#" class="nav-link" th:href="@{/logout}"><i class="mdi mdi-logout menu-icon"></i>
+                            <span class="menu-title">Log Out</span></a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tab-content tab-transparent-content">
+                            <div class="tab-pane fade show active" id="business-1" role="tabpanel" aria-labelledby="business-tab">
+
+                                <!-- Product detail table -->
+                                <div class="col-lg-12 grid-margin stretch-card">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Product detail</h4>
+                                            <div id="product-detail-table-container">
+                                                <table class="table">
+                                                    <tr><th>Id</th><td></td></tr>
+                                                    <tr><th>Name</th><td></td></tr>
+                                                    <tr><th>Price</th><td></td></tr>
+                                                    <tr><th>Discount</th><td></td></tr>
+                                                    <tr><th>Quantity</th><td></td></tr>
+                                                    <tr><th>Categories</th><td></td></tr>
+                                                    <tr><th>Tag</th><td></td></tr>
+                                                    <tr><th>Rating Count</th><td></td></tr>
+                                                    <tr><th>Rating Avg</th><td></td></tr>
+                                                    <tr><th>Revenue</th><td></td></tr>
+                                                    <tr><th>Unique Buyers Count</th><td></td></tr>
+                                                    <tr><th>Reorder rate</th><td></td></tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <!-- Product rating chart -->
+                                <div class="row">
+                                    <div class="col-12 grid-margin">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <h4 class="card-title mb-0">Product Rating</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
+                                                        <div class="pl-0 pl-lg-4 ">
+                                                            <div class="d-xl-flex justify-content-between align-items-center mb-2">
+                                                                <div class="d-lg-flex align-items-center mb-lg-2 mb-xl-0">
+                                                                    <h3 class="text-dark font-weight-bold mr-2 mb-0">Devices sales</h3>
+                                                                    <h5 class="mb-0">( growth 62% )</h5>
+                                                                </div>
+                                                                <div class="d-lg-flex">
+                                                                    <p class="mr-2 mb-0">Timezone:</p>
+                                                                    <p class="text-dark font-weight-bold mb-0">GMT-0400 Eastern Delight Time</p>
+                                                                </div>
+                                                            </div>
+                                                            <div id="product-rating-chart-container">
+                                                                <div id="product-rating-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Product with order status count -->
+                                <div class="row">
+                                    <div class="col-12 grid-margin">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <h4 class="card-title mb-0">Product with order status count</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
+                                                        <div class="pl-0 pl-lg-4 ">
+                                                            <div class="d-xl-flex justify-content-between align-items-center mb-2">
+                                                                <div class="d-lg-flex align-items-center mb-lg-2 mb-xl-0">
+                                                                    <h3 class="text-dark font-weight-bold mr-2 mb-0">Devices sales</h3>
+                                                                    <h5 class="mb-0">( growth 62% )</h5>
+                                                                </div>
+                                                                <div class="d-lg-flex">
+                                                                    <p class="mr-2 mb-0">Timezone:</p>
+                                                                    <p class="text-dark font-weight-bold mb-0">GMT-0400 Eastern Delight Time</p>
+                                                                </div>
+                                                            </div>
+                                                            <div id="product-osc-chart-container">
+                                                                <div id="product-osc-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Product revenue -->
+                                <div class="row">
+                                    <div class="col-12 grid-margin">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <h4 class="card-title mb-0">Product revenue</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
+                                                        <div class="pl-0 pl-lg-4 ">
+                                                            <div class="d-xl-flex justify-content-between align-items-center mb-2">
+                                                                <div class="d-lg-flex align-items-center mb-lg-2 mb-xl-0">
+                                                                    <h3 class="text-dark font-weight-bold mr-2 mb-0">Devices sales</h3>
+                                                                    <h5 class="mb-0">( growth 62% )</h5>
+                                                                </div>
+                                                                <div class="d-lg-flex">
+                                                                    <p class="mr-2 mb-0">Timezone:</p>
+                                                                    <p class="text-dark font-weight-bold mb-0">GMT-0400 Eastern Delight Time</p>
+                                                                </div>
+                                                            </div>
+                                                            <div id="product-osr-chart-container">
+                                                                <div id="product-osr-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- content-wrapper ends -->
+            <!-- partial:partials/_footer.html -->
+            <footer class="footer">
+                <div class="footer-inner-wraper">
+                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                        <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © web7.com 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- partial -->
+        </div>
+    </div>
+</div>
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script th:src="@{/assets/vendors/js/vendor.bundle.base.js}"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script th:src="@{/assets/vendors/chart.js/Chart.min.js}"></script>
+<script th:src="@{/assets/vendors/jquery-circle-progress/js/circle-progress.min.js}"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script th:src="@{/assets/js/off-canvas.js}"></script>
+<script th:src="@{/assets/js/hoverable-collapse.js}"></script>
+<script th:src="@{/assets/js/misc.js}"></script>
+<!-- endinject -->
+<!-- Custom js for this page -->
+<script th:src="@{/assets/js/dashboard.js}"></script>
+
+<script th:inline="javascript">
+    const productId = [[${productId}]]
+</script>
+<script th:src="@{/js/analytic-product-detail.js}"></script>
+<script th:src="@{/js/render-chart.js}"></script>
+<!-- End custom js for this page -->
+</body>
+</html>

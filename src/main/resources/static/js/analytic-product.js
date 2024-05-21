@@ -196,8 +196,9 @@ function renderProdStdTable(data) {
     let productStdContainer = document.getElementById("product-std-container");
     productStdContainer.innerHTML = "";
     let table = document.createElement("table");
+    table.setAttribute("class", "table");
     let tableHead = table.insertRow(0);
-    tableHead.innerHTML = '<th>Product Id</th><th>Product Name</th><th>Price</th><th>Discount</th><th>Quantity</th><th>Action</th>';
+    tableHead.innerHTML = '<th>Product Id</th><th>Product Name</th><th>Price</th><th>Discount (%)</th><th>Quantity</th><th>Action</th>';
     for (let i = 0; i < data.length; i++) {
         let row = table.insertRow(i+1);
         row.innerHTML = `<td>${data[i].productId}</td>
@@ -205,7 +206,12 @@ function renderProdStdTable(data) {
                         <td>${data[i].price}</td>
                         <td>${data[i].discount}</td>
                         <td>${data[i].quantity}</td>
-                        <td><button type="button"><a href="/analytics/product/${data[i].productId}">Detail</a></button></td>`
+                        <td>
+                            <a href="/analytics/product/${data[i].productId}">
+                                <button type="button" class="btn btn-primary btn-rounded btn-fw">
+                                    Detail
+                                </button>
+                            </a>`;
     }
     productStdContainer.appendChild(table);
 }

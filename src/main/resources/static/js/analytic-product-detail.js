@@ -93,11 +93,12 @@ function renderProductDetailAnalyticTable() {
     let prodDetailContainer = document.getElementById("product-detail-table-container");
     prodDetailContainer.innerHTML ="";
     let table = document.createElement("table");
+    table.setAttribute("class", "table");
     table.innerHTML = `
                 <tr><th>Id</th><td>${productId}</td></tr>
                 <tr><th>Name</th><td>${prevProdStdData.productName}</td></tr>
                 <tr><th>Price</th><td>${prevProdStdData.price}</td></tr>
-                <tr><th>Discount</th><td>${prevProdStdData.discount}</td></tr>
+                <tr><th>Discount</th><td>${prevProdStdData.discount}%</td></tr>
                 <tr><th>Quantity</th><td>${prevProdStdData.quantity}</td></tr>
                 <tr><th>Categories</th><td>${prevProdCTData.categoryNames.join(', ')}</td></tr>
                 <tr><th>Tags</th><td>${prevProdCTData.tagNames.join(', ')}</td></tr>          

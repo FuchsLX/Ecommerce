@@ -92,6 +92,7 @@ function renderCategoryDetailAnalyticTable() {
     let cateDetailContainer = document.getElementById("category-detail-table-container");
     cateDetailContainer.innerHTML ="";
     let table = document.createElement("table");
+    table.setAttribute("class", "table");
     table.innerHTML = `
                 <tr><th>Id</th><td>${categoryId}</td></tr>
                 <tr><th>Name</th><td>${prevCatePCData.categoryName}</td></tr>
@@ -101,7 +102,6 @@ function renderCategoryDetailAnalyticTable() {
                 <tr><th>Revenue</th><td>${prevCateOSRData.completedTotalPrice}</td></tr>
                 <tr><th>Unique buyers count</th><td>${prevCateBCData.uniqueBuyersCount}</td></tr>
                 <tr><th>Reorder rate</th><td>${prevCateBCData.reorderRate}</td></tr>
-                
     `;
     cateDetailContainer.appendChild(table);
 }
