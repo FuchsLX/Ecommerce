@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Dashboard</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" th:href="@{/assets/vendors/mdi/css/materialdesignicons.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendors/flag-icon-css/css/flag-icon.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendors/css/vendor.bundle.base.css}">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" th:href="@{/assets/vendors/font-awesome/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css}">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <!-- End layout styles -->
+    <link rel="shortcut icon" th:href="@{/assets/images/favicon.png}">
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <style>
+        #order-status-cnt-chart,
+        #order-revenue-chart,
+        #cus-cnt-chart,
+        #tag-product-cnt-chart,
+        #category-rating-chart,
+        #most-ordered-categories-chart,
+        #highest-revenue-categories-chart,
+        #highest-reorder-rate-categories-chart,
+        #product-rating-chart,
+        #most-ordered-products-chart,
+        #highest-revenue-products-chart,
+        #highest-reorder-rate-products-chart {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+            <a class="navbar-brand brand-logo" href="index.html"><img th:src="@{/assets/images/logo.svg}" alt="logo" /></a>
+            <a class="navbar-brand brand-logo-mini" href="index.html"><img th:src="@{/assets/images/logo-mini.svg}" alt="logo" /></a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-stretch">
+            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                <span class="mdi mdi-menu"></span>
+            </button>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                <span class="mdi mdi-menu"></span>
+            </button>
+        </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item nav-category">Main</li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/analytics/main}">
+                        <span class="icon-bg"><i class="mdi mdi-cube menu-icon"></i></span>
+                        <span class="menu-title">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item sidebar-user-actions">
+                    <div class="sidebar-user-menu">
+                        <a href="#" class="nav-link"><i class="mdi mdi-settings menu-icon"></i>
+                            <span class="menu-title">Settings</span>
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item sidebar-user-actions">
+                    <div class="sidebar-user-menu">
+                        <a href="#" class="nav-link"><i class="mdi mdi-speedometer menu-icon"></i>
+                            <span class="menu-title">Take Tour</span></a>
+                    </div>
+                </li>
+                <li class="nav-item sidebar-user-actions">
+                    <div class="sidebar-user-menu">
+                        <a href="#" class="nav-link" th:href="@{/logout}"><i class="mdi mdi-logout menu-icon"></i>
+                            <span class="menu-title">Log Out</span></a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tab-content tab-transparent-content">
+                            <div class="tab-pane fade show active" id="business-1" role="tabpanel" aria-labelledby="business-tab">
+
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-sm-6 grid-margin stretch-card">
+                                        <div class="card">
+                                            <div class="card-body text-center">
+                                                <h5 class="mb-2 text-dark font-weight-normal">Orders</h5>
+                                                <h2 class="mb-4 text-dark font-weight-bold"><span id="sum-order-count"></span></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-6 col-lg-6 col-sm-6 grid-margin stretch-card">
+                                        <div class="card">
+                                            <div class="card-body text-center">
+                                                <h5 class="mb-2 text-dark font-weight-normal">Revenue</h5>
+                                                <h2 class="mb-4 text-dark font-weight-bold"><span id="sum-revenue"></span></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- Order analytics-->
+                                <div class="row">
+                                    <div class="col-12 grid-margin">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <h4 class="card-title mb-0">Order status count</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
+                                                        <div class="pl-0 pl-lg-4 ">
+                                                            <div id="order-status-cnt-chart-container">
+                                                                <div id="order-status-cnt-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 grid-margin">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <h4 class="card-title mb-0">Order revenue</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
+                                                        <div class="pl-0 pl-lg-4 ">
+                                                            <div id="order-revenue-chart-container">
+                                                                <div id="order-revenue-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Customer count analytics-->
+                                <div class="row">
+                                    <div class="col-12 grid-margin">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <h4 class="card-title mb-0">Customer</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
+                                                        <div class="pl-0 pl-lg-4 ">
+                                                            <div id="cus-cnt-chart-container">
+                                                                <div id="cus-cnt-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <!-- Tag analytics -->
+                                <div class="row">
+                                    <div class="col-12 grid-margin">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <h4 class="card-title mb-0">Tag product count</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
+                                                        <div class="pl-0 pl-lg-4 ">
+                                                            <div id="tag-chart-container">
+                                                                <div id="tag-product-cnt-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Category rating average analytics -->
+                                <div class="row">
+                                    <div class="col-12 grid-margin">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <h4 class="card-title mb-0">Category rating average</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
+                                                        <div class="pl-0 pl-lg-4 ">
+                                                            <div id="category-rating-chart-container">
+                                                                <div id="category-rating-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Most Ordered Categories -->
+                                <div class="row">
+                                    <div class="col-12 grid-margin">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <h4 class="card-title mb-0">Most Ordered Categories</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
+                                                        <div class="pl-0 pl-lg-4 ">
+                                                            <div id="most-ordered-categories-chart-container">
+                                                                <div id="most-ordered-categories-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Highest Revenue Categories -->
+                                <div class="row">
+                                    <div class="col-12 grid-margin">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <h4 class="card-title mb-0">Highest Revenue Categories</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
+                                                        <div class="pl-0 pl-lg-4 ">
+                                                            <div id="highest-revenue-categories-chart-container">
+                                                                <div id="highest-revenue-categories-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Highest Reorder Rate Categories -->
+                                <div class="row">
+                                    <div class="col-12 grid-margin">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <h4 class="card-title mb-0">Highest Reorder Rate Categories</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
+                                                        <div class="pl-0 pl-lg-4 ">
+                                                            <div id="highest-reorder-rate-categories-chart-container">
+                                                                <div id="highest-reorder-rate-categories-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Category (with product_count field) table -->
+                                <div class="col-lg-12 grid-margin stretch-card">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Category Pc</h4>
+                                            <div id="category-pc-container">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Category Id</th>
+                                                            <th>Category name</th>
+                                                            <th>Product count</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Product rating average -->
+                                <div class="row">
+                                    <div class="col-12 grid-margin">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <h4 class="card-title mb-0">Product rating average</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
+                                                        <div class="pl-0 pl-lg-4 ">
+                                                            <div id="product-rating-chart-container">
+                                                                <div id="product-rating-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Most Ordered Products -->
+                                <div class="row">
+                                    <div class="col-12 grid-margin">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <h4 class="card-title mb-0">Most Ordered Products</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
+                                                        <div class="pl-0 pl-lg-4 ">
+                                                            <div id="most-ordered-products-chart-container">
+                                                                <div id="most-ordered-products-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Highest Revenue Products -->
+                                <div class="row">
+                                    <div class="col-12 grid-margin">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <h4 class="card-title mb-0">Highest Revenue Products</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
+                                                        <div class="pl-0 pl-lg-4 ">
+                                                            <div id="highest-revenue-products-chart-container">
+                                                                <div id="highest-revenue-products-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Highest Reorder Rate Products -->
+                                <div class="row">
+                                    <div class="col-12 grid-margin">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <h4 class="card-title mb-0">Highest Revenue Products</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
+                                                        <div class="pl-0 pl-lg-4 ">
+                                                            <div id="highest-reorder-rate-products-chart-container">
+                                                                <div id="highest-reorder-rate-products-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Product (with id, name, price, discount, quantity fields) table -->
+                                <div class="col-lg-12 grid-margin stretch-card">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Product STD</h4>
+                                            <div id="product-std-container">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Product Id</th>
+                                                        <th>Product name</th>
+                                                        <th>Price</th>
+                                                        <th>Discount (%)</th>
+                                                        <th>Quantity</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- content-wrapper ends -->
+            <!-- partial:partials/_footer.html -->
+            <footer class="footer">
+                <div class="footer-inner-wraper">
+                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                        <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © web7.com 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- partial -->
+        </div>
+    </div>
+</div>
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script th:src="@{/assets/vendors/js/vendor.bundle.base.js}"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script th:src="@{/assets/vendors/chart.js/Chart.min.js}"></script>
+<script th:src="@{/assets/vendors/jquery-circle-progress/js/circle-progress.min.js}"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script th:src="@{/assets/js/off-canvas.js}"></script>
+<script th:src="@{/assets/js/hoverable-collapse.js}"></script>
+<script th:src="@{/assets/js/misc.js}"></script>
+<!-- endinject -->
+<!-- Custom js for this page -->
+<script th:src="@{/assets/js/dashboard.js}"></script>
+
+<script th:src="@{/js/analytic-tag-product-cnt.js}"></script>
+<script th:src="@{/js/analytic-order-status-cnt.js}"></script>
+<script th:src="@{/js/analytic-customer-cnt.js}"></script>
+<script th:src="@{/js/analytic-category.js}"></script>
+<script th:src="@{/js/analytic-product.js}"></script>
+<script th:src="@{/js/render-chart.js}"></script>
+<!-- End custom js for this page -->
+</body>
+</html>
