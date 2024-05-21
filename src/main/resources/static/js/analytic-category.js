@@ -31,11 +31,11 @@ const cateRatingAvgSchema = {
             displayName: "Three Star"
         },
         {
-            fieldName: "oneStarRatingCount",
+            fieldName: "fourStarRatingCount",
             displayName: "Four Star"
         },
         {
-            fieldName: "oneStarRatingCount",
+            fieldName: "fiveStarRatingCount",
             displayName: "Five Star"
         },
     ]
