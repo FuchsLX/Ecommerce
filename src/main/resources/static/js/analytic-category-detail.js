@@ -98,7 +98,7 @@ function renderCategoryDetailAnalyticTable() {
                 <tr><th>Name</th><td>${prevCatePCData.categoryName}</td></tr>
                 <tr><th>Product count</th><td>${prevCatePCData.productCount}</td></tr>
                 <tr><th>Rating count</th><td>${prevCateRatingData.ratingCount}</td></tr>
-                <tr><th>Rating avg</th><td>${prevCateRatingData.ratingAvg}</td></tr>
+                <tr><th>Rating average</th><td>${prevCateRatingData.ratingAvg}</td></tr>
                 <tr><th>Revenue</th><td>${prevCateOSRData.completedTotalPrice}</td></tr>
                 <tr><th>Unique buyers count</th><td>${prevCateBCData.uniqueBuyersCount}</td></tr>
                 <tr><th>Reorder rate</th><td>${prevCateBCData.reorderRate}</td></tr>

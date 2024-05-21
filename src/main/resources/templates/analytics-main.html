@@ -25,6 +25,8 @@
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
     <style>
         #order-status-cnt-chart,
+        #order-revenue-chart,
+        #cus-cnt-chart,
         #tag-product-cnt-chart,
         #category-rating-chart,
         #most-ordered-categories-chart,
@@ -100,17 +102,24 @@
                             <div class="tab-pane fade show active" id="business-1" role="tabpanel" aria-labelledby="business-tab">
 
                                 <div class="row">
-                                    <div class="col-xl-3 col-lg-6 col-sm-6 grid-margin stretch-card">
+                                    <div class="col-xl-6 col-lg-6 col-sm-6 grid-margin stretch-card">
                                         <div class="card">
                                             <div class="card-body text-center">
                                                 <h5 class="mb-2 text-dark font-weight-normal">Orders</h5>
-                                                <h2 class="mb-4 text-dark font-weight-bold">932.00</h2>
-<!--                                                <div class="dashboard-progress dashboard-progress-1 d-flex align-items-center justify-content-center item-parent"><i class="mdi mdi-lightbulb icon-md absolute-center text-dark"></i></div>-->
-                                                <p class="mt-4 mb-0">Completed</p>
-<!--                                                <h3 class="mb-0 font-weight-bold mt-2 text-dark">5443</h3>-->
+                                                <h2 class="mb-4 text-dark font-weight-bold"><span id="sum-order-count"></span></h2>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="col-xl-6 col-lg-6 col-sm-6 grid-margin stretch-card">
+                                        <div class="card">
+                                            <div class="card-body text-center">
+                                                <h5 class="mb-2 text-dark font-weight-normal">Revenue</h5>
+                                                <h2 class="mb-4 text-dark font-weight-bold"><span id="sum-revenue"></span></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
 
                                 <!-- Order analytics-->
@@ -126,18 +135,7 @@
                                                     </div>
                                                     <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
                                                         <div class="pl-0 pl-lg-4 ">
-                                                            <div class="d-xl-flex justify-content-between align-items-center mb-2">
-                                                                <div class="d-lg-flex align-items-center mb-lg-2 mb-xl-0">
-                                                                    <h3 class="text-dark font-weight-bold mr-2 mb-0">Devices sales</h3>
-                                                                    <h5 class="mb-0">( growth 62% )</h5>
-                                                                </div>
-                                                                <div class="d-lg-flex">
-                                                                    <p class="mr-2 mb-0">Timezone:</p>
-                                                                    <p class="text-dark font-weight-bold mb-0">GMT-0400 Eastern Delight Time</p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="graph-custom-legend clearfix" id="device-sales-legend"></div>
-                                                            <div id="order-chart-container">
+                                                            <div id="order-status-cnt-chart-container">
                                                                 <div id="order-status-cnt-chart"></div>
                                                             </div>
                                                         </div>
@@ -147,6 +145,55 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <div class="col-12 grid-margin">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <h4 class="card-title mb-0">Order revenue</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
+                                                        <div class="pl-0 pl-lg-4 ">
+                                                            <div id="order-revenue-chart-container">
+                                                                <div id="order-revenue-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Customer count analytics-->
+                                <div class="row">
+                                    <div class="col-12 grid-margin">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                                            <h4 class="card-title mb-0">Customer</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
+                                                        <div class="pl-0 pl-lg-4 ">
+                                                            <div id="cus-cnt-chart-container">
+                                                                <div id="cus-cnt-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
 
                                 <!-- Tag analytics -->
                                 <div class="row">
@@ -161,16 +208,6 @@
                                                     </div>
                                                     <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
                                                         <div class="pl-0 pl-lg-4 ">
-                                                            <div class="d-xl-flex justify-content-between align-items-center mb-2">
-                                                                <div class="d-lg-flex align-items-center mb-lg-2 mb-xl-0">
-                                                                    <h3 class="text-dark font-weight-bold mr-2 mb-0">Devices sales</h3>
-                                                                    <h5 class="mb-0">( growth 62% )</h5>
-                                                                </div>
-                                                                <div class="d-lg-flex">
-                                                                    <p class="mr-2 mb-0">Timezone:</p>
-                                                                    <p class="text-dark font-weight-bold mb-0">GMT-0400 Eastern Delight Time</p>
-                                                                </div>
-                                                            </div>
                                                             <div id="tag-chart-container">
                                                                 <div id="tag-product-cnt-chart"></div>
                                                             </div>
@@ -196,16 +233,6 @@
                                                     </div>
                                                     <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
                                                         <div class="pl-0 pl-lg-4 ">
-                                                            <div class="d-xl-flex justify-content-between align-items-center mb-2">
-                                                                <div class="d-lg-flex align-items-center mb-lg-2 mb-xl-0">
-                                                                    <h3 class="text-dark font-weight-bold mr-2 mb-0">Devices sales</h3>
-                                                                    <h5 class="mb-0">( growth 62% )</h5>
-                                                                </div>
-                                                                <div class="d-lg-flex">
-                                                                    <p class="mr-2 mb-0">Timezone:</p>
-                                                                    <p class="text-dark font-weight-bold mb-0">GMT-0400 Eastern Delight Time</p>
-                                                                </div>
-                                                            </div>
                                                             <div id="category-rating-chart-container">
                                                                 <div id="category-rating-chart"></div>
                                                             </div>
@@ -231,16 +258,6 @@
                                                     </div>
                                                     <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
                                                         <div class="pl-0 pl-lg-4 ">
-                                                            <div class="d-xl-flex justify-content-between align-items-center mb-2">
-                                                                <div class="d-lg-flex align-items-center mb-lg-2 mb-xl-0">
-                                                                    <h3 class="text-dark font-weight-bold mr-2 mb-0">Devices sales</h3>
-                                                                    <h5 class="mb-0">( growth 62% )</h5>
-                                                                </div>
-                                                                <div class="d-lg-flex">
-                                                                    <p class="mr-2 mb-0">Timezone:</p>
-                                                                    <p class="text-dark font-weight-bold mb-0">GMT-0400 Eastern Delight Time</p>
-                                                                </div>
-                                                            </div>
                                                             <div id="most-ordered-categories-chart-container">
                                                                 <div id="most-ordered-categories-chart"></div>
                                                             </div>
@@ -266,16 +283,6 @@
                                                     </div>
                                                     <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
                                                         <div class="pl-0 pl-lg-4 ">
-                                                            <div class="d-xl-flex justify-content-between align-items-center mb-2">
-                                                                <div class="d-lg-flex align-items-center mb-lg-2 mb-xl-0">
-                                                                    <h3 class="text-dark font-weight-bold mr-2 mb-0">Devices sales</h3>
-                                                                    <h5 class="mb-0">( growth 62% )</h5>
-                                                                </div>
-                                                                <div class="d-lg-flex">
-                                                                    <p class="mr-2 mb-0">Timezone:</p>
-                                                                    <p class="text-dark font-weight-bold mb-0">GMT-0400 Eastern Delight Time</p>
-                                                                </div>
-                                                            </div>
                                                             <div id="highest-revenue-categories-chart-container">
                                                                 <div id="highest-revenue-categories-chart"></div>
                                                             </div>
@@ -301,16 +308,6 @@
                                                     </div>
                                                     <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
                                                         <div class="pl-0 pl-lg-4 ">
-                                                            <div class="d-xl-flex justify-content-between align-items-center mb-2">
-                                                                <div class="d-lg-flex align-items-center mb-lg-2 mb-xl-0">
-                                                                    <h3 class="text-dark font-weight-bold mr-2 mb-0">Devices sales</h3>
-                                                                    <h5 class="mb-0">( growth 62% )</h5>
-                                                                </div>
-                                                                <div class="d-lg-flex">
-                                                                    <p class="mr-2 mb-0">Timezone:</p>
-                                                                    <p class="text-dark font-weight-bold mb-0">GMT-0400 Eastern Delight Time</p>
-                                                                </div>
-                                                            </div>
                                                             <div id="highest-reorder-rate-categories-chart-container">
                                                                 <div id="highest-reorder-rate-categories-chart"></div>
                                                             </div>
@@ -357,16 +354,6 @@
                                                     </div>
                                                     <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
                                                         <div class="pl-0 pl-lg-4 ">
-                                                            <div class="d-xl-flex justify-content-between align-items-center mb-2">
-                                                                <div class="d-lg-flex align-items-center mb-lg-2 mb-xl-0">
-                                                                    <h3 class="text-dark font-weight-bold mr-2 mb-0">Devices sales</h3>
-                                                                    <h5 class="mb-0">( growth 62% )</h5>
-                                                                </div>
-                                                                <div class="d-lg-flex">
-                                                                    <p class="mr-2 mb-0">Timezone:</p>
-                                                                    <p class="text-dark font-weight-bold mb-0">GMT-0400 Eastern Delight Time</p>
-                                                                </div>
-                                                            </div>
                                                             <div id="product-rating-chart-container">
                                                                 <div id="product-rating-chart"></div>
                                                             </div>
@@ -392,16 +379,6 @@
                                                     </div>
                                                     <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
                                                         <div class="pl-0 pl-lg-4 ">
-                                                            <div class="d-xl-flex justify-content-between align-items-center mb-2">
-                                                                <div class="d-lg-flex align-items-center mb-lg-2 mb-xl-0">
-                                                                    <h3 class="text-dark font-weight-bold mr-2 mb-0">Devices sales</h3>
-                                                                    <h5 class="mb-0">( growth 62% )</h5>
-                                                                </div>
-                                                                <div class="d-lg-flex">
-                                                                    <p class="mr-2 mb-0">Timezone:</p>
-                                                                    <p class="text-dark font-weight-bold mb-0">GMT-0400 Eastern Delight Time</p>
-                                                                </div>
-                                                            </div>
                                                             <div id="most-ordered-products-chart-container">
                                                                 <div id="most-ordered-products-chart"></div>
                                                             </div>
@@ -427,16 +404,6 @@
                                                     </div>
                                                     <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
                                                         <div class="pl-0 pl-lg-4 ">
-                                                            <div class="d-xl-flex justify-content-between align-items-center mb-2">
-                                                                <div class="d-lg-flex align-items-center mb-lg-2 mb-xl-0">
-                                                                    <h3 class="text-dark font-weight-bold mr-2 mb-0">Devices sales</h3>
-                                                                    <h5 class="mb-0">( growth 62% )</h5>
-                                                                </div>
-                                                                <div class="d-lg-flex">
-                                                                    <p class="mr-2 mb-0">Timezone:</p>
-                                                                    <p class="text-dark font-weight-bold mb-0">GMT-0400 Eastern Delight Time</p>
-                                                                </div>
-                                                            </div>
                                                             <div id="highest-revenue-products-chart-container">
                                                                 <div id="highest-revenue-products-chart"></div>
                                                             </div>
@@ -462,16 +429,6 @@
                                                     </div>
                                                     <div class="col-lg-12 col-sm-8 grid-margin  grid-margin-lg-0">
                                                         <div class="pl-0 pl-lg-4 ">
-                                                            <div class="d-xl-flex justify-content-between align-items-center mb-2">
-                                                                <div class="d-lg-flex align-items-center mb-lg-2 mb-xl-0">
-                                                                    <h3 class="text-dark font-weight-bold mr-2 mb-0">Devices sales</h3>
-                                                                    <h5 class="mb-0">( growth 62% )</h5>
-                                                                </div>
-                                                                <div class="d-lg-flex">
-                                                                    <p class="mr-2 mb-0">Timezone:</p>
-                                                                    <p class="text-dark font-weight-bold mb-0">GMT-0400 Eastern Delight Time</p>
-                                                                </div>
-                                                            </div>
                                                             <div id="highest-reorder-rate-products-chart-container">
                                                                 <div id="highest-reorder-rate-products-chart"></div>
                                                             </div>
@@ -545,6 +502,7 @@
 
 <script th:src="@{/js/analytic-tag-product-cnt.js}"></script>
 <script th:src="@{/js/analytic-order-status-cnt.js}"></script>
+<script th:src="@{/js/analytic-customer-cnt.js}"></script>
 <script th:src="@{/js/analytic-category.js}"></script>
 <script th:src="@{/js/analytic-product.js}"></script>
 <script th:src="@{/js/render-chart.js}"></script>
