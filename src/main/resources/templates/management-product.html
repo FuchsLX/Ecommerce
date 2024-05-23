@@ -6,7 +6,8 @@
     <style>
 
         .nen{
-            background: radial-gradient(#fff,#ffd6d6)}
+            background: radial-gradient(#fff,#ffd6d6)
+        }
         body {
             margin: auto;
             background-color: #f2f2f2;
@@ -93,11 +94,11 @@
             100% {
                 background-position: 0 0;
             }}
-        .pagination {
+        #pagination {
             display: inline-block;
         }
 
-        .pagination a {
+        #pagination a {
             color: black;
             float: left;
             padding: 8px 16px;
@@ -121,98 +122,108 @@
     </style>
     <script>
         function waringDelete(message) {
-            if (confirm(message)==true){
-                return true;
-            }
-            return false;
+            return confirm(message) === true;
         }
 
     </script>
 </head>
 <body>
- <div class="tnn"><a><img th:src="@{/img/logo.png}" alt="logo" width="80px"></a></div>
-<div class="container">
-    <div class="nen">
-    <h1>Products Management</h1>
-    <button class="add">
-    <a th:href="@{/product-management/add-new-product.html}">Add new Product</a><br>
-    </button>
-    </div>
-    <div class="group-sorting">
-        <button class="add">
-        <a th:href="@{'/product-management/products-list/page/' + ${currentPage} + '?sortField=title&sortDir=' + ${reverseSortDir}}">Sort Title</a>
-        </button>
-        <button class="add">
-        <a th:href="@{'/product-management/products-list/page/' + ${currentPage} + '?sortField=slug&sortDir=' + ${reverseSortDir}}">Sort Slug</a>
-        </button>
-        <button class="add">
-        <a th:href="@{'/product-management/products-list/page/' + ${currentPage} + '?sortField=discount&sortDir=' + ${reverseSortDir}}">Sort Discount</a>
-        </button>
-
-    </div>
-
-    <table class="list-products-management">
-        <thead style="background-color: aquamarine">
-            <tr class="nhan">
-                <td>Title</td>
-                <td>Slug</td>
-                <td>Sku</td>
-                <td>Price</td>
-                <td>Discount</td>
-                <td>Created At</td>
-                <td>Quantity</td>
-                <td>Action</td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="product : ${listProducts}">
-                <td th:text="${product.title}"></td>
-                <td th:text="${product.slug}"></td>
-                <td th:text="${product.sku}"></td>
-                <td th:text="${product.price}"></td>
-                <td th:text="${product.discount}"></td>
-                <td th:text="${product.createdAt}"></td>
-                <td th:text="${product.quantity}"></td>
-                <td>
-                    <button class="update">
-                    <a th:href="@{/product-management/update-product-form/{id}(id=${product.id})}">Update</a>
-                    </button>
-                    <th:block th:if="${product.getOrderItems().isEmpty() and product.getCartItems().isEmpty()}">
-                        <a class="delete" onclick="return waringDelete('bạn có chắc muốn xóa không');" th:href="@{/product-management/delete-product/{id}(id=${product.id})}">Delete</a>
-                    </th:block>
-
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div th:if="${totalPages > 1}">
-        <div class="total-rows">
-            <p th:text="'Total rows: ' + ${totalItems}"></p>
+    <div class="tnn"><a><img th:src="@{/img/logo.png}" alt="logo" width="80px"></a></div>
+    <div class="container">
+        <div class="nen">
+            <h1>Products Management</h1>
+            <div id="search-container" style="display: flex">
+                <input type="text" id="search-product"  name="q" placeholder="🔍"
+                       style="position: relative; border-radius: 10px;border: none; height:30px; width:300px; left: 30px; margin-right: 30px">
+                <button type="button"
+                        onclick="searchProductManagement()"
+                        style="position: relative; border-radius: 10px; border: none; height: 30px ; width:75px; background-color: #f68383">Search</button>
+            </div>
+            <button class="add">
+                <a th:href="@{/product-management/add-new-product.html}">Add new Product</a><br>
+            </button>
         </div>
-       <div class="pagination">
-           <span>
-            <a th:if="${currentPage > 1}" th:href="@{'/product-management/products-list/page/' + ${currentPage - 1}+
-                '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}" class="nl">&laquo;</a>
-           </span>
-           <span>
-                <span th:each="i : ${#numbers.sequence(1, totalPages)}">
-                    <a th:if="${currentPage != i}" th:href="@{'/product-management/products-list/page/' + ${i} +
-                    '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}" th:text="${i}" class="nl"></a>
-                    <span th:unless="${currentPage != i}" th:text="${i}" class="atv"></span>
-                </span>
-           </span>
-           <span>
-            <a th:if="${currentPage < totalPages }" th:href="@{'/product-management/products-list/page/' + ${currentPage + 1}
-                + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}" id="nl">&raquo;</a>
-           </span><br>
-       </div>
-    </div><br>
-    <button class="back">
-    <a th:href="@{/admin}">Back to Admin Panel</a>
-    </button>
+        <div class="group-sorting">
+            <button class="add">
+                <a th:href="@{'/product-management/products-list/page/' + ${currentPage} + '?sortField=title&sortDir=' + ${reverseSortDir} + '&searchName=' + ${searchName} }">Sort Title</a>
+            </button>
+            <button class="add">
+            <a th:href="@{'/product-management/products-list/page/' + ${currentPage} + '?sortField=slug&sortDir=' + ${reverseSortDir} + '&searchName=' + ${searchName} }">Sort Slug</a>
+            </button>
+            <button class="add">
+            <a th:href="@{'/product-management/products-list/page/' + ${currentPage} + '?sortField=discount&sortDir=' + ${reverseSortDir} + '&searchName=' + ${searchName}}">Sort Discount</a>
+            </button>
 
+        </div>
+
+        <table class="list-products-management">
+            <thead style="background-color: aquamarine">
+                <tr class="nhan">
+                    <td>Title</td>
+                    <td>Slug</td>
+                    <td>Sku</td>
+                    <td>Price</td>
+                    <td>Discount</td>
+                    <td>Created At</td>
+                    <td>Quantity</td>
+                    <td>Action</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="product : ${listProducts}">
+                    <td th:text="${product.title}"></td>
+                    <td th:text="${product.slug}"></td>
+                    <td th:text="${product.sku}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.discount}"></td>
+                    <td th:text="${product.createdAt}"></td>
+                    <td th:text="${product.quantity}"></td>
+                    <td>
+                        <button class="update">
+                        <a th:href="@{/product-management/update-product-form/{id}(id=${product.id})}">Update</a>
+                        </button>
+                        <th:block th:if="${product.getOrderItems().isEmpty() and product.getCartItems().isEmpty()}">
+                            <a class="delete" onclick="return waringDelete('bạn có chắc muốn xóa không');" th:href="@{/product-management/delete-product/{id}(id=${product.id})}">Delete</a>
+                        </th:block>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="pagination-container" th:if="${totalPages > 1}">
+            <div class="total-rows">
+                <p th:text="'Total rows: ' + ${totalItems}"></p>
+            </div>
+            <div id="pagination">
+               <span>
+                <a th:if="${currentPage > 1}" th:href="@{'/product-management/products-list/page/' + ${currentPage - 1}+
+                    '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&searchName=' + ${searchName}}" class="nl">&laquo;</a>
+               </span>
+                <span>
+                    <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+                        <a th:if="${currentPage != i}" th:href="@{'/product-management/products-list/page/' + ${i} +
+                        '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&searchName=' + ${searchName}}" th:text="${i}" class="nl"></a>
+                        <span th:unless="${currentPage != i}" th:text="${i}" class="atv"></span>
+                    </span>
+               </span>
+                <span>
+                <a th:if="${currentPage < totalPages }" th:href="@{'/product-management/products-list/page/' + ${currentPage + 1}
+                    + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&searchName=' + ${searchName} }" id="nl">&raquo;</a>
+               </span><br>
+            </div>
+        </div>
+
+
+        <br>
+        <button class="back">
+            <a th:href="@{/admin}">Back to Admin Panel</a>
+        </button>
     </div>
-</div>
+
+    <script th:inline="javascript">
+        let searchName = [[${searchName}]];
+    </script>
+    <script th:src="@{/js/search-product-management.js}"></script>
 </body>
 </html>

@@ -57,4 +57,10 @@ public interface ProductRepository extends JpaRepository<Product, String> {
             "inner join users as u on u.id = o.customer_id " +
             "where o.status = 'COMPLETED' and u.email = :email", nativeQuery = true)
     List<String> getAllOrderedProductIdByCustomerName(@Param("email") String customerEmail);
+
+
+    @Query(value = "select * " +
+            "from products as p " +
+            "where lower(p.title) like %:searchName%", nativeQuery = true)
+    Page<Product> getAllProductsBySearchName(@Param("searchName") String searchName, Pageable pageable);
 }
