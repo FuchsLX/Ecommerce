@@ -38,7 +38,7 @@ public class ProductReviewController {
         return "review-detail";
     }
 
-    @GetMapping("/{productId}/{pageNo}")
+    @GetMapping("/pd/{productId}/{pageNo}")
     @ResponseBody
     public ResponseEntity<List<ProductReviewDTO>> getAllReviewsWithPagination(
             @PathVariable("productId") String productId,

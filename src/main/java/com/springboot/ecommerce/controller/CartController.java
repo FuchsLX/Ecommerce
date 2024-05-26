@@ -39,17 +39,6 @@ public class CartController {
         }
     }
 
-    @PostMapping("/test")
-    @ResponseBody
-    public String wtf() {
-        return "deo gieu kieu gi";
-    }
-
-    @GetMapping("/test")
-    @ResponseBody
-    public String wtfGet() {
-        return "deo gieu kieu gi";
-    }
 
     @PostMapping("/add-product-to-cart/{productId}/{quantity}")
     @ResponseBody

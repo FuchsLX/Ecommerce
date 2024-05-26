@@ -4,7 +4,8 @@ package com.springboot.ecommerce.controller;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
-import com.springboot.ecommerce.constants.BootstrapRole;
+import com.springboot.ecommerce.constants.BootstrapPermission;
+import com.springboot.ecommerce.entities.user.Permission;
 import com.springboot.ecommerce.entities.user.User;
 import com.springboot.ecommerce.exception.EmptyUserMetaException;
 import com.springboot.ecommerce.entities.cart.Cart;
@@ -30,6 +31,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.springboot.ecommerce.entities.transaction.TransactionType.*;
 import static com.springboot.ecommerce.constants.PaymentUrl.*;
@@ -141,7 +143,13 @@ public class OrderController {
                                        @AuthenticationPrincipal UserDetails user) {
         User currentUser = userService.findByEmail(user.getUsername());
         orderService.setCancelledOrder(orderId);
-        if (currentUser.getRole().getName().equals(BootstrapRole.ADMIN.getName())){
+        List<String> permission = currentUser.getRole().getPermissions()
+                .stream()
+                .map(Permission::getName)
+                .toList();
+        for (String permissionName : permission) {logger.debug("permissionName: {}", permissionName);}
+        System.out.println(permission.contains(BootstrapPermission.STAFF_WRITE.getName()));
+        if (permission.contains(BootstrapPermission.STAFF_WRITE.getName()) || permission.contains(BootstrapPermission.STAFF_READ.getName())){
             redirectAttributes.addAttribute("orderId", orderId);
             return "redirect:/order-management/order-detail/{orderId}";
         } else {

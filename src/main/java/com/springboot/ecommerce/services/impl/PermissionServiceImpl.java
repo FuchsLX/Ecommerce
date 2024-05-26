@@ -1,5 +1,6 @@
 package com.springboot.ecommerce.services.impl;
 
+import com.springboot.ecommerce.constants.BootstrapPermission;
 import com.springboot.ecommerce.controller.dto.PermissionDTO;
 import com.springboot.ecommerce.entities.user.Permission;
 import com.springboot.ecommerce.repositories.PermissionRepository;
@@ -33,6 +34,7 @@ public class PermissionServiceImpl implements PermissionService {
     public List<PermissionDTO> getAllPermissions() {
         return permissionRepository.findAll()
                 .stream()
+                .filter(per -> !per.getName().equals(BootstrapPermission.CUSTOMER_READ.getName()) && !per.getName().equals(BootstrapPermission.CUSTOMER_WRITE.getName()))
                 .map(per -> PermissionDTO.builder()
                         .id(per.getId())
                         .name(per.getName())
