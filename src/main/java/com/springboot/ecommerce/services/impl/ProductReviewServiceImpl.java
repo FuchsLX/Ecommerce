@@ -34,7 +34,7 @@ public class ProductReviewServiceImpl implements ProductReviewService {
 
     @Override
     public List<ProductReviewDTO> getAllReviews(String productId, int pageNo) {
-        return this.getAllReviewWithPagination(productId, pageNo, 1, "created_at", "desc").stream()
+        return this.getAllReviewWithPagination(productId, pageNo, 3, "created_at", "desc").stream()
                 .map(pr -> ProductReviewDTO.builder()
                         .id(pr.getId())
                         .productId(productId)
@@ -117,7 +117,7 @@ public class ProductReviewServiceImpl implements ProductReviewService {
     }
 
     public Page<ProductReview> getAllReviewWithPagination(String productId) {
-        return this.getAllReviewWithPagination(productId, 1, 1, "created_at", "desc");
+        return this.getAllReviewWithPagination(productId, 1, 3, "created_at", "desc");
     }
 
 
