@@ -55,6 +55,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<Product> getAllProducts(int pageNo, int pageSize, String sortField, String sortDirection, String searchName) {
+        return productRepository.getAllProductsBySearchName(
+                searchName.toLowerCase(),
+                this.findPaginated(pageNo, pageSize, sortField, sortDirection)
+        );
+    }
+
+    @Override
     public void deleteProduct(String id) {
         productElasticSearchService.delete(id);
         productMetaService.deleteByProduct(id);

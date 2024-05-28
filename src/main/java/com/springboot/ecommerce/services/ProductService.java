@@ -12,6 +12,8 @@ public interface ProductService {
     void saveNewProduct(Product product);
     Page<Product> getAllProducts(int pageNo, int pageSize, String sortField, String sortDirection);
 
+    Page<Product> getAllProducts(int pageNo, int pageSize, String sortField, String sortDirection, String searchName);
+
     void deleteProduct(String id);
 
     List<Product> findAllByTag(String id);

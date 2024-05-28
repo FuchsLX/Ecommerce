@@ -22,14 +22,13 @@
         <div class="dropdown">
             <img th:src="@{/img/user.png}" alt="User Logo" class="user-logo dropdown-btn">
             <div class="dropdown-content">
-                <a th:href="@{/account/edit}">Profile</a>
                 <a href="/logout">Log Out</a>
             </div>
         </div>
     </div>
 </header>
 
-<h1>ADMIN PANEL</h1>
+<h1>Dashboard</h1>
 <div class="button-container">
     <a class="button" th:href="@{/category-management/categories-list}">Category Management</a>
     <a class="button" th:href="@{/tag-management/tags-list}">Tag Management</a>

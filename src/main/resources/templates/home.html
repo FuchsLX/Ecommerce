@@ -84,13 +84,13 @@
                 <div class="col-4">
                     <a th:href="@{/product/{slugProduct}(slugProduct=${product.slug})}"><img th:src="${product.getImageLink()}"></a>
                     <h4 th:text="${product.title}"></h4>
-                    <div class="rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-o"></i>
-                    </div>
+<!--                    <div class="rating">-->
+<!--                        <i class="fa fa-star"></i>-->
+<!--                        <i class="fa fa-star"></i>-->
+<!--                        <i class="fa fa-star"></i>-->
+<!--                        <i class="fa fa-star"></i>-->
+<!--                        <i class="fa fa-star-o"></i>-->
+<!--                    </div>-->
                     <p><span th:text="${product.price}"></span><sup>$</sup></p>
                     <button class="button-add-product-to-cart" onclick="addProductToCart(this)"  th:data-product-id="${product.id}">Add to Cart</button>
                 </div>
@@ -106,14 +106,14 @@
                 <div class="col-4">
                     <a th:href="@{/product/{slugProduct}(slugProduct=${product.slug})}"><img th:src="${product.getImageLink()}"></a>
                     <h4 th:text="${product.title}"></h4>
-                    <div class="rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-o"></i>
-                    </div>
-                    <p><span th:text="${product.price}"></span><sup>đ</sup></p>
+<!--                    <div class="rating">-->
+<!--                        <i class="fa fa-star"></i>-->
+<!--                        <i class="fa fa-star"></i>-->
+<!--                        <i class="fa fa-star"></i>-->
+<!--                        <i class="fa fa-star"></i>-->
+<!--                        <i class="fa fa-star-o"></i>-->
+<!--                    </div>-->
+                    <p><span th:text="${product.price}"></span><sup>$</sup></p>
                     <button class="button-add-product-to-cart" onclick="addProductToCart(this)"  th:data-product-id="${product.id}">Add to Cart</button>
                 </div>
             </th:block>
@@ -151,13 +151,13 @@
             <div class="watch-1"> <!---san pham-->
                 <a th:href="@{/product/{slugProduct}(slugProduct=${product.slug})}"><img th:src="${product.getImageLink()}"></a>
                 <h4 th:text="${product.title}"></h4>
-                <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
-                </div>
+<!--                <div class="rating">-->
+<!--                    <i class="fa fa-star"></i>-->
+<!--                    <i class="fa fa-star"></i>-->
+<!--                    <i class="fa fa-star"></i>-->
+<!--                    <i class="fa fa-star"></i>-->
+<!--                    <i class="fa fa-star-o"></i>-->
+<!--                </div>-->
                 <p><span th:text="${product.price}"></span><sup>$</sup></p>
                 <button class="button-add-product-to-cart" onclick="addProductToCart(this)"  th:data-product-id="${product.id}">Add to Cart</button>
             </div>

@@ -142,7 +142,11 @@
                         </th:block>
                         <td th:text="${orderItem.getQuantity()}"></td>
                         <td th:text="${orderItem.getPrice()}"></td>
-                        <td><a th:href="@{/review/detail/{productId}(productId=${orderItem.getProduct().getId()})}">Review</a></td>
+                        <td>
+                            <form class="button-pos" th:action="@{/review/detail/{productId}(productId=${orderItem.getProduct().getId()})}">
+                                <button type="submit">Review</button>
+                            </form>
+                        </td>
                     </tr>
                 </table>
             </div>

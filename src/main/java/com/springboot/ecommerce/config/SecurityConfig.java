@@ -2,7 +2,6 @@ package com.springboot.ecommerce.config;
 
 
 import com.springboot.ecommerce.constants.BootstrapPermission;
-import com.springboot.ecommerce.constants.BootstrapRole;
 import com.springboot.ecommerce.security.loginError.CustomAuthenticationFailureHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -31,10 +30,12 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(c -> c
-                        .requestMatchers("/home/**", "/registration/**", "/product/**", "/css/**", "/js/**", "/fonts/**", "/img/**", "/assets/**").permitAll()
-                        .requestMatchers("/category-management/**", "/tag-management/**", "/order-management/**", "/admin").hasAnyRole(BootstrapRole.ADMIN.getName(), BootstrapRole.STAFF.getName())
-                        .requestMatchers("/product-management/**").hasAnyRole(BootstrapRole.ADMIN.getName(), BootstrapRole.STAFF.getName())
-                        .requestMatchers("/cart/**", "/account/**", "/order/**").hasAnyAuthority(BootstrapPermission.CUSTOMER_READ.getName(), BootstrapPermission.CUSTOMER_WRITE.getName(), BootstrapPermission.ADMIN_WRITE.getName())
+                        .requestMatchers("/home/**", "/registration/**", "/review/pd/**",  "/product/**", "/search/**", "/css/**", "/js/**", "/fonts/**", "/img/**", "/assets/**").permitAll()
+                        .requestMatchers("/admin").hasAnyAuthority(BootstrapPermission.ADMIN_READ.getName(), BootstrapPermission.ADMIN_WRITE.getName(), BootstrapPermission.STAFF_READ.getName(), BootstrapPermission.STAFF_WRITE.getName())
+                        .requestMatchers("/product-management/**", "/category-management/**", "/tag-management/**",  "/order-management/**").hasAnyAuthority(BootstrapPermission.STAFF_READ.getName(), BootstrapPermission.STAFF_WRITE.getName())
+                        .requestMatchers("/staff-management/**", "/analytics/**", "/role-management/**").hasAnyAuthority(BootstrapPermission.ADMIN_WRITE.getName(), BootstrapPermission.ADMIN_READ.getName())
+                        .requestMatchers("/order/**").hasAnyAuthority(BootstrapPermission.CUSTOMER_WRITE.getName(), BootstrapPermission.CUSTOMER_READ.getName(), BootstrapPermission.STAFF_WRITE.getName(), BootstrapPermission.STAFF_READ.getName())
+                        .requestMatchers("/cart/**", "/account/**").hasAnyAuthority(BootstrapPermission.CUSTOMER_READ.getName(), BootstrapPermission.CUSTOMER_WRITE.getName())
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
