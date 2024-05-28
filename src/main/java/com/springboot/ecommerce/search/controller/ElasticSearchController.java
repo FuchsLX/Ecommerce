@@ -35,7 +35,8 @@ public class ElasticSearchController {
             @RequestParam(value = "upperBoundPrice", required = false) BigDecimal  upperBoundPrice,
             @RequestParam(value = "lowerBoundPrice", required = false) BigDecimal lowerBoundPrice,
             Model model, HttpSession session
-    ){
+    )
+    {
         int pageSize = 4;
         Pageable pageable = productElasticSearchService.findPaginated(pageNo, pageSize, sortField, sortDir);
         Page<ProductElasticSearch> page = productElasticSearchService
@@ -47,7 +48,6 @@ public class ElasticSearchController {
             throw new ProductNotFoundException();
         }
         productElasticSearchService.setFilterAttributeSession(session,keyword, categories, tags, lowerBoundPrice, upperBoundPrice);
-
 
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());

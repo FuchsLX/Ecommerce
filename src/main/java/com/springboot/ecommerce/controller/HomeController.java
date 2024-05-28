@@ -30,7 +30,7 @@ public class HomeController {
     private final ProductReviewService productReviewService;
 
 
-    @GetMapping("/setCartSession")
+    @GetMapping("/setCartSession")  
     public String setCartSession(@AuthenticationPrincipal UserDetails user, HttpSession session){
         User currentUser = userService.findByEmail(user.getUsername());
         if (!currentUser.getRole().getName().equals(BootstrapRole.CUSTOMER.getName())) {
@@ -67,6 +67,7 @@ public class HomeController {
         return "home";
     }
 
+    
     @GetMapping("/login")
     public String getSignInPage(){
         return "login";
@@ -89,6 +90,4 @@ public class HomeController {
         );
         return "product-detail";
     }
-
-
 }
