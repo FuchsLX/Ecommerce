@@ -30,7 +30,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(c -> c
-                        .requestMatchers("/home/**", "/registration/**", "/review/pd/**",  "/product/**", "/css/**", "/js/**", "/fonts/**", "/img/**", "/assets/**").permitAll()
+                        .requestMatchers("/home/**", "/registration/**", "/review/pd/**",  "/product/**", "/search/**", "/css/**", "/js/**", "/fonts/**", "/img/**", "/assets/**").permitAll()
                         .requestMatchers("/admin").hasAnyAuthority(BootstrapPermission.ADMIN_READ.getName(), BootstrapPermission.ADMIN_WRITE.getName(), BootstrapPermission.STAFF_READ.getName(), BootstrapPermission.STAFF_WRITE.getName())
                         .requestMatchers("/product-management/**", "/category-management/**", "/tag-management/**",  "/order-management/**").hasAnyAuthority(BootstrapPermission.STAFF_READ.getName(), BootstrapPermission.STAFF_WRITE.getName())
                         .requestMatchers("/staff-management/**", "/analytics/**", "/role-management/**").hasAnyAuthority(BootstrapPermission.ADMIN_WRITE.getName(), BootstrapPermission.ADMIN_READ.getName())
